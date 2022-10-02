@@ -4,32 +4,49 @@ import javafx.scene.input.KeyEvent;
 import uet.oop.bomberman.entities.Bomber;
 
 public class Controller {
+    public static boolean[] direction = new boolean[5];
 
-    private int direction;
     Controller() {
-        direction = Bomber.directionRight;
+        direction[Bomber.directionNone] = true;
     }
 
     public void listen(KeyEvent event) {
         switch (event.getCode()) {
             case UP:
-                direction = Bomber.directionUp;
+                direction[Bomber.directionUp] = true;
                 break;
             case DOWN:
-                direction = Bomber.directionDown;
+                direction[Bomber.directionDown] = true;
                 break;
             case LEFT:
-                direction = Bomber.directionLeft;
+                direction[Bomber.directionLeft] = true;
                 break;
             case RIGHT:
-                direction = Bomber.directionRight;
+                direction[Bomber.directionRight] = true;
                 break;
             default:
+                direction[Bomber.directionNone] = false;
                 break;
         }
     }
 
-    public int getDirection() {
-        return this.direction;
+    public void release(KeyEvent event) {
+        switch (event.getCode()) {
+            case UP:
+                direction[Bomber.directionUp] = false;
+                break;
+            case DOWN:
+                direction[Bomber.directionDown] = false;
+                break;
+            case LEFT:
+                direction[Bomber.directionLeft] = false;
+                break;
+            case RIGHT:
+                direction[Bomber.directionRight] = false;
+                break;
+            default:
+                direction[Bomber.directionNone] = true;
+                break;
+        }
     }
 }
