@@ -1,5 +1,7 @@
 package uet.oop.bomberman.entities;
 
+import uet.oop.bomberman.graphics.Sprite;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.List;
@@ -7,7 +9,7 @@ import java.util.Scanner;
 
 /**
  * Lớp tải màn chơi từ tệp cấu hình.
- *
+ * <p>
  * Sample:
  * 1 13 31
  * ###############################
@@ -23,41 +25,40 @@ import java.util.Scanner;
  * # #*# # # # # # #*# # # # # # #
  * #           *   *  *          #
  * ###############################
- *
+ * <p>
  * Mô tả cấu trúc tệp cấu hình màn chơi:
  * 1/ Dòng đầu tiên bao gồm 3 số nguyên L, R, C:
  * L - số thứ tự màn chơi
  * R - số hàng của bản đồ
  * C - số cột của bản đồ
- *
+ * <p>
  * 2/ R dòng tiếp theo, mỗi dòng có C kí tự. Mỗi kí tự đại diện cho một đối tượng trên bản đồ:
  * Tiles:
  * # - Wall
  * * - Brick
  * x - Portal
- *
+ * <p>
  * Character:
  * p - Bomber
  * 1 - Balloon
  * 2 - Oneal
- *
+ * <p>
  * Items:
  * b - Bomb Item
  * f - Flame Item
  * s - Speed Item
- *
+ * <p>
  * Kí tự khác các kí tự trên - Grass
  *
  * @author TTD
  */
 public class LoadLevel {
     /**
-     *
-     * @param level tên level cần tải
+     * @param level        tên level cần tải
      * @param stillObjects danh sách đối tượng cố định
      * @throws FileNotFoundException khi không tìm thấy tệp cấu hình cần tải
      */
-    public LoadLevel(int level, List<Entity> stillObjects) throws FileNotFoundException {
+    public LoadLevel(int level, List<Entity> stillObjects, List<Entity> entities) throws FileNotFoundException {
         String path = "res/levels/Level" + level + ".txt";
         System.out.println(path);
 
@@ -83,6 +84,13 @@ public class LoadLevel {
                     case 'x':
                         stillObjects.add(new Portal(j, i));
                         break;
+                    case 'p':
+                        entities.add(new Bomber(j, i));
+                        break;
+                    case '1':
+                        entities.add(new Enemy(j, i, Sprite.balloom_right1, 1));
+                    case '2':
+                        entities.add(new Enemy(j, i, Sprite.oneal_right1, 2));
                 }
             }
         }

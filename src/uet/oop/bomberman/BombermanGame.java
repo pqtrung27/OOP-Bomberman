@@ -38,8 +38,6 @@ public class BombermanGame extends Application {
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
 
-        MovingEntity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
-
         // Tao root container
         Group root = new Group();
         root.getChildren().add(canvas);
@@ -72,13 +70,11 @@ public class BombermanGame extends Application {
         timer.start();
 
         createMap();
-
-        entities.add(bomberman);
     }
 
     public void createMap() {
         try {
-            new LoadLevel(1, stillObjects);
+            new LoadLevel(1, stillObjects, entities);
         } catch (FileNotFoundException e) {
             System.out.println("File Not Found!!!");
         }
