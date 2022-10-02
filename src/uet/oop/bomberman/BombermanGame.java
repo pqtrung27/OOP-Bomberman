@@ -13,6 +13,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import java.io.File;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,15 +77,20 @@ public class BombermanGame extends Application {
     }
 
     public void createMap() {
-        for (int i = 0; i < WIDTH; i++) {
-            for (int j = 0; j < HEIGHT; j++) {
-                Entity object;
-                if (j == 0 || j == HEIGHT - 1 || i == 0 || i == WIDTH - 1) {
-                    object = new Wall(i, j);
-                } else {
-                    object = new Grass(i, j);
+        try {
+            new LoadLevel(1, stillObjects);
+        } catch (FileNotFoundException e) {
+            System.out.println("File Not Found!!!");
+            for (int i = 0; i < WIDTH; i++) {
+                for (int j = 0; j < HEIGHT; j++) {
+                    Entity object;
+                    if (j == 0 || j == HEIGHT - 1 || i == 0 || i == WIDTH - 1) {
+                        object = new Wall(i, j);
+                    } else {
+                        object = new Grass(i, j);
+                    }
+                    stillObjects.add(object);
                 }
-                stillObjects.add(object);
             }
         }
     }
