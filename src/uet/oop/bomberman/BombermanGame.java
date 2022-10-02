@@ -9,6 +9,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import java.io.File;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,11 +55,17 @@ public class BombermanGame extends Application {
         stage.setScene(scene);
         stage.show();
 
+        //bay lac
+        String bgmFile = "res/audio/MainBGM.mp3";
+        Media bgm = new Media(new File(bgmFile).toURI().toString());
+        MediaPlayer bgmPlayer = new MediaPlayer(bgm);
+
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
                 render();
                 update();
+                bgmPlayer.play();
             }
         };
         timer.start();

@@ -5,3 +5,7 @@
 - Moving animation cho bomber.          Done
 - Moving cho Enemy.
 - Moving animation cho Enemy.
+- Collide giữa các entity.
+- Ghi lại trạng thái ra file.
+- Thêm nhạc nền.                        Done
+- Thêm sound effect cho các event.
