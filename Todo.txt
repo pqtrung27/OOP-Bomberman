@@ -1,6 +1,7 @@
 - Thiết kế cây thừa kế.
 - Nhận keyEvent.                        Done
 - Moving cho Bomber.                    Done
-- Moving animation cho bomber.
+- Đi chéo cho Bomber.                   Done
+- Moving animation cho bomber.          Done
 - Moving cho Enemy.
 - Moving animation cho Enemy.

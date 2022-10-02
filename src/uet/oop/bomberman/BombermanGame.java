@@ -2,13 +2,10 @@ package uet.oop.bomberman;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
@@ -49,10 +46,8 @@ public class BombermanGame extends Application {
 
         //tao input event handler.
         Controller controller = new Controller();
-        scene.setOnKeyPressed(event -> {
-            controller.listen(event);
-            bomberman.move(controller.getDirection());
-        });
+        scene.setOnKeyPressed(controller::listen);
+        scene.setOnKeyReleased(controller::release);
 
         // Them scene vao stage
         stage.setScene(scene);
@@ -77,6 +72,17 @@ public class BombermanGame extends Application {
             new LoadLevel(1, stillObjects);
         } catch (FileNotFoundException e) {
             System.out.println("File Not Found!!!");
+            for (int i = 0; i < WIDTH; i++) {
+                for (int j = 0; j < HEIGHT; j++) {
+                    Entity object;
+                    if (j == 0 || j == HEIGHT - 1 || i == 0 || i == WIDTH - 1) {
+                        object = new Wall(i, j);
+                    } else {
+                        object = new Grass(i, j);
+                    }
+                    stillObjects.add(object);
+                }
+            }
         }
     }
 
