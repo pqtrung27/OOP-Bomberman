@@ -20,7 +20,7 @@ public class Bomber extends MovingEntity{
 
     @Override
     public void update() {
-        System.out.println(_sprite);
+        // System.out.println(_sprite);
         this.img = _sprite;
     }
 
