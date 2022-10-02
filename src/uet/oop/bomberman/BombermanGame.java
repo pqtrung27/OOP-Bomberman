@@ -81,17 +81,6 @@ public class BombermanGame extends Application {
             new LoadLevel(1, stillObjects);
         } catch (FileNotFoundException e) {
             System.out.println("File Not Found!!!");
-            for (int i = 0; i < WIDTH; i++) {
-                for (int j = 0; j < HEIGHT; j++) {
-                    Entity object;
-                    if (j == 0 || j == HEIGHT - 1 || i == 0 || i == WIDTH - 1) {
-                        object = new Wall(i, j);
-                    } else {
-                        object = new Grass(i, j);
-                    }
-                    stillObjects.add(object);
-                }
-            }
         }
     }
 
