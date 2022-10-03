@@ -21,8 +21,8 @@ public class BombermanGame extends Application {
 
     private GraphicsContext gc;
     private Canvas canvas;
-    private List<Entity> entities = new ArrayList<>();
-    private List<Entity> stillObjects = new ArrayList<>();
+    private List<Entity> movingObjects = new ArrayList<>();
+    public static List<Entity> stillObjects = new ArrayList<>();
 
 
     public static void main(String[] args) {
@@ -34,8 +34,6 @@ public class BombermanGame extends Application {
         // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
-
-        MovingEntity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
 
         // Tao root container
         Group root = new Group();
@@ -53,6 +51,8 @@ public class BombermanGame extends Application {
         stage.setScene(scene);
         stage.show();
 
+        createMap();
+
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
@@ -61,27 +61,23 @@ public class BombermanGame extends Application {
             }
         };
         timer.start();
-
-        createMap();
-
-        entities.add(bomberman);
     }
 
     public void createMap() {
         try {
-            new LoadLevel(1, stillObjects);
+            new LoadLevel(1, stillObjects, movingObjects);
         } catch (FileNotFoundException e) {
             System.out.println("File Not Found!!!");
         }
     }
 
     public void update() {
-        entities.forEach(Entity::update);
+        movingObjects.forEach(Entity::update);
     }
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         stillObjects.forEach(g -> g.render(gc));
-        entities.forEach(g -> g.render(gc));
+        movingObjects.forEach(g -> g.render(gc));
     }
 }

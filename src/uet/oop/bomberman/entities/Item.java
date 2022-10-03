@@ -47,6 +47,8 @@ public abstract class Item extends BreakableEntity {
         }
     }
 
+    public abstract boolean powerUp(Bomber bomber);
+
     @Override
     public void update() {
 

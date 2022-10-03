@@ -1,5 +1,7 @@
 package uet.oop.bomberman.entities;
 
+import uet.oop.bomberman.graphics.Sprite;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.List;
@@ -11,7 +13,7 @@ import java.util.Scanner;
  * Sample:
  * 1 13 31
  * ###############################
- * #p     ** *  1 * 2 *  * * *   #
+ * #p     s* *  1 * 2 *  * * *   #
  * # # # #*# # #*#*# # # #*#*#*# #
  * #  x*     ***  *  1   * 2 * * #
  * # # # # # #*# # #*#*# # # # #*#
@@ -51,28 +53,32 @@ import java.util.Scanner;
  * @author TTD
  */
 public class LoadLevel {
+    // Kích thước map của màn chơi
+    public static int nRow;
+    public static int nCol;
+
     /**
-     *
+     * Tải tải màn chơi từ tập cấu hình.
      * @param level tên level cần tải
      * @param stillObjects danh sách đối tượng cố định
+     * @param movingObjects danh sách đối tượng di chuyển
      * @throws FileNotFoundException khi không tìm thấy tệp cấu hình cần tải
      */
-    public LoadLevel(int level, List<Entity> stillObjects) throws FileNotFoundException {
+    public LoadLevel(int level, List<Entity> stillObjects, List<Entity> movingObjects) throws FileNotFoundException {
         String path = "res/levels/Level" + level + ".txt";
-        System.out.println(path);
+        // System.out.println(path);
 
         Scanner scanner = new Scanner(new FileInputStream(path));
         scanner.nextInt();
-        int nRow = scanner.nextInt();
-        int nCol = scanner.nextInt();
+        nRow = scanner.nextInt();
+        nCol = scanner.nextInt();
         scanner.nextLine();
 
+        stillObjects.clear();
+        movingObjects.clear();
         for (int i = 0; i < nRow; ++i) {
             String data = scanner.nextLine();
             for (int j = 0; j < nCol; ++j) {
-                if (data.charAt(j) != '#') {
-                    stillObjects.add(new Grass(j, i));
-                }
                 switch (data.charAt(j)) {
                     case '#':
                         stillObjects.add(new Wall(j, i));
@@ -82,6 +88,16 @@ public class LoadLevel {
                         break;
                     case 'x':
                         stillObjects.add(new Portal(j, i));
+                        break;
+                    case 's':
+                        stillObjects.add(new SpeedItem(j, i));
+                        break;
+                    case 'p':
+                        movingObjects.add(new Bomber(j, i, Sprite.player_right.getFxImage()));
+                        stillObjects.add(new Grass(j, i));
+                        break;
+                    default:
+                        stillObjects.add(new Grass(j, i));
                         break;
                 }
             }
