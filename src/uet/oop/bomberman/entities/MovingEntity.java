@@ -28,6 +28,14 @@ public abstract class MovingEntity extends Entity {
         return true;
     }
 
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
     protected void animate() {
         if (animate < animate_MAX_VALUE) {
             animate++;

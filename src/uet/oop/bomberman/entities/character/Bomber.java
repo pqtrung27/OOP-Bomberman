@@ -1,8 +1,20 @@
 package uet.oop.bomberman.entities.character;
 
+import uet.oop.bomberman.entities.BreakableEntity;
+import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.MovingEntity;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.entities.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.util.Controller;
+import uet.oop.bomberman.util.LoadLevel;
+
+import java.util.List;
 
 public class Bomber extends MovingEntity {
 
@@ -60,6 +72,39 @@ public class Bomber extends MovingEntity {
             _x += addX;
             _y += addY;
         }
+    }
+
+    @Override
+    public boolean canMove(int x, int y) {
+        if (_direction == directionLeft) {
+            return canPass(x, y) && canPass(x, y + Sprite.SCALED_SIZE - 1);
+        }
+        if (_direction == directionUp) {
+            return canPass(x, y) && canPass(x + Sprite.SCALED_SIZE - 1, y);
+        }
+        if (_direction == directionRight) {
+            return canPass(x + Sprite.SCALED_SIZE - 1, y)
+                    && canPass(x + Sprite.SCALED_SIZE - 1, y + Sprite.SCALED_SIZE - 1);
+        }
+        if (_direction == directionDown) {
+            return canPass(x + Sprite.SCALED_SIZE - 1, y + Sprite.SCALED_SIZE - 1)
+                    && canPass(x,  y +Sprite.SCALED_SIZE - 1);
+        }
+        return true;
+    }
+
+    private boolean canPass(int x, int y) {
+        int xUnit = x / Sprite.SCALED_SIZE;
+        int yUnit = y / Sprite.SCALED_SIZE;
+        int id = yUnit * LoadLevel.nCol + xUnit;
+        Entity obstacle = BombermanGame.stillObjects.get(id);
+        if (obstacle instanceof Wall) {
+            return false;
+        }
+        if (obstacle instanceof BreakableEntity && !((BreakableEntity) obstacle).isBroken()) {
+            return false;
+        }
+        return true;
     }
 
     private void chooseSprite() {

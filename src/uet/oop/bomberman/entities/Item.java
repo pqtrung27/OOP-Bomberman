@@ -2,6 +2,7 @@ package uet.oop.bomberman.entities;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import uet.oop.bomberman.entities.character.Bomber;
 
 /**
  * Lớp trừu tượng cài đặt các đối tượng vật phẩm.
@@ -46,6 +47,8 @@ public abstract class Item extends BreakableEntity {
             super.breakEntity();
         }
     }
+
+    public abstract boolean powerUp(Bomber bomber);
 
     @Override
     public void update() {

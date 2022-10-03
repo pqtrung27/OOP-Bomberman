@@ -16,7 +16,7 @@ import java.util.Scanner;
  * Sample:
  * 1 13 31
  * ###############################
- * #p     ** *  1 * 2 *  * * *   #
+ * #p     s* *  1 * 2 *  * * *   #
  * # # # #*# # #*#*# # # #*#*#*# #
  * #  x*     ***  *  1   * 2 * * #
  * # # # # # #*# # #*#*# # # # #*#
@@ -56,27 +56,36 @@ import java.util.Scanner;
  * @author TTD
  */
 public class LoadLevel {
+    // Kích thước map của màn chơi
+    public static int nRow;
+    public static int nCol;
+
     /**
+<<<<<<< HEAD
+     * Tải tải màn chơi từ tập cấu hình.
+     * @param level tên level cần tải
+=======
      * @param level        tên level cần tải
+>>>>>>> d0562aab69d1fbae5cb97782ff8a27329e766e3a
      * @param stillObjects danh sách đối tượng cố định
+     * @param movingObjects danh sách đối tượng di chuyển
      * @throws FileNotFoundException khi không tìm thấy tệp cấu hình cần tải
      */
-    public LoadLevel(int level, List<Entity> stillObjects, List<Entity> entities) throws FileNotFoundException {
+    public LoadLevel(int level, List<Entity> stillObjects, List<Entity> movingObjects) throws FileNotFoundException {
         String path = "res/levels/Level" + level + ".txt";
-        System.out.println(path);
+        // System.out.println(path);
 
         Scanner scanner = new Scanner(new FileInputStream(path));
         scanner.nextInt();
-        int nRow = scanner.nextInt();
-        int nCol = scanner.nextInt();
+        nRow = scanner.nextInt();
+        nCol = scanner.nextInt();
         scanner.nextLine();
 
+        stillObjects.clear();
+        movingObjects.clear();
         for (int i = 0; i < nRow; ++i) {
             String data = scanner.nextLine();
             for (int j = 0; j < nCol; ++j) {
-                if (data.charAt(j) != '#') {
-                    stillObjects.add(new Grass(j, i));
-                }
                 switch (data.charAt(j)) {
                     case '#':
                         stillObjects.add(new Wall(j, i));
@@ -87,13 +96,22 @@ public class LoadLevel {
                     case 'x':
                         stillObjects.add(new Portal(j, i));
                         break;
+                    case 's':
+                        stillObjects.add(new SpeedItem(j, i));
+                        break;
                     case 'p':
-                        entities.add(new Bomber(j, i));
+                        movingObjects.add(new Bomber(j, i));
+                        stillObjects.add(new Grass(j, i));
                         break;
                     case '1':
-                        entities.add(new Ballon(j, i));
+                        movingObjects.add(new Ballon(j, i));
+                        stillObjects.add(new Grass(j, i));
                     case '2':
-                        entities.add(new Oneal(j, i));
+                        movingObjects.add(new Oneal(j, i));
+                        stillObjects.add(new Grass(j, i));
+                    default:
+                        stillObjects.add(new Grass(j, i));
+                        break;
                 }
             }
         }

@@ -11,14 +11,17 @@ import javafx.scene.image.Image;
 public abstract class BreakableEntity extends Entity {
     // Biến boolean kiểm tra trạng thái của đối tượng (true = đã bị phá hủy)
     protected boolean isBroken;
+    protected Grass base;
 
     /**
      * Khởi tạo đối tượng sử dụng phương thức khởi tạo của lớp cha Entity.
      * Gán trạng thái ban đầu chưa bị phá hủy cho đối tượng.
+     * Khởi tạo đối tượng nền Grass.
      */
     public BreakableEntity(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
         isBroken = false;
+        base = new Grass(xUnit, yUnit);
     }
 
     /**
@@ -40,12 +43,15 @@ public abstract class BreakableEntity extends Entity {
     /**
      * Ghi đè phương thức render() của lớp cha Entity.
      * Chỉ cho phép render khi đối tượng có trạng thái chưa bị phá hủy.
+     * Render đối tượng nền Grass khi đối tượng đã bị phá hủy.
      * @param gc GraphicsContext
      */
     @Override
     public void render(GraphicsContext gc) {
         if (!isBroken) {
             super.render(gc);
+        } else {
+            base.render(gc);
         }
     }
 

@@ -31,8 +31,8 @@ public class BombermanGame extends Application {
 
     private GraphicsContext gc;
     private Canvas canvas;
-    private List<Entity> entities = new ArrayList<>();
-    private List<Entity> stillObjects = new ArrayList<>();
+    private List<Entity> movingObjects = new ArrayList<>();
+    public static List<Entity> stillObjects = new ArrayList<>();
 
 
     public static void main(String[] args) {
@@ -61,6 +61,8 @@ public class BombermanGame extends Application {
         stage.setScene(scene);
         stage.show();
 
+        createMap();
+
         //bay lac
         String bgmFile = "res/audio/MainBGM.mp3";
         Media bgm = new Media(new File(bgmFile).toURI().toString());
@@ -75,25 +77,23 @@ public class BombermanGame extends Application {
             }
         };
         timer.start();
-
-        createMap();
     }
 
     public void createMap() {
         try {
-            new LoadLevel(1, stillObjects, entities);
+            new LoadLevel(1, stillObjects, movingObjects);
         } catch (FileNotFoundException e) {
             System.out.println("File Not Found!!!");
         }
     }
 
     public void update() {
-        entities.forEach(Entity::update);
+        movingObjects.forEach(Entity::update);
     }
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         stillObjects.forEach(g -> g.render(gc));
-        entities.forEach(g -> g.render(gc));
+        movingObjects.forEach(g -> g.render(gc));
     }
 }
