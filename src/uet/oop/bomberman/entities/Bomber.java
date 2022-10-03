@@ -13,18 +13,17 @@ import java.util.List;
 
 public class Bomber extends MovingEntity {
 
-    private Sprite _sprite;
+    private Sprite _sprite = Sprite.player_right;
     private int _direction;
     private boolean isMoving;
 
     private int _x;
     private int _y;
 
-    public Bomber(int x, int y, Image img) {
-        super(x, y, img);
-        _sprite = Sprite.player_right;
-        _x = this.x;
-        _y = this.y;
+    public Bomber(int x, int y) {
+        super(x, y, Sprite.player_right.getFxImage());
+        _x = x * Sprite.SCALED_SIZE;
+        _y = y * Sprite.SCALED_SIZE;
     }
 
     @Override
@@ -64,7 +63,7 @@ public class Bomber extends MovingEntity {
 
     public void move(int addX, int addY) {
         isMoving = true;
-        if (canMove(x + addX, y + addY)) {
+        if (canMove(_x + addX, _y + addY)) {
             _x += addX;
             _y += addY;
         }
@@ -108,25 +107,25 @@ public class Bomber extends MovingEntity {
             case MovingEntity.directionUp:
                 _sprite = Sprite.player_up;
                 if (isMoving) {
-                    _sprite = Sprite.movingSprite(Sprite.player_up_1,Sprite.player_up_2, animate, 15);
+                    _sprite = Sprite.movingSprite(Sprite.player_up_1, Sprite.player_up_2, animate, 20);
                 }
                 break;
             case MovingEntity.directionDown:
                 _sprite = Sprite.player_down;
                 if (isMoving) {
-                    _sprite = Sprite.movingSprite(Sprite.player_down_1,Sprite.player_down_2, animate, 15);
+                    _sprite = Sprite.movingSprite(Sprite.player_down_1, Sprite.player_down_2, animate, 20);
                 }
                 break;
             case MovingEntity.directionLeft:
                 _sprite = Sprite.player_left;
                 if (isMoving) {
-                    _sprite = Sprite.movingSprite(Sprite.player_left_1,Sprite.player_left_2, animate, 15);
+                    _sprite = Sprite.movingSprite(Sprite.player_left_1, Sprite.player_left_2, animate, 20);
                 }
                 break;
             case MovingEntity.directionRight:
                 _sprite = Sprite.player_right;
                 if (isMoving) {
-                    _sprite = Sprite.movingSprite(Sprite.player_right_1,Sprite.player_right_2, animate, 15);
+                    _sprite = Sprite.movingSprite(Sprite.player_right_1, Sprite.player_right_2, animate, 20);
                 }
                 break;
             default:
