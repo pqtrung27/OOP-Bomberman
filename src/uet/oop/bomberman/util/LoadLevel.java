@@ -1,6 +1,9 @@
-package uet.oop.bomberman.entities;
+package uet.oop.bomberman.util;
 
-import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.entities.*;
+import uet.oop.bomberman.entities.character.enemy.Ballon;
+import uet.oop.bomberman.entities.character.Bomber;
+import uet.oop.bomberman.entities.character.enemy.Oneal;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -88,9 +91,9 @@ public class LoadLevel {
                         entities.add(new Bomber(j, i));
                         break;
                     case '1':
-                        entities.add(new Enemy(j, i, Sprite.balloom_right1, 1));
+                        entities.add(new Ballon(j, i));
                     case '2':
-                        entities.add(new Enemy(j, i, Sprite.oneal_right1, 2));
+                        entities.add(new Oneal(j, i));
                 }
             }
         }

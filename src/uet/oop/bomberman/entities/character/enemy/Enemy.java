@@ -1,30 +1,29 @@
-package uet.oop.bomberman.entities;
+package uet.oop.bomberman.entities.character.enemy;
 
-import uet.oop.bomberman.Controller;
+import uet.oop.bomberman.entities.MovingEntity;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.Random;
 
-public class Enemy extends MovingEntity {
-
-    private final int BALLON = 1;
-    private final int ONEAL = 2;
+public abstract class Enemy extends MovingEntity {
     private Sprite _sprite = Sprite.player_right;
+    protected Sprite[] spriteList = new Sprite[7];
+
+    protected final int leftSprite = 0;
+    protected final int rightSprite = 3;
+    protected final int deadSprite = 6;
     private int _direction;
     private boolean isMoving;
 
     private int _x;
     private int _y;
-
-    private int _type;
-
     private int randomSeed = 0;
 
-    public Enemy(int x, int y, Sprite sprite, int type) {
-        super(x, y, sprite.getFxImage());
+    public Enemy(int x, int y) {
+        super(x, y);
         _x = x * Sprite.SCALED_SIZE;
         _y = y * Sprite.SCALED_SIZE;
-        _type = type;
+        this.speed = 1;
     }
 
     @Override
@@ -70,27 +69,17 @@ public class Enemy extends MovingEntity {
     private void chooseSprite() {
         switch (_direction) {
             case MovingEntity.directionUp:
-                _sprite = Sprite.player_up;
+            case MovingEntity.directionLeft:
+                _sprite = spriteList[leftSprite];
                 if (isMoving) {
-                    _sprite = Sprite.movingSprite(Sprite.player_up_1, Sprite.player_up_2, animate, 10);
+                    _sprite = Sprite.movingSprite(spriteList[leftSprite+1], spriteList[leftSprite+2], animate, 20);
                 }
                 break;
             case MovingEntity.directionDown:
-                _sprite = Sprite.player_down;
-                if (isMoving) {
-                    _sprite = Sprite.movingSprite(Sprite.player_down_1, Sprite.player_down_2, animate, 10);
-                }
-                break;
-            case MovingEntity.directionLeft:
-                _sprite = Sprite.player_left;
-                if (isMoving) {
-                    _sprite = Sprite.movingSprite(Sprite.player_left_1, Sprite.player_left_2, animate, 10);
-                }
-                break;
             case MovingEntity.directionRight:
-                _sprite = Sprite.player_right;
+                _sprite = spriteList[rightSprite];
                 if (isMoving) {
-                    _sprite = Sprite.movingSprite(Sprite.player_right_1, Sprite.player_right_2, animate, 10);
+                    _sprite = Sprite.movingSprite(spriteList[rightSprite+1], spriteList[rightSprite+2], animate, 20);
                 }
                 break;
             default:

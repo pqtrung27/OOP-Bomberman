@@ -1,12 +1,8 @@
-package uet.oop.bomberman.entities;
+package uet.oop.bomberman.entities.character;
 
-import javafx.scene.SnapshotParameters;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
+import uet.oop.bomberman.entities.MovingEntity;
 import uet.oop.bomberman.graphics.Sprite;
-import uet.oop.bomberman.Controller;
+import uet.oop.bomberman.util.Controller;
 
 public class Bomber extends MovingEntity {
 

@@ -11,6 +11,9 @@ import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import uet.oop.bomberman.util.Controller;
+import uet.oop.bomberman.util.LoadLevel;
+
 import java.io.File;
 
 import java.io.FileNotFoundException;
@@ -20,7 +23,11 @@ import java.util.List;
 public class BombermanGame extends Application {
 
     public static final int WIDTH = 20;
-    public static final int HEIGHT = 15;
+    public static final int HEIGHT = 13;
+
+    final double initialSceneWidth = WIDTH * Sprite.SCALED_SIZE;
+
+    final double initialSceneHeight = HEIGHT * Sprite.SCALED_SIZE;
 
     private GraphicsContext gc;
     private Canvas canvas;
@@ -43,7 +50,7 @@ public class BombermanGame extends Application {
         root.getChildren().add(canvas);
 
         // Tao scene
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(root, initialSceneWidth, initialSceneHeight);
 
         //tao input event handler.
         Controller controller = new Controller();
