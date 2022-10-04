@@ -16,7 +16,8 @@ import java.util.TimerTask;
  * @author TTD
  */
 public class Bomb extends BreakableEntity {
-    private static int range = 1;
+    public static int range = 1;
+    public static int maxBombNum = 1;
     private Sprite sprite;
     private boolean waiting;
     private final List<Flame> flames = new ArrayList<>();
@@ -54,6 +55,14 @@ public class Bomb extends BreakableEntity {
     }
 
     /**
+     * Phương thức tăng số lượng bomb có thể đặt.
+     * Có thể được sử dụng sia khi Bomber nhận power-up BombItem.
+     */
+    public static void increaseBombNum() {
+        ++maxBombNum;
+    }
+
+    /**
      * Bomb nổ, phá hủy những đối tượng Brick xung quanh nó.
      */
     private void explode() {
@@ -75,7 +84,7 @@ public class Bomb extends BreakableEntity {
                     flames.add(new Flame(curX, curY, i, true));
                     BombermanGame.explodingEntities.add((BreakableEntity) entity);
                     ((BreakableEntity) entity).breakEntity();
-                    System.err.println(curX + " " + curY + " " + (curY * LoadLevel.nCol + curX));
+                    System.out.println(curX + " " + curY + " " + (curY * LoadLevel.nCol + curX));
                     break;
                 }
                 flames.add(new Flame(curX, curY, i, k == range));
@@ -86,11 +95,11 @@ public class Bomb extends BreakableEntity {
     @Override
     public void update() {
         animate();
-        if (waiting) {
-            sprite = Sprite.movingSprite(Sprite.bomb, Sprite.bomb_1, Sprite.bomb_2, animate, 30);
-        } else if (isExploding) {
+        if (isExploding) {
             sprite = Sprite.movingSprite(Sprite.bomb_exploded, Sprite.bomb_exploded1, Sprite.bomb_exploded2, animate, 35);
             flames.forEach(Flame::update);
+        } else if (waiting) {
+            sprite = Sprite.movingSprite(Sprite.bomb, Sprite.bomb_1, Sprite.bomb_2, animate, 30);
         }
         this.img = sprite.getFxImage();
     }

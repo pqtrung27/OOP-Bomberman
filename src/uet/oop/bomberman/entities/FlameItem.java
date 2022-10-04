@@ -13,6 +13,7 @@ public class FlameItem extends Item {
             return false;
         }
         Bomb.increaseRange();
+        breakEntity();
         return true;
     }
 }

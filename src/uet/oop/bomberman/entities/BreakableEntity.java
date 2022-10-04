@@ -56,7 +56,7 @@ public abstract class BreakableEntity extends Entity {
                 isExploding = false;
                 isBroken = true;
             }
-        }, 750L);
+        }, 500L);
     }
 
     /**

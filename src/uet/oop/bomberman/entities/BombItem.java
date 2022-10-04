@@ -12,7 +12,8 @@ public class BombItem extends Item {
         if (isBroken()) {
             return false;
         }
-
+        Bomb.increaseBombNum();
+        breakEntity();
         return true;
     }
 }

@@ -23,6 +23,7 @@ public class Bomber extends MovingEntity {
     @Override
     public void update() {
         layBomb();
+        powerUp();
 
         animate();
         calculateMove();
@@ -33,11 +34,22 @@ public class Bomber extends MovingEntity {
     }
 
     protected void layBomb() {
-        if (!Controller.layBomb) {
+        if (!Controller.layBomb || BombermanGame.bombs.size() == Bomb.maxBombNum) {
+            Controller.layBomb = false;
             return;
         }
         BombermanGame.bombs.add(new Bomb(this.x / Sprite.SCALED_SIZE, this.y / Sprite.SCALED_SIZE));
         Controller.layBomb = false;
+    }
+
+    protected void powerUp() {
+        int xUnit = this.x / Sprite.SCALED_SIZE;
+        int yUnit = this.y / Sprite.SCALED_SIZE;
+        Entity entity = BombermanGame.stillObjects.get(yUnit * LoadLevel.nCol + xUnit);
+        if (!(entity instanceof Item)) {
+            return;
+        }
+        ((Item) entity).powerUp(this);
     }
 
     protected void calculateMove() {
@@ -99,6 +111,9 @@ public class Bomber extends MovingEntity {
         Entity obstacle = BombermanGame.stillObjects.get(id);
         if (obstacle instanceof Wall) {
             return false;
+        }
+        if (obstacle instanceof Item && !((Item) obstacle).isCovered()) {
+            return true;
         }
         if (obstacle instanceof BreakableEntity && !((BreakableEntity) obstacle).isBroken()) {
             return false;

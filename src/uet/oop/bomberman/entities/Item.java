@@ -44,8 +44,16 @@ public abstract class Item extends BreakableEntity {
         if (!cover.isBroken()) {
             cover.breakEntity();
         } else {
-            super.breakEntity();
+            this.isBroken = true;
         }
+    }
+
+    /**
+     * Phương thức kiểm tra vật phẩm bị giấu hay không.
+     * @return true nếu vật phẩm bị giấu sau đối tượng Brick.
+     */
+    public boolean isCovered() {
+        return !cover.isBroken();
     }
 
     public abstract boolean powerUp(Bomber bomber);
