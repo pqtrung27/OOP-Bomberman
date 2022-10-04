@@ -1,11 +1,10 @@
-package uet.oop.bomberman.entities;
+package uet.oop.bomberman.entities.character;
 
+import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.graphics.Sprite;
-import uet.oop.bomberman.Controller;
-
-import java.util.List;
-
+import uet.oop.bomberman.util.Controller;
+import uet.oop.bomberman.util.LoadLevel;
 public class Bomber extends MovingEntity {
 
     private Sprite _sprite = Sprite.player_right;

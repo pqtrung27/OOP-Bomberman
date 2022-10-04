@@ -1,6 +1,9 @@
-package uet.oop.bomberman.entities;
+package uet.oop.bomberman.util;
 
-import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.entities.*;
+import uet.oop.bomberman.entities.character.enemy.Ballon;
+import uet.oop.bomberman.entities.character.Bomber;
+import uet.oop.bomberman.entities.character.enemy.Oneal;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -58,12 +61,8 @@ public class LoadLevel {
     public static int nCol;
 
     /**
-<<<<<<< HEAD
      * Tải tải màn chơi từ tập cấu hình.
      * @param level tên level cần tải
-=======
-     * @param level        tên level cần tải
->>>>>>> d0562aab69d1fbae5cb97782ff8a27329e766e3a
      * @param stillObjects danh sách đối tượng cố định
      * @param movingObjects danh sách đối tượng di chuyển
      * @throws FileNotFoundException khi không tìm thấy tệp cấu hình cần tải
@@ -101,10 +100,10 @@ public class LoadLevel {
                         stillObjects.add(new Grass(j, i));
                         break;
                     case '1':
-                        movingObjects.add(new Enemy(j, i, Sprite.balloom_right1, 1));
+                        movingObjects.add(new Ballon(j, i));
                         stillObjects.add(new Grass(j, i));
                     case '2':
-                        movingObjects.add(new Enemy(j, i, Sprite.oneal_right1, 2));
+                        movingObjects.add(new Oneal(j, i));
                         stillObjects.add(new Grass(j, i));
                     default:
                         stillObjects.add(new Grass(j, i));

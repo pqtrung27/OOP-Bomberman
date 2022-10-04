@@ -3,7 +3,7 @@
 - Moving cho Bomber.                    Done
 - Đi chéo cho Bomber.                   Done
 - Moving animation cho bomber.          Done
-- Moving cho Enemy.
+- Moving cho Enemy.                     Done
 - Moving animation cho Enemy.
 - Collide giữa các entity.
 - Ghi lại trạng thái ra file.

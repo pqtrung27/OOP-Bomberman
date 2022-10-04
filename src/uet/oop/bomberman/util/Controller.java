@@ -1,13 +1,13 @@
-package uet.oop.bomberman;
+package uet.oop.bomberman.util;
 
 import javafx.scene.input.KeyEvent;
-import uet.oop.bomberman.entities.Bomber;
+import uet.oop.bomberman.entities.character.Bomber;
 
 public class Controller {
     public static boolean[] direction = new boolean[5];
     public static boolean layBomb;
 
-    Controller() {
+    public Controller() {
         direction[Bomber.directionNone] = true;
         layBomb = false;
     }
