@@ -1,10 +1,5 @@
 package uet.oop.bomberman.entities;
 
-import javafx.scene.SnapshotParameters;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.Controller;
@@ -28,12 +23,22 @@ public class Bomber extends MovingEntity {
 
     @Override
     public void update() {
+        layBomb();
+
         animate();
         calculateMove();
         chooseSprite();
         this.x = _x;
         this.y = _y;
         this.img = _sprite.getFxImage();
+    }
+
+    protected void layBomb() {
+        if (!Controller.layBomb) {
+            return;
+        }
+        BombermanGame.bombs.add(new Bomb(this.x / Sprite.SCALED_SIZE, this.y / Sprite.SCALED_SIZE));
+        Controller.layBomb = false;
     }
 
     protected void calculateMove() {

@@ -26,6 +26,7 @@ public class BombermanGame extends Application {
     private Canvas canvas;
     private List<Entity> movingObjects = new ArrayList<>();
     public static List<Entity> stillObjects = new ArrayList<>();
+    public static List<Bomb> bombs = new ArrayList<>();
 
 
     public static void main(String[] args) {
@@ -82,11 +83,19 @@ public class BombermanGame extends Application {
 
     public void update() {
         movingObjects.forEach(Entity::update);
+        bombs.forEach(Bomb::update);
+
+        for (Bomb b : bombs) {
+            if (b.isBroken()) {
+                bombs.remove(b);
+            }
+        }
     }
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         stillObjects.forEach(g -> g.render(gc));
         movingObjects.forEach(g -> g.render(gc));
+        bombs.forEach(g -> g.render(gc));
     }
 }

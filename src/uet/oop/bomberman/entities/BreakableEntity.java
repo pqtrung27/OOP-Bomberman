@@ -12,6 +12,8 @@ public abstract class BreakableEntity extends Entity {
     // Biến boolean kiểm tra trạng thái của đối tượng (true = đã bị phá hủy)
     protected boolean isBroken;
     protected Grass base;
+    protected int animate = 0;
+    protected final int animate_MAX_VALUE = 7500;
 
     /**
      * Khởi tạo đối tượng sử dụng phương thức khởi tạo của lớp cha Entity.
@@ -53,6 +55,12 @@ public abstract class BreakableEntity extends Entity {
         } else {
             base.render(gc);
         }
+    }
+
+    protected void animate() {
+        if (animate < animate_MAX_VALUE) {
+            animate++;
+        } else animate = 0;
     }
 
     @Override
