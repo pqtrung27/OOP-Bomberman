@@ -33,7 +33,8 @@ public class BombermanGame extends Application {
     private Canvas canvas;
     private List<Entity> movingObjects = new ArrayList<>();
     public static List<Entity> stillObjects = new ArrayList<>();
-    public static List<Bomb> bombs = new ArrayList<>();
+    public static List<BreakableEntity> bombs = new ArrayList<>();
+    public static List<BreakableEntity> explodingEntities = new ArrayList<>();
 
 
     public static void main(String[] args) {
@@ -90,11 +91,19 @@ public class BombermanGame extends Application {
 
     public void update() {
         movingObjects.forEach(Entity::update);
-        bombs.forEach(Bomb::update);
 
-        for (Bomb b : bombs) {
+        update(bombs);
+        update(explodingEntities);
+    }
+
+    public void update(List<BreakableEntity> list) {
+        if (!list.isEmpty()) {
+            list.forEach(BreakableEntity::update);
+        }
+        for (int i = list.size() - 1; i >= 0; --i) {
+            BreakableEntity b = list.get(i);
             if (b.isBroken()) {
-                bombs.remove(b);
+                list.remove(b);
             }
         }
     }

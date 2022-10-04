@@ -1,7 +1,9 @@
 package uet.oop.bomberman.entities;
 
 import javafx.scene.canvas.GraphicsContext;
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.util.LoadLevel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +19,7 @@ public class Bomb extends BreakableEntity {
     private static int range = 1;
     private Sprite sprite;
     private boolean waiting;
-    private List<Flame> flames = new ArrayList<>();
+    private final List<Flame> flames = new ArrayList<>();
 
     /**
      * Khởi tạo đối tượng sử dụng phương thức khởi tạo của lớp cha BreakableEntity.
@@ -65,6 +67,16 @@ public class Bomb extends BreakableEntity {
             for (int k = 1; k <= range; ++k) {
                 int curX = xUnit + addX[i] * k;
                 int curY = yUnit + addY[i] * k;
+                Entity entity = BombermanGame.stillObjects.get(curY * LoadLevel.nCol + curX);
+                if (entity instanceof Wall) {
+                    break;
+                }
+                if (entity instanceof BreakableEntity) {
+                    flames.add(new Flame(curX, curY, i, true));
+                    BombermanGame.explodingEntities.add((BreakableEntity) entity);
+                    ((BreakableEntity) entity).breakEntity();
+                    break;
+                }
                 flames.add(new Flame(curX, curY, i, k == range));
             }
         }
