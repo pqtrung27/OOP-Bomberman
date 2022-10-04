@@ -3,26 +3,32 @@ package uet.oop.bomberman.entities;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+import java.sql.Time;
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * Lớp trừu tượng cài đặt các đối tượng có thể phá hủy.
  *
  * @author TTD
  */
 public abstract class BreakableEntity extends Entity {
-    // Biến boolean kiểm tra trạng thái của đối tượng (true = đã bị phá hủy)
-    protected boolean isBroken;
+    // Biến boolean kiểm tra trạng thái của đối tượng
+    protected boolean isBroken; // true = đã bị phá hủy
+    protected boolean isExploding; // true = đang nổ
     protected Grass base;
     protected int animate = 0;
     protected final int animate_MAX_VALUE = 7500;
 
     /**
      * Khởi tạo đối tượng sử dụng phương thức khởi tạo của lớp cha Entity.
-     * Gán trạng thái ban đầu chưa bị phá hủy cho đối tượng.
+     * Gán trạng thái ban đầu chưa bị phá hủy, không đang nổ cho đối tượng.
      * Khởi tạo đối tượng nền Grass.
      */
     public BreakableEntity(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
         isBroken = false;
+        isExploding = false;
         base = new Grass(xUnit, yUnit);
     }
 
@@ -36,10 +42,21 @@ public abstract class BreakableEntity extends Entity {
 
     /**
      * Phương thức chuyển trạng thái của đối tượng.
-     * Gán trạng thái đã bị phá hủy cho đối tượng.
+     * Gán trạng thái đang nổ cho đối tượng.
+     * Cài đặt timer, gán trạng thái đã bị phá hủy cho đối tượng sau 750ms.
      */
     public void breakEntity() {
-        isBroken = true;
+        isExploding = true;
+        animate = 0;
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                isExploding = false;
+                isBroken = true;
+            }
+        }, 750L);
     }
 
     /**
