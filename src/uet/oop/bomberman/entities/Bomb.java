@@ -71,10 +71,11 @@ public class Bomb extends BreakableEntity {
                 if (entity instanceof Wall) {
                     break;
                 }
-                if (entity instanceof BreakableEntity) {
+                if (entity instanceof BreakableEntity && !((BreakableEntity) entity).isBroken()) {
                     flames.add(new Flame(curX, curY, i, true));
                     BombermanGame.explodingEntities.add((BreakableEntity) entity);
                     ((BreakableEntity) entity).breakEntity();
+                    System.err.println(curX + " " + curY + " " + (curY * LoadLevel.nCol + curX));
                     break;
                 }
                 flames.add(new Flame(curX, curY, i, k == range));

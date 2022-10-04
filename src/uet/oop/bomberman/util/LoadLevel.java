@@ -95,6 +95,12 @@ public class LoadLevel {
                     case 's':
                         stillObjects.add(new SpeedItem(j, i));
                         break;
+                    case 'b':
+                        stillObjects.add(new BombItem(j, i));
+                        break;
+                    case 'f':
+                        stillObjects.add(new FlameItem(j, i));
+                        break;
                     case 'p':
                         movingObjects.add(new Bomber(j, i));
                         stillObjects.add(new Grass(j, i));
@@ -102,9 +108,11 @@ public class LoadLevel {
                     case '1':
                         movingObjects.add(new Ballon(j, i));
                         stillObjects.add(new Grass(j, i));
+                        break;
                     case '2':
                         movingObjects.add(new Oneal(j, i));
                         stillObjects.add(new Grass(j, i));
+                        break;
                     default:
                         stillObjects.add(new Grass(j, i));
                         break;
