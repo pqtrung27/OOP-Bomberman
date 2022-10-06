@@ -10,7 +10,7 @@ import uet.oop.bomberman.entities.character.Bomber;
  * @author TTD
  */
 public abstract class Item extends BreakableEntity {
-    private Brick cover;
+    protected Brick cover;
 
     /**
      * Khởi tạo đối tượng sử dụng phương thức khởi tạo của lớp cha BreakableEntity.

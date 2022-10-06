@@ -1,6 +1,7 @@
 package uet.oop.bomberman.entities;
 
 import javafx.scene.canvas.GraphicsContext;
+import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.graphics.Sprite;
 
 /**
@@ -8,30 +9,45 @@ import uet.oop.bomberman.graphics.Sprite;
  *
  * @author TTD
  */
-public class Portal extends Entity {
-    private Brick cover;
-
+public class Portal extends Item {
     /**
      * Khởi tạo đối tượng sử dụng phương thức khởi tạo của lớp cha BreakableEntity.
      * Khởi tạo đối tượng Brick đặt trên Portal.
      */
     public Portal(int xUnit, int yUnit) {
         super(xUnit, yUnit, Sprite.portal.getFxImage());
-        cover = new Brick(xUnit, yUnit);
+    }
+
+    @Override
+    public boolean powerUp(Bomber bomberman) {
+        if (isBroken()) {
+            return false;
+        }
+        breakEntity();
+        return true;
     }
 
     /**
-     * Ghi đè phương thức render() của lớp cha BreakableEntity.
-     * Portal ban đầu bị giấu sau một đối tượng Brick, chỉ hiện ra sau khi Brick bị phá hủy.
+     * Ghi đè phương thức breakEntity() của lớp cha BreakableEntity.
+     * Portal hiện ra sau khi đối tượng Brick ở trên bị phá hủy.
+     * Không thể phá hủy Portal.
+     */
+    @Override
+    public void breakEntity() {
+        if (!cover.isBroken()) {
+            cover.breakEntity();
+        }
+    }
+
+    /**
+     * Ghi đè phương thức render() của lớp cha Item.
+     * Portal chỉ hiện ra sau khi đối tượng Brick ở trên bị phá hủy.
      * @param gc GraphicsContext
      */
     @Override
     public void render(GraphicsContext gc) {
-        if (!cover.isBroken()) {
-            cover.render(gc);
-        } else {
-            super.render(gc);
-        }
+        base.render(gc);
+        super.render(gc);
     }
 
     @Override

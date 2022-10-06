@@ -111,7 +111,7 @@ public class BombermanGame extends Application {
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         stillObjects.forEach(g -> g.render(gc));
-        movingObjects.forEach(g -> g.render(gc));
         bombs.forEach(g -> g.render(gc));
+        movingObjects.forEach(g -> g.render(gc));
     }
 }
