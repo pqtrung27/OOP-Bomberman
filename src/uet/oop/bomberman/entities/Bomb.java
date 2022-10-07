@@ -76,14 +76,13 @@ public class Bomb extends BreakableEntity {
             for (int k = 1; k <= range; ++k) {
                 int curX = xUnit + addX[i] * k;
                 int curY = yUnit + addY[i] * k;
-                Entity entity = BombermanGame.stillObjects.get(curY * LoadLevel.nCol + curX);
-                if (entity instanceof Wall) {
+                LayerEntity entity = BombermanGame.stillObjects.get(curY * LoadLevel.nCol + curX);
+                if (entity.isWall()) {
                     break;
                 }
-                if (entity instanceof BreakableEntity && !((BreakableEntity) entity).isBroken()) {
+                if (entity.isBreakable()) {
                     flames.add(new Flame(curX, curY, i, true));
-                    BombermanGame.explodingEntities.add((BreakableEntity) entity);
-                    ((BreakableEntity) entity).breakEntity();
+                    entity.destroy();
                     System.out.println(curX + " " + curY + " " + (curY * LoadLevel.nCol + curX));
                     break;
                 }

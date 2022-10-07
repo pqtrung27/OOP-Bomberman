@@ -45,11 +45,8 @@ public class Bomber extends MovingEntity {
     protected void powerUp() {
         int xUnit = this.x / Sprite.SCALED_SIZE;
         int yUnit = this.y / Sprite.SCALED_SIZE;
-        Entity entity = BombermanGame.stillObjects.get(yUnit * LoadLevel.nCol + xUnit);
-        if (!(entity instanceof Item)) {
-            return;
-        }
-        ((Item) entity).powerUp(this);
+        LayerEntity entity = BombermanGame.stillObjects.get(yUnit * LoadLevel.nCol + xUnit);
+        entity.powerUp(this);
     }
 
     protected void calculateMove() {
@@ -108,17 +105,8 @@ public class Bomber extends MovingEntity {
         int xUnit = x / Sprite.SCALED_SIZE;
         int yUnit = y / Sprite.SCALED_SIZE;
         int id = yUnit * LoadLevel.nCol + xUnit;
-        Entity obstacle = BombermanGame.stillObjects.get(id);
-        if (obstacle instanceof Wall) {
-            return false;
-        }
-        if (obstacle instanceof Item && !((Item) obstacle).isCovered()) {
-            return true;
-        }
-        if (obstacle instanceof BreakableEntity && !((BreakableEntity) obstacle).isBroken()) {
-            return false;
-        }
-        return true;
+        LayerEntity obstacle = BombermanGame.stillObjects.get(id);
+        return obstacle.canBePassed();
     }
 
     private void chooseSprite() {

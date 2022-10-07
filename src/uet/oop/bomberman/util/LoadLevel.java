@@ -67,7 +67,7 @@ public class LoadLevel {
      * @param movingObjects danh sách đối tượng di chuyển
      * @throws FileNotFoundException khi không tìm thấy tệp cấu hình cần tải
      */
-    public LoadLevel(int level, List<Entity> stillObjects, List<Entity> movingObjects) throws FileNotFoundException {
+    public LoadLevel(int level, List<LayerEntity> stillObjects, List<Entity> movingObjects) throws FileNotFoundException {
         String path = "res/levels/Level" + level + ".txt";
         // System.out.println(path);
 
@@ -82,41 +82,43 @@ public class LoadLevel {
         for (int i = 0; i < nRow; ++i) {
             String data = scanner.nextLine();
             for (int j = 0; j < nCol; ++j) {
+                LayerEntity layer = new LayerEntity(j, i);
+                if (data.charAt(j) != '#') {
+                    layer.add(new Grass(j, i));
+                } else {
+                    layer.add(new Wall(j, i));
+                }
+
                 switch (data.charAt(j)) {
-                    case '#':
-                        stillObjects.add(new Wall(j, i));
-                        break;
                     case '*':
-                        stillObjects.add(new Brick(j, i));
+                        layer.add(new Brick(j, i));
                         break;
                     case 'x':
-                        stillObjects.add(new Portal(j, i));
+                        layer.add(new Portal(j, i));
                         break;
                     case 's':
-                        stillObjects.add(new SpeedItem(j, i));
+                        layer.add(new SpeedItem(j, i));
                         break;
                     case 'b':
-                        stillObjects.add(new BombItem(j, i));
+                        layer.add(new BombItem(j, i));
                         break;
                     case 'f':
-                        stillObjects.add(new FlameItem(j, i));
+                        layer.add(new FlameItem(j, i));
                         break;
                     case 'p':
                         movingObjects.add(new Bomber(j, i));
-                        stillObjects.add(new Grass(j, i));
                         break;
                     case '1':
                         movingObjects.add(new Ballon(j, i));
-                        stillObjects.add(new Grass(j, i));
                         break;
                     case '2':
                         movingObjects.add(new Oneal(j, i));
-                        stillObjects.add(new Grass(j, i));
-                        break;
-                    default:
-                        stillObjects.add(new Grass(j, i));
                         break;
                 }
+                if (layer.isItem() || layer.isPortal()) {
+                    layer.add(new Brick(j, i));
+                }
+                stillObjects.add(layer);
             }
         }
     }

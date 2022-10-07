@@ -32,9 +32,8 @@ public class BombermanGame extends Application {
     private GraphicsContext gc;
     private Canvas canvas;
     private List<Entity> movingObjects = new ArrayList<>();
-    public static List<Entity> stillObjects = new ArrayList<>();
+    public static List<LayerEntity> stillObjects = new ArrayList<>();
     public static List<BreakableEntity> bombs = new ArrayList<>();
-    public static List<BreakableEntity> explodingEntities = new ArrayList<>();
 
 
     public static void main(String[] args) {
@@ -90,10 +89,9 @@ public class BombermanGame extends Application {
     }
 
     public void update() {
+        stillObjects.forEach(Entity::update);
         movingObjects.forEach(Entity::update);
-
         update(bombs);
-        update(explodingEntities);
     }
 
     public void update(List<BreakableEntity> list) {

@@ -16,7 +16,6 @@ public abstract class BreakableEntity extends Entity {
     // Biến boolean kiểm tra trạng thái của đối tượng
     protected boolean isBroken; // true = đã bị phá hủy
     protected boolean isExploding; // true = đang nổ
-    protected Grass base;
     protected int animate = 0;
     protected final int animate_MAX_VALUE = 7500;
 
@@ -29,7 +28,6 @@ public abstract class BreakableEntity extends Entity {
         super(xUnit, yUnit, img);
         isBroken = false;
         isExploding = false;
-        base = new Grass(xUnit, yUnit);
     }
 
     /**
@@ -62,15 +60,12 @@ public abstract class BreakableEntity extends Entity {
     /**
      * Ghi đè phương thức render() của lớp cha Entity.
      * Chỉ cho phép render khi đối tượng có trạng thái chưa bị phá hủy.
-     * Render đối tượng nền Grass khi đối tượng đã bị phá hủy.
      * @param gc GraphicsContext
      */
     @Override
     public void render(GraphicsContext gc) {
         if (!isBroken) {
             super.render(gc);
-        } else {
-            base.render(gc);
         }
     }
 
