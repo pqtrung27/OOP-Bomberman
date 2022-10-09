@@ -31,8 +31,8 @@ public class BoardState implements Serializable {
     public int nCol;
     private List<LayerEntity> stillObjects = new ArrayList<>();
     private List<MovingEntity> movingObjects = new ArrayList<>();
-    public static List<BreakableEntity> bombs = new ArrayList<>();
-    public static List<Flame> flames = new ArrayList<>();
+    public List<BreakableEntity> bombs = new ArrayList<>();
+    public List<Flame> flames = new ArrayList<>();
     private Bomber bomber;
 
     public boolean endGame = false;
@@ -52,17 +52,15 @@ public class BoardState implements Serializable {
         stillObjects.forEach(Entity::update);
         movingObjects.forEach(Entity::update);
         layBomb();
-        if (!bombs.isEmpty()) {
-            bombs.forEach(BreakableEntity::update);
-        }
-        for (int i = bombs.size() - 1; i >= 0; --i) {
-            BreakableEntity b = bombs.get(i);
-            if (b.isBroken()) {
-                bombs.remove(b);
-            }
-        }
 
-        flames.forEach(Flame::update);
+        //no lambda to avoid ConcurrentModificationException.
+        for (int i = 0; i < bombs.size(); ++i) {
+            bombs.get(i).update();
+        }
+        //no lambda to avoid ConcurrentModificationException.
+        for (int i = 0; i < flames.size(); ++i) {
+            flames.get(i).update();
+        }
 
         bomberCollide();
         enemyCollide();

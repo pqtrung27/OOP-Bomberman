@@ -103,12 +103,15 @@ public class Bomb extends BreakableEntity {
             board.flames.forEach(Flame::update);
         } else if (waiting) {
             sprite = Sprite.movingSprite(Sprite.bomb, Sprite.bomb_1, Sprite.bomb_2, animate, 30);
+        } else if (isBroken) {
+            board.bombs.remove(this);
         }
         this.img = sprite.getFxImage();
     }
 
     /**
      * Ghi đè phương thức render(), render thêm đối tượng Flame khi Bomb đang nổ.
+     *
      * @param gc GraphicsContext
      */
     @Override
