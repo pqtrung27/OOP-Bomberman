@@ -4,8 +4,6 @@ import javafx.scene.image.Image;
 import uet.oop.bomberman.graphics.Sprite;
 
 public abstract class MovingEntity extends Entity {
-
-
     protected int animate = 0;
     protected final int animate_MAX_VALUE = 7500;
 
@@ -22,10 +20,6 @@ public abstract class MovingEntity extends Entity {
 
     public MovingEntity(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
-    }
-
-    public boolean canMove(int x, int y) {
-        return true;
     }
 
     public int getSpeed() {

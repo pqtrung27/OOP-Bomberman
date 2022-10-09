@@ -1,8 +1,11 @@
-package uet.oop.bomberman.entities;
+package uet.oop.bomberman.entities.breakable;
 
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.entities.BreakableEntity;
+import uet.oop.bomberman.entities.LayerEntity;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.util.Controller;
 import uet.oop.bomberman.util.LoadLevel;
 
 import java.util.ArrayList;
@@ -76,15 +79,17 @@ public class Bomb extends BreakableEntity {
             for (int k = 1; k <= range; ++k) {
                 int curX = xUnit + addX[i] * k;
                 int curY = yUnit + addY[i] * k;
-                LayerEntity entity = BombermanGame.stillObjects.get(curY * LoadLevel.nCol + curX);
-                if (entity.isWall()) {
-                    break;
-                }
-                if (entity.isBreakable()) {
-                    flames.add(new Flame(curX, curY, i, true));
-                    entity.destroy();
-                    System.out.println(curX + " " + curY + " " + (curY * LoadLevel.nCol + curX));
-                    break;
+                LayerEntity entity = board.get(curX * Sprite.SCALED_SIZE, curY * Sprite.SCALED_SIZE);
+                if (entity != null) {
+                    if (entity.isWall()) {
+                        break;
+                    }
+                    if (entity.isBreakable()) {
+                        flames.add(new Flame(curX, curY, i, true));
+                        entity.destroy();
+                        //System.out.println(curX + " " + curY + " " + (curY * LoadLevel.nCol + curX));
+                        break;
+                    }
                 }
                 flames.add(new Flame(curX, curY, i, k == range));
             }

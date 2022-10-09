@@ -1,5 +1,6 @@
-package uet.oop.bomberman.entities;
+package uet.oop.bomberman.entities.breakable;
 
+import uet.oop.bomberman.entities.BreakableEntity;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class Flame extends BreakableEntity {

@@ -1,7 +1,7 @@
-package uet.oop.bomberman.entities;
+package uet.oop.bomberman.entities.breakable.item;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import uet.oop.bomberman.entities.BreakableEntity;
 import uet.oop.bomberman.entities.character.Bomber;
 
 /**

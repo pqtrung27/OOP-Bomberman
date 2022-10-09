@@ -1,5 +1,6 @@
 package uet.oop.bomberman.entities.character.enemy;
 
+import uet.oop.bomberman.entities.LayerEntity;
 import uet.oop.bomberman.entities.MovingEntity;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -60,10 +61,11 @@ public abstract class Enemy extends MovingEntity {
 
     public void move(int addX, int addY) {
         isMoving = true;
-        if (canMove(_x + addX, _y + addY)) {
+        LayerEntity entity = board.get(_x + addX, _y + addY);
+        if (entity == null) {
             _x += addX;
             _y += addY;
-        }
+        } else randomSeed = 0;
     }
 
     private void chooseSprite() {
@@ -72,14 +74,14 @@ public abstract class Enemy extends MovingEntity {
             case MovingEntity.directionLeft:
                 _sprite = spriteList[leftSprite];
                 if (isMoving) {
-                    _sprite = Sprite.movingSprite(spriteList[leftSprite+1], spriteList[leftSprite+2], animate, 20);
+                    _sprite = Sprite.movingSprite(spriteList[leftSprite + 1], spriteList[leftSprite + 2], animate, 20);
                 }
                 break;
             case MovingEntity.directionDown:
             case MovingEntity.directionRight:
                 _sprite = spriteList[rightSprite];
                 if (isMoving) {
-                    _sprite = Sprite.movingSprite(spriteList[rightSprite+1], spriteList[rightSprite+2], animate, 20);
+                    _sprite = Sprite.movingSprite(spriteList[rightSprite + 1], spriteList[rightSprite + 2], animate, 20);
                 }
                 break;
             default:

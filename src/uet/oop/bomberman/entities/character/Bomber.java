@@ -2,11 +2,13 @@ package uet.oop.bomberman.entities.character;
 
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.entities.breakable.Bomb;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.util.Controller;
-import uet.oop.bomberman.util.LoadLevel;
+
 public class Bomber extends MovingEntity {
 
+    private final int xPadding = Sprite.SCALED_SIZE * 4;
     private Sprite _sprite = Sprite.player_right;
     private int _direction;
     private boolean isMoving;
@@ -22,7 +24,6 @@ public class Bomber extends MovingEntity {
 
     @Override
     public void update() {
-        layBomb();
         powerUp();
 
         animate();
@@ -33,20 +34,11 @@ public class Bomber extends MovingEntity {
         this.img = _sprite.getFxImage();
     }
 
-    protected void layBomb() {
-        if (!Controller.layBomb || BombermanGame.bombs.size() == Bomb.maxBombNum) {
-            Controller.layBomb = false;
-            return;
-        }
-        BombermanGame.bombs.add(new Bomb(this.x / Sprite.SCALED_SIZE, this.y / Sprite.SCALED_SIZE));
-        Controller.layBomb = false;
-    }
-
     protected void powerUp() {
-        int xUnit = this.x / Sprite.SCALED_SIZE;
-        int yUnit = this.y / Sprite.SCALED_SIZE;
-        LayerEntity entity = BombermanGame.stillObjects.get(yUnit * LoadLevel.nCol + xUnit);
-        entity.powerUp(this);
+        LayerEntity entity = board.get(this.x, this.y);
+        if (entity != null && entity.isItem()) {
+            entity.powerUp(this);
+        }
     }
 
     protected void calculateMove() {
@@ -55,16 +47,13 @@ public class Bomber extends MovingEntity {
         if (Controller.direction[directionUp]) {
             addY--;
             _direction = directionUp;
-        }
-        if (Controller.direction[directionDown]) {
+        } else if (Controller.direction[directionDown]) {
             addY++;
             _direction = directionDown;
-        }
-        if (Controller.direction[directionLeft]) {
+        } else if (Controller.direction[directionLeft]) {
             addX--;
             _direction = directionLeft;
-        }
-        if (Controller.direction[directionRight]) {
+        } else if (Controller.direction[directionRight]) {
             addX++;
             _direction = directionRight;
         }
@@ -72,41 +61,49 @@ public class Bomber extends MovingEntity {
         if (addX != 0 || addY != 0) {
             move(addX * speed, addY * speed);
         } else isMoving = false;
+
+        if (_direction == MovingEntity.directionRight && _x + Sprite.SCALED_SIZE > BombermanGame.initialSceneWidth + board.boardOffset - xPadding) {
+            board.boardOffset = Math.min(board.nCol * Sprite.SCALED_SIZE - BombermanGame.initialSceneWidth
+                    , _x + Sprite.SCALED_SIZE - BombermanGame.initialSceneWidth + xPadding);
+        }
+        if (_direction == MovingEntity.directionLeft && x <= xPadding + board.boardOffset) {
+            board.boardOffset = Math.max(0, _x - xPadding);
+        }
     }
 
     public void move(int addX, int addY) {
         isMoving = true;
-        if (canMove(_x + addX, _y + addY)) {
+        LayerEntity entity = board.get(_x + addX, _y);
+        if (entity == null || entity.canBePassed()) {
             _x += addX;
+        } else {
+            addX = 0;
+            if (entity.y() >= _y + Sprite.SCALED_SIZE - 31) {
+                addY = -2;
+            } else if (entity.y() + Sprite.SCALED_SIZE - 31 <= _y) {
+                addY = 2;
+            }
+            move(addX, addY);
+            return;
+        }
+        entity = board.get(_x, _y + addY);
+        if (entity == null || entity.canBePassed()) {
             _y += addY;
+        } else {
+            addY = 0;
+            if (entity.x() >= _x + Sprite.SCALED_SIZE - 31) {
+                addX = -2;
+            } else if (entity.x() + Sprite.SCALED_SIZE - 31 <= _x) {
+                addX = 2;
+            }
+            move(addX, addY);
         }
-    }
-
-    @Override
-    public boolean canMove(int x, int y) {
-        if (_direction == directionLeft) {
-            return canPass(x, y) && canPass(x, y + Sprite.SCALED_SIZE - 1);
-        }
-        if (_direction == directionUp) {
-            return canPass(x, y) && canPass(x + Sprite.SCALED_SIZE - 1, y);
-        }
-        if (_direction == directionRight) {
-            return canPass(x + Sprite.SCALED_SIZE - 1, y)
-                    && canPass(x + Sprite.SCALED_SIZE - 1, y + Sprite.SCALED_SIZE - 1);
-        }
-        if (_direction == directionDown) {
-            return canPass(x + Sprite.SCALED_SIZE - 1, y + Sprite.SCALED_SIZE - 1)
-                    && canPass(x,  y +Sprite.SCALED_SIZE - 1);
-        }
-        return true;
     }
 
     private boolean canPass(int x, int y) {
         int xUnit = x / Sprite.SCALED_SIZE;
         int yUnit = y / Sprite.SCALED_SIZE;
-        int id = yUnit * LoadLevel.nCol + xUnit;
-        LayerEntity obstacle = BombermanGame.stillObjects.get(id);
-        return obstacle.canBePassed();
+        return true;
     }
 
     private void chooseSprite() {

@@ -8,11 +8,11 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
+import uet.oop.bomberman.entities.BreakableEntity;
 import uet.oop.bomberman.graphics.Sprite;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import uet.oop.bomberman.util.Controller;
-import uet.oop.bomberman.util.LoadLevel;
 
 import java.io.File;
 
@@ -25,16 +25,12 @@ public class BombermanGame extends Application {
     public static final int WIDTH = 20;
     public static final int HEIGHT = 13;
 
-    final double initialSceneWidth = WIDTH * Sprite.SCALED_SIZE;
+    public static final double initialSceneWidth = WIDTH * Sprite.SCALED_SIZE;
 
-    final double initialSceneHeight = HEIGHT * Sprite.SCALED_SIZE;
+    public static final double initialSceneHeight = HEIGHT * Sprite.SCALED_SIZE;
 
     private GraphicsContext gc;
     private Canvas canvas;
-    private List<Entity> movingObjects = new ArrayList<>();
-    public static List<LayerEntity> stillObjects = new ArrayList<>();
-    public static List<BreakableEntity> bombs = new ArrayList<>();
-
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -82,39 +78,21 @@ public class BombermanGame extends Application {
 
     public void createMap() {
         try {
-            new LoadLevel(1, stillObjects, movingObjects);
+            Entity.board.LoadLevel(1);
         } catch (FileNotFoundException e) {
             System.out.println("File Not Found!!!");
         }
     }
 
     public void update() {
-        stillObjects.forEach(Entity::update);
-        movingObjects.forEach(Entity::update);
-        update(bombs);
-    }
-
-    public void update(List<BreakableEntity> list) {
-        if (!list.isEmpty()) {
-            list.forEach(BreakableEntity::update);
-        }
-        for (int i = list.size() - 1; i >= 0; --i) {
-            BreakableEntity b = list.get(i);
-            if (b.isBroken()) {
-                list.remove(b);
-            }
-        }
+        Entity.board.update();
     }
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        stillObjects.forEach(g -> g.render(gc));
-        bombs.forEach(g -> g.render(gc));
-        movingObjects.forEach(g -> g.render(gc));
+        Entity.board.render(gc);
     }
 }
-
-
 
 
 /******************************************************************************

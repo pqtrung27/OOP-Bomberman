@@ -1,9 +1,13 @@
 package uet.oop.bomberman.entities;
 
 import javafx.scene.canvas.GraphicsContext;
+import uet.oop.bomberman.entities.breakable.Brick;
+import uet.oop.bomberman.entities.breakable.Portal;
+import uet.oop.bomberman.entities.breakable.item.Item;
 import uet.oop.bomberman.entities.character.Bomber;
+import uet.oop.bomberman.entities.unbreakable.Grass;
+import uet.oop.bomberman.entities.unbreakable.Wall;
 
-import javax.swing.border.Border;
 import java.util.Stack;
 
 /**
@@ -12,7 +16,7 @@ import java.util.Stack;
  * @author TTD
  */
 public class LayerEntity extends Entity {
-    Stack<Entity> stack = new Stack<>();
+    public Stack<Entity> stack = new Stack<>();
 
     public LayerEntity(int x, int y) {
         super(x, y);
