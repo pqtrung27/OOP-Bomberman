@@ -14,6 +14,10 @@ public abstract class MovingEntity extends Entity {
     public static final int directionLeft = 3;
     public static final int directionRight = 4;
 
+    protected int displayCountDown = 40;
+    protected boolean isMoving;
+    protected boolean isDead;
+
     public MovingEntity(int xUnit, int yUnit) {
         super(xUnit, yUnit);
     }
@@ -28,6 +32,18 @@ public abstract class MovingEntity extends Entity {
 
     public void setSpeed(int speed) {
         this.speed = speed;
+    }
+
+    public void kill() {
+        isDead = true;
+    }
+
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public boolean deadOver() {
+        return isDead && (displayCountDown <= 0);
     }
 
     protected void animate() {

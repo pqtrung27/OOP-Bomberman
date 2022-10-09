@@ -9,6 +9,7 @@ import uet.oop.bomberman.entities.breakable.Portal;
 import uet.oop.bomberman.entities.breakable.item.SpeedItem;
 import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.entities.character.enemy.Ballon;
+import uet.oop.bomberman.entities.character.enemy.Enemy;
 import uet.oop.bomberman.entities.character.enemy.Oneal;
 import uet.oop.bomberman.entities.unbreakable.Grass;
 import uet.oop.bomberman.entities.unbreakable.Wall;
@@ -29,9 +30,12 @@ public class BoardState implements Serializable {
     public int nRow;
     public int nCol;
     private List<LayerEntity> stillObjects = new ArrayList<>();
-    private List<Entity> movingObjects = new ArrayList<>();
+    private List<MovingEntity> movingObjects = new ArrayList<>();
     public static List<BreakableEntity> bombs = new ArrayList<>();
-    private Entity bomber;
+    public static List<Flame> flames = new ArrayList<>();
+    private Bomber bomber;
+
+    public boolean endGame = false;
 
     public BoardState() {
 
@@ -41,12 +45,12 @@ public class BoardState implements Serializable {
         stillObjects.forEach(g -> g.render(gc));
         bombs.forEach(g -> g.render(gc));
         movingObjects.forEach(g -> g.render(gc));
+        flames.forEach(f -> f.render(gc));
     }
 
     public void update() {
         stillObjects.forEach(Entity::update);
         movingObjects.forEach(Entity::update);
-
         layBomb();
         if (!bombs.isEmpty()) {
             bombs.forEach(BreakableEntity::update);
@@ -58,6 +62,12 @@ public class BoardState implements Serializable {
             }
         }
 
+        flames.forEach(Flame::update);
+
+        bomberCollide();
+        enemyCollide();
+
+        if (bomber.deadOver()) endGame = true;
     }
 
     public LayerEntity get(int xTop, int yTop) {
@@ -80,12 +90,53 @@ public class BoardState implements Serializable {
         return null;
     }
 
+    private boolean collide(Entity entity1, Entity entity2) {
+        int xTop1 = entity1.x();
+        int yTop1 = entity1.y();
+        int xBot1 = xTop1 + Sprite.SCALED_SIZE - 1;
+        int yBot1 = yTop1 + Sprite.SCALED_SIZE - 1;
+        int xTop2 = entity2.x();
+        int yTop2 = entity2.y();
+        int xBot2 = xTop2 + Sprite.SCALED_SIZE - 1;
+        int yBot2 = yTop2 + Sprite.SCALED_SIZE - 1;
+        if (yTop2 <= yBot1 && yTop2 >= yTop1
+                || yBot2 >= yTop1 && yBot2 <= yBot1) {
+            if (xTop2 <= xBot1 && xTop2 >= xTop1
+                    || xBot2 >= xTop1 && xBot2 <= xBot1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void bomberCollide() {
+        flames.forEach(flame -> {
+            if (collide(bomber, flame)) bomber.kill();
+        });
+        movingObjects.forEach(movEn -> {
+            if (!(movEn instanceof Bomber))
+                if (collide(bomber, movEn)) bomber.kill();
+        });
+    }
+
+    public void enemyCollide() {
+        for (int i = 0; i < movingObjects.size(); ++i) {
+            MovingEntity entity = movingObjects.get(i);
+            if (!(entity instanceof Bomber))
+                for (int j = 0; j < flames.size(); ++j) {
+                    Flame flame = flames.get(j);
+                    if (collide(entity, flame)) entity.kill();
+                }
+            if ((entity).deadOver()) movingObjects.remove(i);
+        }
+    }
+
     protected void layBomb() {
         if (!Controller.layBomb || bombs.size() == Bomb.maxBombNum) {
             Controller.layBomb = false;
             return;
         }
-        bombs.add(new Bomb(bomber.x() / Sprite.SCALED_SIZE, bomber.y() / Sprite.SCALED_SIZE));
+        bombs.add(new Bomb((bomber.x() + bomber.getSpeed()) / Sprite.SCALED_SIZE, (bomber.y() + bomber.getSpeed()) / Sprite.SCALED_SIZE));
         Controller.layBomb = false;
     }
 

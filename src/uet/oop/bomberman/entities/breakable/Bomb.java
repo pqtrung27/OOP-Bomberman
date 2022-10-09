@@ -23,7 +23,6 @@ public class Bomb extends BreakableEntity {
     public static int maxBombNum = 1;
     private Sprite sprite;
     private boolean waiting;
-    private final List<Flame> flames = new ArrayList<>();
 
     /**
      * Khởi tạo đối tượng sử dụng phương thức khởi tạo của lớp cha BreakableEntity.
@@ -85,13 +84,13 @@ public class Bomb extends BreakableEntity {
                         break;
                     }
                     if (entity.isBreakable()) {
-                        flames.add(new Flame(curX, curY, i, true));
+                        board.flames.add(new Flame(curX, curY, i, true));
                         entity.destroy();
                         //System.out.println(curX + " " + curY + " " + (curY * LoadLevel.nCol + curX));
                         break;
                     }
                 }
-                flames.add(new Flame(curX, curY, i, k == range));
+                board.flames.add(new Flame(curX, curY, i, k == range));
             }
         }
     }
@@ -101,7 +100,7 @@ public class Bomb extends BreakableEntity {
         animate();
         if (isExploding) {
             sprite = Sprite.movingSprite(Sprite.bomb_exploded, Sprite.bomb_exploded1, Sprite.bomb_exploded2, animate, 35);
-            flames.forEach(Flame::update);
+            board.flames.forEach(Flame::update);
         } else if (waiting) {
             sprite = Sprite.movingSprite(Sprite.bomb, Sprite.bomb_1, Sprite.bomb_2, animate, 30);
         }
@@ -114,7 +113,6 @@ public class Bomb extends BreakableEntity {
      */
     @Override
     public void render(GraphicsContext gc) {
-        flames.forEach(f -> f.render(gc));
         super.render(gc);
     }
 }

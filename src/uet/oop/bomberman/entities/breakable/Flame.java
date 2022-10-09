@@ -21,6 +21,7 @@ public class Flame extends BreakableEntity {
     @Override
     public void update() {
         if (!isExploding) {
+            board.flames.clear();
             return;
         }
         Sprite sprite = Sprite.bomb;

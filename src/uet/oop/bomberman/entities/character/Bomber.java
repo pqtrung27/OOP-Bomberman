@@ -11,8 +11,6 @@ public class Bomber extends MovingEntity {
     private final int xPadding = Sprite.SCALED_SIZE * 4;
     private Sprite _sprite = Sprite.player_right;
     private int _direction;
-    private boolean isMoving;
-
     private int _x;
     private int _y;
 
@@ -20,18 +18,24 @@ public class Bomber extends MovingEntity {
         super(x, y, Sprite.player_right.getFxImage());
         _x = x * Sprite.SCALED_SIZE;
         _y = y * Sprite.SCALED_SIZE;
+        this.isDead = false;
+        this.isMoving = false;
+        this.displayCountDown = 100;
     }
 
     @Override
     public void update() {
-        powerUp();
-
         animate();
-        calculateMove();
         chooseSprite();
         this.x = _x;
         this.y = _y;
         this.img = _sprite.getFxImage();
+        if (isDead()){
+            displayCountDown--;
+        } else {
+            powerUp();
+            calculateMove();
+        }
     }
 
     protected void powerUp() {
@@ -101,33 +105,37 @@ public class Bomber extends MovingEntity {
     }
 
     private void chooseSprite() {
-        switch (_direction) {
-            case MovingEntity.directionUp:
-                _sprite = Sprite.player_up;
-                if (isMoving) {
-                    _sprite = Sprite.movingSprite(Sprite.player_up_1, Sprite.player_up_2, animate, 20);
-                }
-                break;
-            case MovingEntity.directionDown:
-                _sprite = Sprite.player_down;
-                if (isMoving) {
-                    _sprite = Sprite.movingSprite(Sprite.player_down_1, Sprite.player_down_2, animate, 20);
-                }
-                break;
-            case MovingEntity.directionLeft:
-                _sprite = Sprite.player_left;
-                if (isMoving) {
-                    _sprite = Sprite.movingSprite(Sprite.player_left_1, Sprite.player_left_2, animate, 20);
-                }
-                break;
-            case MovingEntity.directionRight:
-                _sprite = Sprite.player_right;
-                if (isMoving) {
-                    _sprite = Sprite.movingSprite(Sprite.player_right_1, Sprite.player_right_2, animate, 20);
-                }
-                break;
-            default:
-                break;
+        if (isDead) {
+            _sprite = Sprite.movingSprite(Sprite.player_dead1, Sprite.player_dead2, Sprite.player_dead3, animate, 20);
+        } else {
+            switch (_direction) {
+                case MovingEntity.directionUp:
+                    _sprite = Sprite.player_up;
+                    if (isMoving) {
+                        _sprite = Sprite.movingSprite(Sprite.player_up_1, Sprite.player_up_2, animate, 20);
+                    }
+                    break;
+                case MovingEntity.directionDown:
+                    _sprite = Sprite.player_down;
+                    if (isMoving) {
+                        _sprite = Sprite.movingSprite(Sprite.player_down_1, Sprite.player_down_2, animate, 20);
+                    }
+                    break;
+                case MovingEntity.directionLeft:
+                    _sprite = Sprite.player_left;
+                    if (isMoving) {
+                        _sprite = Sprite.movingSprite(Sprite.player_left_1, Sprite.player_left_2, animate, 20);
+                    }
+                    break;
+                case MovingEntity.directionRight:
+                    _sprite = Sprite.player_right;
+                    if (isMoving) {
+                        _sprite = Sprite.movingSprite(Sprite.player_right_1, Sprite.player_right_2, animate, 20);
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

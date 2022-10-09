@@ -14,7 +14,6 @@ public abstract class Enemy extends MovingEntity {
     protected final int rightSprite = 3;
     protected final int deadSprite = 6;
     private int _direction;
-    private boolean isMoving;
 
     private int _x;
     private int _y;
@@ -25,16 +24,21 @@ public abstract class Enemy extends MovingEntity {
         _x = x * Sprite.SCALED_SIZE;
         _y = y * Sprite.SCALED_SIZE;
         this.speed = 1;
+        this.isDead = false;
     }
 
     @Override
     public void update() {
         animate();
-        calculateMove();
         chooseSprite();
-        this.x = _x;
-        this.y = _y;
         this.img = _sprite.getFxImage();
+        if (isDead) {
+            displayCountDown--;
+        } else {
+            calculateMove();
+            this.x = _x;
+            this.y = _y;
+        }
     }
 
     protected void calculateMove() {
@@ -69,23 +73,27 @@ public abstract class Enemy extends MovingEntity {
     }
 
     private void chooseSprite() {
-        switch (_direction) {
-            case MovingEntity.directionUp:
-            case MovingEntity.directionLeft:
-                _sprite = spriteList[leftSprite];
-                if (isMoving) {
-                    _sprite = Sprite.movingSprite(spriteList[leftSprite + 1], spriteList[leftSprite + 2], animate, 20);
-                }
-                break;
-            case MovingEntity.directionDown:
-            case MovingEntity.directionRight:
-                _sprite = spriteList[rightSprite];
-                if (isMoving) {
-                    _sprite = Sprite.movingSprite(spriteList[rightSprite + 1], spriteList[rightSprite + 2], animate, 20);
-                }
-                break;
-            default:
-                break;
+        if (isDead) {
+            _sprite = spriteList[deadSprite];
+        } else {
+            switch (_direction) {
+                case MovingEntity.directionUp:
+                case MovingEntity.directionLeft:
+                    _sprite = spriteList[leftSprite];
+                    if (isMoving) {
+                        _sprite = Sprite.movingSprite(spriteList[leftSprite + 1], spriteList[leftSprite + 2], animate, 20);
+                    }
+                    break;
+                case MovingEntity.directionDown:
+                case MovingEntity.directionRight:
+                    _sprite = spriteList[rightSprite];
+                    if (isMoving) {
+                        _sprite = Sprite.movingSprite(spriteList[rightSprite + 1], spriteList[rightSprite + 2], animate, 20);
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

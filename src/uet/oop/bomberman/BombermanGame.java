@@ -18,11 +18,14 @@ package uet.oop.bomberman;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.BreakableEntity;
 import uet.oop.bomberman.graphics.Sprite;
@@ -74,6 +77,14 @@ public class BombermanGame extends Application {
         stage.setScene(scene);
         stage.show();
 
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent t) {
+                Platform.exit();
+                System.exit(0);
+            }
+        });
+
         createMap();
 
         //bay lac
@@ -102,6 +113,9 @@ public class BombermanGame extends Application {
 
     public void update() {
         Entity.board.update();
+        if (Entity.board.endGame){
+            System.exit(0);
+        }
     }
 
     public void render() {
