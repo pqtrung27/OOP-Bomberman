@@ -32,7 +32,8 @@ public class BombermanGame extends Application {
     private GraphicsContext gc;
     private Canvas canvas;
     private List<Entity> movingObjects = new ArrayList<>();
-    public static List<Entity> stillObjects = new ArrayList<>();
+    public static List<LayerEntity> stillObjects = new ArrayList<>();
+    public static List<BreakableEntity> bombs = new ArrayList<>();
 
 
     public static void main(String[] args) {
@@ -88,12 +89,27 @@ public class BombermanGame extends Application {
     }
 
     public void update() {
+        stillObjects.forEach(Entity::update);
         movingObjects.forEach(Entity::update);
+        update(bombs);
+    }
+
+    public void update(List<BreakableEntity> list) {
+        if (!list.isEmpty()) {
+            list.forEach(BreakableEntity::update);
+        }
+        for (int i = list.size() - 1; i >= 0; --i) {
+            BreakableEntity b = list.get(i);
+            if (b.isBroken()) {
+                list.remove(b);
+            }
+        }
     }
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         stillObjects.forEach(g -> g.render(gc));
+        bombs.forEach(g -> g.render(gc));
         movingObjects.forEach(g -> g.render(gc));
     }
 }

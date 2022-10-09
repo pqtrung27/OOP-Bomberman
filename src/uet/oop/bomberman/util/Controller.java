@@ -5,13 +5,18 @@ import uet.oop.bomberman.entities.character.Bomber;
 
 public class Controller {
     public static boolean[] direction = new boolean[5];
+    public static boolean layBomb;
 
     public Controller() {
         direction[Bomber.directionNone] = true;
+        layBomb = false;
     }
 
     public void listen(KeyEvent event) {
         switch (event.getCode()) {
+            case SPACE:
+                layBomb = true;
+                break;
             case UP:
                 direction[Bomber.directionUp] = true;
                 break;

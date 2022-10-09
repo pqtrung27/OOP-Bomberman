@@ -1,21 +1,10 @@
 package uet.oop.bomberman.entities.character;
 
-import uet.oop.bomberman.entities.BreakableEntity;
-import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.MovingEntity;
-import javafx.scene.SnapshotParameters;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
+import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.BombermanGame;
-import uet.oop.bomberman.entities.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.util.Controller;
 import uet.oop.bomberman.util.LoadLevel;
-
-import java.util.List;
-
 public class Bomber extends MovingEntity {
 
     private Sprite _sprite = Sprite.player_right;
@@ -33,12 +22,31 @@ public class Bomber extends MovingEntity {
 
     @Override
     public void update() {
+        layBomb();
+        powerUp();
+
         animate();
         calculateMove();
         chooseSprite();
         this.x = _x;
         this.y = _y;
         this.img = _sprite.getFxImage();
+    }
+
+    protected void layBomb() {
+        if (!Controller.layBomb || BombermanGame.bombs.size() == Bomb.maxBombNum) {
+            Controller.layBomb = false;
+            return;
+        }
+        BombermanGame.bombs.add(new Bomb(this.x / Sprite.SCALED_SIZE, this.y / Sprite.SCALED_SIZE));
+        Controller.layBomb = false;
+    }
+
+    protected void powerUp() {
+        int xUnit = this.x / Sprite.SCALED_SIZE;
+        int yUnit = this.y / Sprite.SCALED_SIZE;
+        LayerEntity entity = BombermanGame.stillObjects.get(yUnit * LoadLevel.nCol + xUnit);
+        entity.powerUp(this);
     }
 
     protected void calculateMove() {
@@ -97,14 +105,8 @@ public class Bomber extends MovingEntity {
         int xUnit = x / Sprite.SCALED_SIZE;
         int yUnit = y / Sprite.SCALED_SIZE;
         int id = yUnit * LoadLevel.nCol + xUnit;
-        Entity obstacle = BombermanGame.stillObjects.get(id);
-        if (obstacle instanceof Wall) {
-            return false;
-        }
-        if (obstacle instanceof BreakableEntity && !((BreakableEntity) obstacle).isBroken()) {
-            return false;
-        }
-        return true;
+        LayerEntity obstacle = BombermanGame.stillObjects.get(id);
+        return obstacle.canBePassed();
     }
 
     private void chooseSprite() {

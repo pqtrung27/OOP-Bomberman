@@ -42,7 +42,7 @@ public abstract class Enemy extends MovingEntity {
 
         if (randomSeed == 0) {
             Random generator = new Random();
-            System.out.println(generator.nextInt());
+            // System.out.println(generator.nextInt());
             _direction = generator.nextInt(4) + 1;
             randomSeed = 100;
         } else randomSeed--;
