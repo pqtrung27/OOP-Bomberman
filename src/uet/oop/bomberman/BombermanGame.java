@@ -1,4 +1,20 @@
+/******************************************************************************
+ *
+ *  Main class to run the game.
+ *
+ ******************************************************************************/
+
 package uet.oop.bomberman;
+
+/**
+ * The {@code BombermanGame} class is a data type for start and loop the
+ * bomber man game.
+ * <p>
+ * This implementation uses JavaFx entirely to render screen and entity.
+ *
+ * @author Phu Quoc Trung
+ * @author Tran Thuy Duong
+ */
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;

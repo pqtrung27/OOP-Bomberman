@@ -100,12 +100,6 @@ public class Bomber extends MovingEntity {
         }
     }
 
-    private boolean canPass(int x, int y) {
-        int xUnit = x / Sprite.SCALED_SIZE;
-        int yUnit = y / Sprite.SCALED_SIZE;
-        return true;
-    }
-
     private void chooseSprite() {
         switch (_direction) {
             case MovingEntity.directionUp:
