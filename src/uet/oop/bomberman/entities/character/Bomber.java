@@ -44,7 +44,7 @@ public class Bomber extends MovingEntity {
     }
 
     public boolean isInPortal() {
-        Layer entity = board.get(this.x, this.y);
+        Entity entity = board.getEntity(this.x, this.y);
         return entity != null && entity.isPortal();
     }
 

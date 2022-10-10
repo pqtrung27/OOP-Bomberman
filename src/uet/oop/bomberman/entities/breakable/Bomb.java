@@ -64,6 +64,11 @@ public class Bomb extends BreakableEntity {
         }
     }
 
+    public static void reset() {
+        maxBombNum = 1;
+        range = 1;
+    }
+
     /**
      * Bomb nổ, phá hủy những đối tượng Brick xung quanh nó.
      */

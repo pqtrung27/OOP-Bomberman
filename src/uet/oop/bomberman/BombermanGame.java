@@ -24,6 +24,7 @@ import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.entities.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import uet.oop.bomberman.entities.breakable.Bomb;
 import uet.oop.bomberman.util.BoardState;
 import uet.oop.bomberman.util.Controller;
 
@@ -66,6 +67,8 @@ public class BombermanGame {
     }
 
     public void reset() {
+        Bomb.reset();
+
         level = 0;
         loadNextLevel();
     }
