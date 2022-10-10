@@ -8,7 +8,7 @@ import uet.oop.bomberman.util.BoardState;
 import java.util.Comparator;
 
 public abstract class Entity {
-    public static final BoardState board = new BoardState();
+    public static BoardState board;
 
     //Tọa độ X tính từ góc trái trên trong Canvas
     protected int x;

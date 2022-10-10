@@ -35,7 +35,7 @@ public class Main extends Application {
 
     public static final double initialSceneHeight = HEIGHT * Sprite.SCALED_SIZE;
 
-    public static int playing = 0;
+    public static boolean playing = false;
 
     public static Menu menu;
     public static BombermanGame game;
@@ -70,15 +70,15 @@ public class Main extends Application {
     }
 
     public Scene chooseScene() {
-        if (playing == 0) {
-            return menu.getScene();
+        if (playing) {
+            return game.getScene();
         }
-        return game.getScene();
+        return menu.getScene();
     }
 
     public void update() {
         // System.out.println(playing);
-        if (playing == 1) {
+        if (playing) {
             game.update();
         } else {
             menu.update();
@@ -86,12 +86,17 @@ public class Main extends Application {
     }
 
     public void render() {
-        if (playing == 1) {
+        if (playing) {
             game.render();
         }
     }
 
     public static void switchPlayingStatus() {
-        playing ^= 1;
+        if (playing) {
+            playing = false;
+        } else {
+            playing = true;
+            game.reset();
+        }
     }
 }

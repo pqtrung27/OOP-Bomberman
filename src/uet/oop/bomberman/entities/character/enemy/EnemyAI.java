@@ -23,6 +23,7 @@ package uet.oop.bomberman.entities.character.enemy;
  * @author Tran Thuy Duong
  */
 
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.MovingEntity;
 import uet.oop.bomberman.entities.character.Bomber;
