@@ -1,15 +1,10 @@
 package uet.oop.bomberman.entities.breakable;
 
 import javafx.scene.canvas.GraphicsContext;
-import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.BreakableEntity;
 import uet.oop.bomberman.entities.LayerEntity;
 import uet.oop.bomberman.graphics.Sprite;
-import uet.oop.bomberman.util.Controller;
-import uet.oop.bomberman.util.LoadLevel;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -58,10 +53,13 @@ public class Bomb extends BreakableEntity {
 
     /**
      * Phương thức tăng số lượng bomb có thể đặt.
-     * Có thể được sử dụng sia khi Bomber nhận power-up BombItem.
+     * Có thể được sử dụng sau khi Bomber nhận power-up BombItem.
+     * Số Bomb lớn nhất có thể đặt = 3.
      */
     public static void increaseBombNum() {
-        ++maxBombNum;
+        if (Bomb.maxBombNum < 3) {
+            ++maxBombNum;
+        }
     }
 
     /**
@@ -97,14 +95,15 @@ public class Bomb extends BreakableEntity {
 
     @Override
     public void update() {
+        if (isBroken) {
+            board.bombs.remove(this);
+            return;
+        }
         animate();
         if (isExploding) {
             sprite = Sprite.movingSprite(Sprite.bomb_exploded, Sprite.bomb_exploded1, Sprite.bomb_exploded2, animate, 35);
-            board.flames.forEach(Flame::update);
         } else if (waiting) {
             sprite = Sprite.movingSprite(Sprite.bomb, Sprite.bomb_1, Sprite.bomb_2, animate, 30);
-        } else if (isBroken) {
-            board.bombs.remove(this);
         }
         this.img = sprite.getFxImage();
     }

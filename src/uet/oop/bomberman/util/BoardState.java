@@ -31,7 +31,7 @@ public class BoardState implements Serializable {
     public int nCol;
     private List<LayerEntity> stillObjects = new ArrayList<>();
     private List<MovingEntity> movingObjects = new ArrayList<>();
-    public List<BreakableEntity> bombs = new ArrayList<>();
+    public List<Bomb> bombs = new ArrayList<>();
     public List<Flame> flames = new ArrayList<>();
     private Bomber bomber;
 
@@ -54,18 +54,18 @@ public class BoardState implements Serializable {
         layBomb();
 
         //no lambda to avoid ConcurrentModificationException.
-        for (int i = 0; i < bombs.size(); ++i) {
+        for (int i = bombs.size() - 1; i >= 0; --i) {
             bombs.get(i).update();
         }
         //no lambda to avoid ConcurrentModificationException.
-        for (int i = 0; i < flames.size(); ++i) {
+        for (int i = flames.size() - 1; i >= 0; --i) {
             flames.get(i).update();
         }
 
         bomberCollide();
         enemyCollide();
 
-        if (bomber.deadOver()) endGame = true;
+        if (bomber.isDead()) endGame = true;
     }
 
     public LayerEntity get(int xTop, int yTop) {
@@ -75,11 +75,11 @@ public class BoardState implements Serializable {
             if (g.isGrass()) {
                 continue;
             }
-            int gXmax = g.x() + Sprite.SCALED_SIZE - 1;
-            int gYmax = g.y() + Sprite.SCALED_SIZE - 1;
-            if (g.y() <= yBot && g.y() >= yTop
+            int gXmax = g.getX() + Sprite.SCALED_SIZE - 1;
+            int gYmax = g.getY() + Sprite.SCALED_SIZE - 1;
+            if (g.getY() <= yBot && g.getY() >= yTop
                     || gYmax >= yTop && gYmax <= yBot) {
-                if (g.x() <= xBot && g.x() >= xTop
+                if (g.getX() <= xBot && g.getX() >= xTop
                         || gXmax >= xTop && gXmax <= xBot) {
                     return g;
                 }
@@ -89,12 +89,12 @@ public class BoardState implements Serializable {
     }
 
     private boolean collide(Entity entity1, Entity entity2) {
-        int xTop1 = entity1.x();
-        int yTop1 = entity1.y();
+        int xTop1 = entity1.getX();
+        int yTop1 = entity1.getY();
         int xBot1 = xTop1 + Sprite.SCALED_SIZE - 1;
         int yBot1 = yTop1 + Sprite.SCALED_SIZE - 1;
-        int xTop2 = entity2.x();
-        int yTop2 = entity2.y();
+        int xTop2 = entity2.getX();
+        int yTop2 = entity2.getY();
         int xBot2 = xTop2 + Sprite.SCALED_SIZE - 1;
         int yBot2 = yTop2 + Sprite.SCALED_SIZE - 1;
         if (yTop2 <= yBot1 && yTop2 >= yTop1
@@ -125,7 +125,7 @@ public class BoardState implements Serializable {
                     Flame flame = flames.get(j);
                     if (collide(entity, flame)) entity.kill();
                 }
-            if ((entity).deadOver()) movingObjects.remove(i);
+            if ((entity).isDead()) movingObjects.remove(i);
         }
     }
 
@@ -134,7 +134,8 @@ public class BoardState implements Serializable {
             Controller.layBomb = false;
             return;
         }
-        bombs.add(new Bomb((bomber.x() + bomber.getSpeed()) / Sprite.SCALED_SIZE, (bomber.y() + bomber.getSpeed()) / Sprite.SCALED_SIZE));
+        bombs.add(new Bomb((bomber.getX() + bomber.getSpeed()) / Sprite.SCALED_SIZE,
+                (bomber.getY() + bomber.getSpeed()) / Sprite.SCALED_SIZE));
         Controller.layBomb = false;
     }
 

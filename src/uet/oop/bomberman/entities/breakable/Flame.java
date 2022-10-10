@@ -20,7 +20,7 @@ public class Flame extends BreakableEntity {
 
     @Override
     public void update() {
-        if (!isExploding) {
+        if (isBroken) {
             board.flames.remove(this);
             return;
         }
@@ -81,6 +81,5 @@ public class Flame extends BreakableEntity {
         }
         this.img = sprite.getFxImage();
         animate();
-
     }
 }

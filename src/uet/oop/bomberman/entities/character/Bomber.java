@@ -18,9 +18,9 @@ public class Bomber extends MovingEntity {
         super(x, y, Sprite.player_right.getFxImage());
         _x = x * Sprite.SCALED_SIZE;
         _y = y * Sprite.SCALED_SIZE;
+        this.isKilled = false;
         this.isDead = false;
         this.isMoving = false;
-        this.displayCountDown = 100;
     }
 
     @Override
@@ -30,9 +30,7 @@ public class Bomber extends MovingEntity {
         this.x = _x;
         this.y = _y;
         this.img = _sprite.getFxImage();
-        if (isDead()){
-            displayCountDown--;
-        } else {
+        if (!isKilled && !isDead) {
             powerUp();
             calculateMove();
         }
@@ -82,9 +80,9 @@ public class Bomber extends MovingEntity {
             _x += addX;
         } else {
             addX = 0;
-            if (entity.y() >= _y + Sprite.SCALED_SIZE - 31) {
+            if (entity.getY() >= _y + Sprite.SCALED_SIZE - 31) {
                 addY = -2;
-            } else if (entity.y() + Sprite.SCALED_SIZE - 31 <= _y) {
+            } else if (entity.getY() + Sprite.SCALED_SIZE - 31 <= _y) {
                 addY = 2;
             }
             move(addX, addY);
@@ -95,9 +93,9 @@ public class Bomber extends MovingEntity {
             _y += addY;
         } else {
             addY = 0;
-            if (entity.x() >= _x + Sprite.SCALED_SIZE - 31) {
+            if (entity.getX() >= _x + Sprite.SCALED_SIZE - 31) {
                 addX = -2;
-            } else if (entity.x() + Sprite.SCALED_SIZE - 31 <= _x) {
+            } else if (entity.getX() + Sprite.SCALED_SIZE - 31 <= _x) {
                 addX = 2;
             }
             move(addX, addY);
@@ -105,8 +103,8 @@ public class Bomber extends MovingEntity {
     }
 
     private void chooseSprite() {
-        if (isDead) {
-            _sprite = Sprite.movingSprite(Sprite.player_dead1, Sprite.player_dead2, Sprite.player_dead3, animate, 20);
+        if (isKilled) {
+            _sprite = Sprite.movingSprite(Sprite.player_dead1, Sprite.player_dead2, Sprite.player_dead3, animate, 35);
         } else {
             switch (_direction) {
                 case MovingEntity.directionUp:

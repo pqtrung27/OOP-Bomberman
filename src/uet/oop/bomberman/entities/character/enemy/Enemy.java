@@ -32,9 +32,7 @@ public abstract class Enemy extends MovingEntity {
         animate();
         chooseSprite();
         this.img = _sprite.getFxImage();
-        if (isDead) {
-            displayCountDown--;
-        } else {
+        if (!isKilled && !isDead) {
             calculateMove();
             this.x = _x;
             this.y = _y;
@@ -73,7 +71,7 @@ public abstract class Enemy extends MovingEntity {
     }
 
     private void chooseSprite() {
-        if (isDead) {
+        if (isKilled) {
             _sprite = spriteList[deadSprite];
         } else {
             switch (_direction) {
@@ -81,14 +79,14 @@ public abstract class Enemy extends MovingEntity {
                 case MovingEntity.directionLeft:
                     _sprite = spriteList[leftSprite];
                     if (isMoving) {
-                        _sprite = Sprite.movingSprite(spriteList[leftSprite + 1], spriteList[leftSprite + 2], animate, 20);
+                        _sprite = Sprite.movingSprite(spriteList[leftSprite], spriteList[leftSprite + 1], spriteList[leftSprite + 2], animate, 20);
                     }
                     break;
                 case MovingEntity.directionDown:
                 case MovingEntity.directionRight:
                     _sprite = spriteList[rightSprite];
                     if (isMoving) {
-                        _sprite = Sprite.movingSprite(spriteList[rightSprite + 1], spriteList[rightSprite + 2], animate, 20);
+                        _sprite = Sprite.movingSprite(spriteList[rightSprite], spriteList[rightSprite + 1], spriteList[rightSprite + 2], animate, 20);
                     }
                     break;
                 default:

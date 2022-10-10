@@ -29,11 +29,11 @@ public abstract class Entity {
         this.img = img;
     }
 
-    public int x() {
+    public int getX() {
         return this.x;
     }
 
-    public int y() {
+    public int getY() {
         return this.y;
     }
     public void render(GraphicsContext gc) {
