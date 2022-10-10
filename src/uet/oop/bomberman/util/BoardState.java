@@ -21,7 +21,6 @@ import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.Scanner;
 
 public class BoardState implements Serializable {
@@ -63,6 +62,9 @@ public class BoardState implements Serializable {
 
         //no lambda to avoid ConcurrentModificationException.
         for (int i = bombs.size() - 1; i >= 0; --i) {
+            if (!collide(bomber, bombs.get(i))) {
+                bombs.get(i).setJustLay(false);
+            }
             bombs.get(i).update();
         }
         //no lambda to avoid ConcurrentModificationException.
@@ -79,24 +81,35 @@ public class BoardState implements Serializable {
         }
     }
 
-    public Layer get(int xTop, int yTop) {
+    public Layer getLayer(int xTop, int yTop) {
         int xBot = xTop + Sprite.SCALED_SIZE - 1;
         int yBot = yTop + Sprite.SCALED_SIZE - 1;
-        for (Layer g : stillObjects) {
-            if (g.isGrass()) {
-                continue;
-            }
-            int gXmax = g.getX() + Sprite.SCALED_SIZE - 1;
-            int gYmax = g.getY() + Sprite.SCALED_SIZE - 1;
-            if (g.getY() <= yBot && g.getY() >= yTop
-                    || gYmax >= yTop && gYmax <= yBot) {
-                if (g.getX() <= xBot && g.getX() >= xTop
-                        || gXmax >= xTop && gXmax <= xBot) {
-                    return g;
-                }
-            }
-        }
+        int xUnitTop = xTop / Sprite.SCALED_SIZE;
+        int yUnitTop = yTop / Sprite.SCALED_SIZE;
+        int xUnitBot = xBot / Sprite.SCALED_SIZE;
+        int yUnitBot = yBot / Sprite.SCALED_SIZE;
+        Layer layer = stillObjects.get(yUnitTop * nCol + xUnitTop);
+        if (layer != null && !(layer.getTop().isGrass())) return layer;
+        layer = stillObjects.get(yUnitBot * nCol + xUnitBot);
+        if (layer != null && !(layer.getTop().isGrass())) return layer;
+        layer = stillObjects.get(yUnitTop * nCol + xUnitBot);
+        if (layer != null && !(layer.getTop().isGrass())) return layer;
+        layer = stillObjects.get(yUnitBot * nCol + xUnitTop);
+        if (layer != null && !(layer.getTop().isGrass())) return layer;
         return null;
+    }
+
+    public Entity getEntity(int xTop, int yTop) {
+        Wall temp = new Wall(0, 0);
+        temp.setX(xTop);
+        temp.setY(yTop);
+        for (Bomb bomb : bombs) {
+            if (collide(bomb, temp) && !bomb.isJustLay())
+                return bomb;
+        }
+        Layer layer = getLayer(xTop, yTop);
+        if (layer == null) return null;
+        return layer.getTop();
     }
 
     private boolean collide(Entity entity1, Entity entity2) {
@@ -141,8 +154,7 @@ public class BoardState implements Serializable {
     }
 
     public int EnemyCalDirection(Enemy enemy) {
-        // return EnemyAI.find(enemy, bomber, enemy.get_direction());
-        return 0;
+        return EnemyAI.find(enemy, bomber, enemy.get_direction());
     }
 
 
@@ -210,7 +222,7 @@ public class BoardState implements Serializable {
                     default:
                         break;
                 }
-                if (layer.isItem() || layer.isPortal()) {
+                if (layer.stack.peek().isItem() || layer.stack.peek().isPortal()) {
                     layer.add(new Brick(j, i));
                 }
                 stillObjects.add(layer);

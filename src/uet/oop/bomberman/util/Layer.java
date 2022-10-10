@@ -3,12 +3,8 @@ package uet.oop.bomberman.util;
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.entities.BreakableEntity;
 import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.breakable.Brick;
-import uet.oop.bomberman.entities.breakable.Portal;
 import uet.oop.bomberman.entities.breakable.item.Item;
 import uet.oop.bomberman.entities.character.Bomber;
-import uet.oop.bomberman.entities.unbreakable.Grass;
-import uet.oop.bomberman.entities.unbreakable.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.Stack;
@@ -46,10 +42,11 @@ public class Layer {
     /**
      * Phương thức được gọi nếu ô layer nằm trong phạm vi nổ của Bomb.
      * Phá hủy đối tượng trên cùng của ô layer nếu có thể.
+     *
      * @return true nếu có thể phá hủy, false nếu không thể phá hủy
      */
-    public boolean destroy() {
-        if (isBreakable()) {
+    public boolean destroyTop() {
+        if (stack.peek().isBreakable()) {
             BreakableEntity top = (BreakableEntity) stack.peek();
             top.breakEntity();
             return true;
@@ -58,41 +55,10 @@ public class Layer {
     }
 
     /**
-     * Phương thức kiểm tra đối tượng trên cùng của stack.
-     */
-    public boolean isWall() {
-        return stack.peek() instanceof Wall;
-    }
-
-    public boolean isGrass() {
-        return stack.peek() instanceof Grass;
-    }
-
-    public boolean isPortal() {
-        return stack.peek() instanceof Portal;
-    }
-
-    public boolean isBreakable() {
-        return stack.peek() instanceof BreakableEntity;
-    }
-
-    public boolean isItem() {
-        return stack.peek() instanceof Item;
-    }
-
-    public boolean isBrick() {
-        return stack.peek() instanceof Brick;
-    }
-
-    public boolean canBePassed() {
-        return !isBrick() && !isWall();
-    }
-
-    /**
      * Chỉ có thể được sử dụng khi đối tượng trên cùng là một vật phẩm.
      */
     public void powerUp(Bomber bomber) {
-        if (!isItem()) {
+        if (!stack.peek().isItem()) {
             return;
         }
         Item top = (Item) stack.peek();
@@ -100,7 +66,18 @@ public class Layer {
     }
 
     /**
+     * Trả về phần tử đứng trên cùng của layer tại ô này.
+     *
+     * @return null nếu không có phần tử nào, nếu có thì trả về phần tử đầu.
+     */
+    public Entity getTop() {
+        if (stack.isEmpty()) return null;
+        return stack.peek();
+    }
+
+    /**
      * Render đối tượng trên cùng của ô layer.
+     *
      * @param gc GraphicsContext
      */
     public void render(GraphicsContext gc) {
@@ -112,7 +89,7 @@ public class Layer {
      * Nếu đối tượng trên cùng đã bị phá hủy, loại bỏ đối tượng trên cùng.
      */
     public void update() {
-        if (isBreakable()) {
+        if (stack.peek().isBreakable()) {
             BreakableEntity top = (BreakableEntity) stack.peek();
             if (top.isBroken()) {
                 stack.pop();
