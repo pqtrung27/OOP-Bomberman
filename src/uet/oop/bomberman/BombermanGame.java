@@ -16,6 +16,7 @@ package uet.oop.bomberman;
  * @author Tran Thuy Duong
  */
 
+import com.sun.webkit.dom.EntityImpl;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -23,6 +24,8 @@ import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.entities.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import uet.oop.bomberman.entities.breakable.Bomb;
+import uet.oop.bomberman.util.BoardState;
 import uet.oop.bomberman.util.Controller;
 
 import java.io.File;
@@ -34,6 +37,7 @@ public class BombermanGame {
     private Canvas canvas;
     private Scene scene;
     MediaPlayer bgmPlayer;
+    private int level = 0;
 
     public BombermanGame() {
         // Tao Canvas
@@ -52,8 +56,6 @@ public class BombermanGame {
         scene.setOnKeyPressed(controller::listen);
         scene.setOnKeyReleased(controller::release);
 
-        createMap();
-
         //bay lac
         String bgmFile = "res/audio/MainBGM.mp3";
         Media bgm = new Media(new File(bgmFile).toURI().toString());
@@ -64,20 +66,27 @@ public class BombermanGame {
         return this.scene;
     }
 
-    public void createMap() {
-        try {
-            Entity.board.LoadLevel(2);
-        } catch (FileNotFoundException e) {
-            System.out.println("File Not Found!!!");
-        }
+    public void reset() {
+        Bomb.reset();
+
+        level = 0;
+        loadNextLevel();
+    }
+
+    private void loadNextLevel() {
+        ++level;
+        Entity.board = new BoardState(level);
     }
 
     public void update() {
         bgmPlayer.play();
         Entity.board.update();
-        if (Entity.board.endGame){
+        if (Entity.board.endGame) {
             Main.switchPlayingStatus();
             bgmPlayer.stop();
+        }
+        if (Entity.board.nextLevel) {
+            loadNextLevel();
         }
     }
 

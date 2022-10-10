@@ -43,6 +43,11 @@ public class Bomber extends MovingEntity {
         }
     }
 
+    public boolean isInPortal() {
+        Entity entity = board.getEntity(this.x, this.y);
+        return entity != null && entity.isPortal();
+    }
+
     protected void calculateMove() {
         int addX = 0;
         int addY = 0;

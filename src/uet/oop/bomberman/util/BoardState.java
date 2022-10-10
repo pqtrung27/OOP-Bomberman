@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class BoardState implements Serializable {
-
     public double boardOffsetX = 0;
     public double boardOffsetY = 0;
     // Kích thước map của màn chơi
@@ -36,9 +35,17 @@ public class BoardState implements Serializable {
     public List<Flame> flames = new ArrayList<>();
     private Bomber bomber;
     public boolean endGame = false;
+    public boolean nextLevel = false;
 
-    public BoardState() {
-
+    public BoardState(int level) {
+        // create map
+        try {
+            loadLevel(level);
+        } catch (FileNotFoundException e) {
+            System.out.println("File Not Found!!!");
+        }
+        endGame = false;
+        nextLevel = false;
     }
 
     public void render(GraphicsContext gc) {
@@ -69,6 +76,9 @@ public class BoardState implements Serializable {
         enemyCollide();
 
         if (bomber.isDead()) endGame = true;
+        if (bomber.isInPortal() && movingObjects.size() == 1) {
+            nextLevel = true;
+        }
     }
 
     public Layer getLayer(int xTop, int yTop) {
@@ -164,7 +174,7 @@ public class BoardState implements Serializable {
      * @param level tên level cần tải
      * @throws FileNotFoundException khi không tìm thấy tệp cấu hình cần tải
      */
-    public void LoadLevel(int level) throws FileNotFoundException {
+    public void loadLevel(int level) throws FileNotFoundException {
         String path = "res/levels/Level" + level + ".txt";
         // System.out.println(path);
         Scanner scanner = new Scanner(new FileInputStream(path));
