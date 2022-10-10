@@ -1,5 +1,6 @@
 package uet.oop.bomberman.entities.character;
 
+import uet.oop.bomberman.Main;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.graphics.Sprite;
@@ -64,9 +65,9 @@ public class Bomber extends MovingEntity {
             move(addX * speed, addY * speed);
         } else isMoving = false;
 
-        if (_direction == MovingEntity.directionRight && _x + Sprite.SCALED_SIZE > BombermanGame.initialSceneWidth + board.boardOffset - xPadding) {
-            board.boardOffset = Math.min(board.nCol * Sprite.SCALED_SIZE - BombermanGame.initialSceneWidth
-                    , _x + Sprite.SCALED_SIZE - BombermanGame.initialSceneWidth + xPadding);
+        if (_direction == MovingEntity.directionRight && _x + Sprite.SCALED_SIZE > Main.initialSceneWidth + board.boardOffset - xPadding) {
+            board.boardOffset = Math.min(board.nCol * Sprite.SCALED_SIZE - Main.initialSceneWidth
+                    , _x + Sprite.SCALED_SIZE - Main.initialSceneWidth + xPadding);
         }
         if (_direction == MovingEntity.directionLeft && x <= xPadding + board.boardOffset) {
             board.boardOffset = Math.max(0, _x - xPadding);
