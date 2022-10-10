@@ -25,7 +25,8 @@ import java.util.Scanner;
 
 public class BoardState implements Serializable {
 
-    public double boardOffset = 0;
+    public double boardOffsetX = 0;
+    public double boardOffsetY = 0;
     // Kích thước map của màn chơi
     public int nRow;
     public int nCol;

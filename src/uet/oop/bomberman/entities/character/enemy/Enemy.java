@@ -57,7 +57,7 @@ public abstract class Enemy extends MovingEntity {
                 Date date = new Date();
                 Long seed = Math.abs(date.getTime());
                 Random generator = new Random(seed);
-                // System.out.println(seed);
+                //System.out.println(seed);
                 _direction = generator.nextInt(4) + 1;
             }
         }

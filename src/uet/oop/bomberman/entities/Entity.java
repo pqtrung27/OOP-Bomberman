@@ -44,7 +44,7 @@ public abstract class Entity {
     }
 
     public void render(GraphicsContext gc) {
-        gc.drawImage(img, x - board.boardOffset, y);
+        gc.drawImage(img, x - board.boardOffsetX, y - board.boardOffsetY);
     }
 
     public boolean isWall() {

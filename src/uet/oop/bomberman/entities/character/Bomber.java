@@ -64,12 +64,20 @@ public class Bomber extends MovingEntity {
             move(addX * speed, addY * speed);
         } else isMoving = false;
 
-        if (_direction == MovingEntity.directionRight && _x + Sprite.SCALED_SIZE > Main.initialSceneWidth + board.boardOffset - xPadding) {
-            board.boardOffset = Math.min(board.nCol * Sprite.SCALED_SIZE - Main.initialSceneWidth
+        if (_direction == MovingEntity.directionRight && _x + Sprite.SCALED_SIZE > Main.initialSceneWidth + board.boardOffsetX - xPadding) {
+            board.boardOffsetX = Math.min(board.nCol * Sprite.SCALED_SIZE - Main.initialSceneWidth
                     , _x + Sprite.SCALED_SIZE - Main.initialSceneWidth + xPadding);
         }
-        if (_direction == MovingEntity.directionLeft && x <= xPadding + board.boardOffset) {
-            board.boardOffset = Math.max(0, _x - xPadding);
+        if (_direction == MovingEntity.directionLeft && _x <= xPadding + board.boardOffsetX) {
+            board.boardOffsetX = Math.max(0, _x - xPadding);
+        }
+
+        if (_direction == MovingEntity.directionDown && _y + Sprite.SCALED_SIZE > Main.initialSceneHeight + board.boardOffsetY - xPadding) {
+            board.boardOffsetY = Math.min(board.nRow * Sprite.SCALED_SIZE - Main.initialSceneHeight
+                    , _y + Sprite.SCALED_SIZE - Main.initialSceneHeight + xPadding);
+        }
+        if (_direction == MovingEntity.directionUp && _y <= xPadding + board.boardOffsetY) {
+            board.boardOffsetY = Math.max(0, _y - xPadding);
         }
     }
 

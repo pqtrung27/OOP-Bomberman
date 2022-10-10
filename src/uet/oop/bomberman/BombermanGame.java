@@ -66,7 +66,7 @@ public class BombermanGame {
 
     public void createMap() {
         try {
-            Entity.board.LoadLevel(1);
+            Entity.board.LoadLevel(2);
         } catch (FileNotFoundException e) {
             System.out.println("File Not Found!!!");
         }
