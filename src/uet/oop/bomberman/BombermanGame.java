@@ -124,7 +124,6 @@ public class BombermanGame extends Application {
     }
 }
 
-
 /******************************************************************************
  *  Copyright 2022, Phu Quoc Trung and Tran Thuy Duong.
  *

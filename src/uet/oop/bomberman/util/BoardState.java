@@ -10,6 +10,7 @@ import uet.oop.bomberman.entities.breakable.item.SpeedItem;
 import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.entities.character.enemy.Ballon;
 import uet.oop.bomberman.entities.character.enemy.Enemy;
+import uet.oop.bomberman.entities.character.enemy.EnemyAI;
 import uet.oop.bomberman.entities.character.enemy.Oneal;
 import uet.oop.bomberman.entities.unbreakable.Grass;
 import uet.oop.bomberman.entities.unbreakable.Wall;
@@ -20,12 +21,12 @@ import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 public class BoardState implements Serializable {
 
     public double boardOffset = 0;
-
     // Kích thước map của màn chơi
     public int nRow;
     public int nCol;
@@ -34,7 +35,6 @@ public class BoardState implements Serializable {
     public List<Bomb> bombs = new ArrayList<>();
     public List<Flame> flames = new ArrayList<>();
     private Bomber bomber;
-
     public boolean endGame = false;
 
     public BoardState() {
@@ -128,6 +128,11 @@ public class BoardState implements Serializable {
             if ((entity).isDead()) movingObjects.remove(i);
         }
     }
+
+    public int EnemyCalDirection(Enemy enemy) {
+        return EnemyAI.find(enemy, bomber, enemy.get_direction());
+    }
+
 
     protected void layBomb() {
         if (!Controller.layBomb || bombs.size() == Bomb.maxBombNum) {

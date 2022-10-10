@@ -14,10 +14,10 @@ public class Bomber extends MovingEntity {
     private int _x;
     private int _y;
 
-    public Bomber(int x, int y) {
-        super(x, y, Sprite.player_right.getFxImage());
-        _x = x * Sprite.SCALED_SIZE;
-        _y = y * Sprite.SCALED_SIZE;
+    public Bomber(int xUnit, int yUnit) {
+        super(xUnit, yUnit, Sprite.player_right.getFxImage());
+        _x = xUnit * Sprite.SCALED_SIZE;
+        _y = yUnit * Sprite.SCALED_SIZE;
         this.isKilled = false;
         this.isDead = false;
         this.isMoving = false;

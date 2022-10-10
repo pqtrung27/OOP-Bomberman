@@ -2,8 +2,10 @@ package uet.oop.bomberman.entities.character.enemy;
 
 import uet.oop.bomberman.entities.LayerEntity;
 import uet.oop.bomberman.entities.MovingEntity;
+import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.graphics.Sprite;
 
+import java.util.Date;
 import java.util.Random;
 
 public abstract class Enemy extends MovingEntity {
@@ -39,16 +41,28 @@ public abstract class Enemy extends MovingEntity {
         }
     }
 
+    public void set_direction(int _direction) {
+        this._direction = _direction;
+    }
+
+    public int get_direction() {
+        return this._direction;
+    }
+
     protected void calculateMove() {
         int addX = 0;
         int addY = 0;
 
-        if (randomSeed == 0) {
-            Random generator = new Random();
-            // System.out.println(generator.nextInt());
-            _direction = generator.nextInt(4) + 1;
-            randomSeed = 100;
-        } else randomSeed--;
+        if (_x % Sprite.SCALED_SIZE == 0 && _y % Sprite.SCALED_SIZE == 0) {
+            _direction = board.EnemyCalDirection(this);
+            if (_direction == 0) {
+                Date date = new Date();
+                Long seed = Math.abs(date.getTime());
+                Random generator = new Random(seed);
+                System.out.println(seed);
+                _direction = generator.nextInt(4) + 1;
+            }
+        }
 
         if (_direction == directionUp) addY--;
         if (_direction == directionDown) addY++;
@@ -58,16 +72,14 @@ public abstract class Enemy extends MovingEntity {
 
         if (addX != 0 || addY != 0) {
             move(addX * speed, addY * speed);
-        } else isMoving = false;
+        }
     }
 
     public void move(int addX, int addY) {
-        isMoving = true;
-        LayerEntity entity = board.get(_x + addX, _y + addY);
-        if (entity == null) {
+        if (board.get(_x + addX, _y + addY) == null) {
             _x += addX;
             _y += addY;
-        } else randomSeed = 0;
+        }
     }
 
     private void chooseSprite() {
@@ -77,17 +89,11 @@ public abstract class Enemy extends MovingEntity {
             switch (_direction) {
                 case MovingEntity.directionUp:
                 case MovingEntity.directionLeft:
-                    _sprite = spriteList[leftSprite];
-                    if (isMoving) {
-                        _sprite = Sprite.movingSprite(spriteList[leftSprite], spriteList[leftSprite + 1], spriteList[leftSprite + 2], animate, 20);
-                    }
+                    _sprite = Sprite.movingSprite(spriteList[leftSprite], spriteList[leftSprite + 1], spriteList[leftSprite + 2], animate, 20);
                     break;
                 case MovingEntity.directionDown:
                 case MovingEntity.directionRight:
-                    _sprite = spriteList[rightSprite];
-                    if (isMoving) {
-                        _sprite = Sprite.movingSprite(spriteList[rightSprite], spriteList[rightSprite + 1], spriteList[rightSprite + 2], animate, 20);
-                    }
+                    _sprite = Sprite.movingSprite(spriteList[rightSprite], spriteList[rightSprite + 1], spriteList[rightSprite + 2], animate, 20);
                     break;
                 default:
                     break;
