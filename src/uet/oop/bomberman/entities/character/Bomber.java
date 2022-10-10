@@ -2,9 +2,9 @@ package uet.oop.bomberman.entities.character;
 
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.BombermanGame;
-import uet.oop.bomberman.entities.breakable.Bomb;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.util.Controller;
+import uet.oop.bomberman.util.Layer;
 
 public class Bomber extends MovingEntity {
 
@@ -37,7 +37,7 @@ public class Bomber extends MovingEntity {
     }
 
     protected void powerUp() {
-        LayerEntity entity = board.get(this.x, this.y);
+        Layer entity = board.get(this.x, this.y);
         if (entity != null && entity.isItem()) {
             entity.powerUp(this);
         }
@@ -75,7 +75,7 @@ public class Bomber extends MovingEntity {
 
     public void move(int addX, int addY) {
         isMoving = true;
-        LayerEntity entity = board.get(_x + addX, _y);
+        Layer entity = board.get(_x + addX, _y);
         if (entity == null || entity.canBePassed()) {
             _x += addX;
         } else {

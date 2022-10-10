@@ -30,7 +30,7 @@ public class BoardState implements Serializable {
     // Kích thước map của màn chơi
     public int nRow;
     public int nCol;
-    private List<LayerEntity> stillObjects = new ArrayList<>();
+    private List<Layer> stillObjects = new ArrayList<>();
     private List<MovingEntity> movingObjects = new ArrayList<>();
     public List<Bomb> bombs = new ArrayList<>();
     public List<Flame> flames = new ArrayList<>();
@@ -49,7 +49,7 @@ public class BoardState implements Serializable {
     }
 
     public void update() {
-        stillObjects.forEach(Entity::update);
+        stillObjects.forEach(Layer::update);
         movingObjects.forEach(Entity::update);
         layBomb();
 
@@ -68,10 +68,10 @@ public class BoardState implements Serializable {
         if (bomber.isDead()) endGame = true;
     }
 
-    public LayerEntity get(int xTop, int yTop) {
+    public Layer get(int xTop, int yTop) {
         int xBot = xTop + Sprite.SCALED_SIZE - 1;
         int yBot = yTop + Sprite.SCALED_SIZE - 1;
-        for (LayerEntity g : stillObjects) {
+        for (Layer g : stillObjects) {
             if (g.isGrass()) {
                 continue;
             }
@@ -130,7 +130,8 @@ public class BoardState implements Serializable {
     }
 
     public int EnemyCalDirection(Enemy enemy) {
-        return EnemyAI.find(enemy, bomber, enemy.get_direction());
+        // return EnemyAI.find(enemy, bomber, enemy.get_direction());
+        return 0;
     }
 
 
@@ -162,7 +163,7 @@ public class BoardState implements Serializable {
         for (int i = 0; i < nRow; ++i) {
             String data = scanner.nextLine();
             for (int j = 0; j < nCol; ++j) {
-                LayerEntity layer = new LayerEntity(j, i);
+                Layer layer = new Layer(j, i);
                 if (data.charAt(j) != '#') {
                     layer.add(new Grass(j, i));
                 } else {

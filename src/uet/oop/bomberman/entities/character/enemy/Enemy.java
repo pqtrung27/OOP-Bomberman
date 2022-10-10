@@ -1,8 +1,6 @@
 package uet.oop.bomberman.entities.character.enemy;
 
-import uet.oop.bomberman.entities.LayerEntity;
 import uet.oop.bomberman.entities.MovingEntity;
-import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.Date;

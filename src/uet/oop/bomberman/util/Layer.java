@@ -1,12 +1,15 @@
-package uet.oop.bomberman.entities;
+package uet.oop.bomberman.util;
 
 import javafx.scene.canvas.GraphicsContext;
+import uet.oop.bomberman.entities.BreakableEntity;
+import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.breakable.Brick;
 import uet.oop.bomberman.entities.breakable.Portal;
 import uet.oop.bomberman.entities.breakable.item.Item;
 import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.entities.unbreakable.Grass;
 import uet.oop.bomberman.entities.unbreakable.Wall;
+import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.Stack;
 
@@ -15,11 +18,22 @@ import java.util.Stack;
  *
  * @author TTD
  */
-public class LayerEntity extends Entity {
+public class Layer {
+    private int x;
+    private int y;
     public Stack<Entity> stack = new Stack<>();
 
-    public LayerEntity(int x, int y) {
-        super(x, y);
+    public Layer(int xUnit, int yUnit) {
+        this.x = xUnit * Sprite.SCALED_SIZE;
+        this.y = yUnit * Sprite.SCALED_SIZE;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 
     /**
@@ -86,21 +100,17 @@ public class LayerEntity extends Entity {
     }
 
     /**
-     * Ghi đè phương thức render() của lớp cha Entity.
      * Render đối tượng trên cùng của ô layer.
      * @param gc GraphicsContext
      */
-    @Override
     public void render(GraphicsContext gc) {
         stack.peek().render(gc);
     }
 
     /**
-     * Ghi đè phương thức update() của lớp cha Entity().
      * Cập nhật đối tượng trên cùng của ô layer.
      * Nếu đối tượng trên cùng đã bị phá hủy, loại bỏ đối tượng trên cùng.
      */
-    @Override
     public void update() {
         if (isBreakable()) {
             BreakableEntity top = (BreakableEntity) stack.peek();

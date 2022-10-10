@@ -2,8 +2,8 @@ package uet.oop.bomberman.entities.breakable;
 
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.entities.BreakableEntity;
-import uet.oop.bomberman.entities.LayerEntity;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.util.Layer;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -76,7 +76,7 @@ public class Bomb extends BreakableEntity {
             for (int k = 1; k <= range; ++k) {
                 int curX = xUnit + addX[i] * k;
                 int curY = yUnit + addY[i] * k;
-                LayerEntity entity = board.get(curX * Sprite.SCALED_SIZE, curY * Sprite.SCALED_SIZE);
+                Layer entity = board.get(curX * Sprite.SCALED_SIZE, curY * Sprite.SCALED_SIZE);
                 if (entity != null) {
                     if (entity.isWall()) {
                         break;
