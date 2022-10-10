@@ -113,8 +113,8 @@ public class EnemyAI {
             if (top.x == bomberPosX && top.y == bomberPosY) {
                 break;
             }
-            if (pq.size() >= 100) return 0; // return 0 if it takes too long for the enemy to get to bomber's position
-            top = pq.poll();
+            if (top.step >= 20) return 0; // return 0 if it takes too long for the enemy to get to bomber's position
+            top = pq.poll();              // Average max step value is 18 in Level 1, so 20 here is appropriate.
             for (int direction = 1; direction <= 4; ++direction) {
                 if (movingBackward(direction, top.direction)) continue;
                 int addX = 0, addY = 0;
@@ -123,7 +123,7 @@ public class EnemyAI {
                 if (direction == MovingEntity.directionLeft) addX -= (Sprite.SCALED_SIZE);
                 if (direction == MovingEntity.directionRight) addX += (Sprite.SCALED_SIZE);
 
-                if (Entity.board.get(top.x + addX, top.y + addY) == null) {
+                if (Entity.board.getEntity(top.x + addX, top.y + addY) == null) {
                     pq.add(new Node(top.x + addX, top.y + addY, direction, top));
                 }
             }

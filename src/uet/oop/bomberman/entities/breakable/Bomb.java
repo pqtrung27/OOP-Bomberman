@@ -18,6 +18,7 @@ public class Bomb extends BreakableEntity {
     public static int maxBombNum = 1;
     private Sprite sprite;
     private boolean waiting;
+    private boolean justLay;
 
     /**
      * Khởi tạo đối tượng sử dụng phương thức khởi tạo của lớp cha BreakableEntity.
@@ -28,6 +29,7 @@ public class Bomb extends BreakableEntity {
         super(xUnit, yUnit, Sprite.bomb.getFxImage());
         sprite = Sprite.bomb;
         waiting = true;
+        justLay = true;
 
         Timer timer = new Timer();
         // Hủy trạng thái đang đợi
@@ -76,14 +78,14 @@ public class Bomb extends BreakableEntity {
             for (int k = 1; k <= range; ++k) {
                 int curX = xUnit + addX[i] * k;
                 int curY = yUnit + addY[i] * k;
-                Layer entity = board.get(curX * Sprite.SCALED_SIZE, curY * Sprite.SCALED_SIZE);
+                Layer entity = board.getLayer(curX * Sprite.SCALED_SIZE, curY * Sprite.SCALED_SIZE);
                 if (entity != null) {
-                    if (entity.isWall()) {
+                    if (entity.stack.peek().isWall()) {
                         break;
                     }
-                    if (entity.isBreakable()) {
+                    if (entity.stack.peek().isBreakable()) {
                         board.flames.add(new Flame(curX, curY, i, true));
-                        entity.destroy();
+                        entity.destroyTop();
                         //System.out.println(curX + " " + curY + " " + (curY * LoadLevel.nCol + curX));
                         break;
                     }
@@ -91,6 +93,14 @@ public class Bomb extends BreakableEntity {
                 board.flames.add(new Flame(curX, curY, i, k == range));
             }
         }
+    }
+
+    public boolean isJustLay() {
+        return justLay;
+    }
+
+    public void setJustLay(boolean justLay) {
+        this.justLay = justLay;
     }
 
     @Override

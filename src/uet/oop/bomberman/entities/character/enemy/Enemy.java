@@ -74,7 +74,7 @@ public abstract class Enemy extends MovingEntity {
     }
 
     public void move(int addX, int addY) {
-        if (board.get(_x + addX, _y + addY) == null) {
+        if (board.getEntity(_x + addX, _y + addY) == null) {
             _x += addX;
             _y += addY;
         }

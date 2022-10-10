@@ -2,6 +2,12 @@ package uet.oop.bomberman.entities;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import uet.oop.bomberman.entities.breakable.Bomb;
+import uet.oop.bomberman.entities.breakable.Brick;
+import uet.oop.bomberman.entities.breakable.Portal;
+import uet.oop.bomberman.entities.breakable.item.Item;
+import uet.oop.bomberman.entities.unbreakable.Grass;
+import uet.oop.bomberman.entities.unbreakable.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.util.BoardState;
 
@@ -39,6 +45,38 @@ public abstract class Entity {
 
     public void render(GraphicsContext gc) {
         gc.drawImage(img, x - board.boardOffset, y);
+    }
+
+    public boolean isWall() {
+        return this instanceof Wall;
+    }
+
+    public boolean isGrass() {
+        return this instanceof Grass;
+    }
+
+    public boolean isPortal() {
+        return this instanceof Portal;
+    }
+
+    public boolean isBreakable() {
+        return this instanceof BreakableEntity;
+    }
+
+    public boolean isItem() {
+        return this instanceof Item;
+    }
+
+    public boolean isBrick() {
+        return this instanceof Brick;
+    }
+
+    public boolean isBomb() {
+        return this instanceof Bomb;
+    }
+
+    public boolean canBePassed() {
+        return !isBrick() && !isWall() && !isBomb();
     }
 
     public abstract void update();
