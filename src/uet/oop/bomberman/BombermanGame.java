@@ -67,13 +67,12 @@ public class BombermanGame {
     }
 
     public void reset() {
-        Bomb.reset();
-
         level = 0;
         loadNextLevel();
     }
 
     private void loadNextLevel() {
+        Bomb.reset();
         ++level;
         Entity.board = new BoardState(level);
     }

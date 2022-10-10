@@ -1,27 +1,28 @@
 package uet.oop.bomberman;
 
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 
 public class Menu {
     private Scene scene;
     Button startButton = new Button("START");
+    Button quitButton = new Button("QUIT");
 
     public Menu() {
         VBox root = new VBox();
         root.setAlignment(Pos.CENTER);
 
         //startButton.setBackground(null);
-        startButton.setPrefSize(100, 100);
+        startButton.setPrefSize(100, 60);
+        startButton.setStyle("-fx-font-size: 20");
 
-        root.getChildren().add(startButton);
+        quitButton.setPrefSize(100, 60);
+        quitButton.setStyle("-fx-font-size: 20");
+
+        root.getChildren().addAll(startButton, quitButton);
 
         scene = new Scene(root, Main.initialSceneWidth, Main.initialSceneHeight);
     }
@@ -30,15 +31,16 @@ public class Menu {
         return this.scene;
     }
 
-    public boolean update() {
-        startButton.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent keyEvent) {
-                if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-                    Main.switchPlayingStatus();
-                }
+    public void update() {
+        startButton.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+                Main.switchPlayingStatus();
             }
         });
-        return false;
+        quitButton.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+                System.exit(0);
+            }
+        });
     }
 }
