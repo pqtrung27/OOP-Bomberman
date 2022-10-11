@@ -52,7 +52,11 @@ public abstract class Enemy extends MovingEntity {
         int addY = 0;
 
         if (_x % Sprite.SCALED_SIZE == 0 && _y % Sprite.SCALED_SIZE == 0) {
-            _direction = board.EnemyCalDirection(this);
+            if (this.isOneal()) {
+                _direction = board.EnemyCalDirection(this);
+            } else {
+                _direction = 0;
+            }
             if (_direction == 0) {
                 Date date = new Date();
                 Long seed = Math.abs(date.getTime());

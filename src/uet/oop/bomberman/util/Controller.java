@@ -9,6 +9,9 @@ public class Controller {
 
     public Controller() {
         direction[Bomber.directionNone] = true;
+        for (int i = 1; i <= 4; ++i) {
+            direction[i] = false;
+        }
         layBomb = false;
     }
 

@@ -39,6 +39,8 @@ public class BombermanGame {
     MediaPlayer bgmPlayer;
     private int level = 0;
 
+    Controller controller = new Controller();
+
     public BombermanGame() {
         // Tao Canvas
         canvas = new Canvas(Main.initialSceneWidth, Main.initialSceneHeight);
@@ -52,7 +54,6 @@ public class BombermanGame {
         scene = new Scene(root, Main.initialSceneWidth, Main.initialSceneHeight);
 
         //tao input event handler.
-        Controller controller = new Controller();
         scene.setOnKeyPressed(controller::listen);
         scene.setOnKeyReleased(controller::release);
 
@@ -67,6 +68,7 @@ public class BombermanGame {
     }
 
     public void reset() {
+        controller = new Controller();
         level = 0;
         loadNextLevel();
     }

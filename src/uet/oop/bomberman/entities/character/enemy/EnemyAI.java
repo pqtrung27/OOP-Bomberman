@@ -10,7 +10,7 @@ package uet.oop.bomberman.entities.character.enemy;
 
 /**
  * The {@code EnemyAI} class is a data type for computing the running
- * path of the enemy to get to the desired positon.
+ * path of the enemy to get to the desired position.
  * <p>
  * This implementation uses A* algorithm with a min order priority queue to
  * reduce the calculation time and find the best way possible.
@@ -23,7 +23,6 @@ package uet.oop.bomberman.entities.character.enemy;
  * @author Tran Thuy Duong
  */
 
-import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.MovingEntity;
 import uet.oop.bomberman.entities.character.Bomber;
@@ -41,7 +40,7 @@ public class EnemyAI {
         private final int y;
         private final int direction;
         private final Node prev;
-        private final int manVal; //Manhattan value of this position.
+        private final int euclidVal; //Euclid value of this position.
         private final int step;
 
         /**
@@ -62,7 +61,7 @@ public class EnemyAI {
             } else {
                 this.step = 1;
             }
-            this.manVal = Math.abs(bomberPosX - x) + Math.abs(bomberPosY - y);
+            this.euclidVal = (int) Math.sqrt(Math.pow((bomberPosX - x), 2) + Math.pow((bomberPosY - y), 2));
         }
 
         /**
@@ -74,9 +73,9 @@ public class EnemyAI {
          */
         @Override
         public int compareTo(Node that) {
-            int comp = (this.manVal + this.step) - (that.manVal + that.step);
+            int comp = (this.euclidVal + this.step) - (that.euclidVal + that.step);
             if (comp != 0) return comp;
-            else return this.manVal - that.manVal;
+            else return this.euclidVal - that.euclidVal;
         }
     }
 
@@ -105,30 +104,35 @@ public class EnemyAI {
      * @return the next step.
      */
     public static int find(Enemy enemy, Bomber bomber, int preDir) {
-        bomberPosX = Sprite.SCALED_SIZE * ((bomber.getX() / Sprite.SCALED_SIZE));
-        bomberPosY = Sprite.SCALED_SIZE * ((bomber.getY() / Sprite.SCALED_SIZE));
+        bomberPosX = (bomber.getX() / Sprite.SCALED_SIZE);
+        bomberPosY = (bomber.getY() / Sprite.SCALED_SIZE);
+
+        Node initNode = new Node(enemy.getX() / Sprite.SCALED_SIZE, enemy.getY() / Sprite.SCALED_SIZE, preDir, null);
+        if (Math.abs(initNode.x - bomberPosX) >= 15) return 0;
+        if (Math.abs(initNode.y - bomberPosY) >= 10) return 0;
+
         PriorityQueue<Node> pq = new PriorityQueue<>();
-        Node initNode = new Node(enemy.getX(), enemy.getY(), preDir, null);
-        if (initNode.manVal >= 20 * Sprite.SCALED_SIZE) return 0;        // return 0 if the enemy is too far away.
         pq.add(initNode);
+
         while (!pq.isEmpty()) {
             Node top = pq.peek();
             if (top.x == bomberPosX && top.y == bomberPosY) {
                 break;
             }
-            if (top.step >= 20 || pq.size() >= 30)  // return 0 if it takes too long for the enemy to get to bomber's position
+            if (top.step >= 15 || pq.size() >= 15)  // return 0 if it takes too long for the enemy to get to bomber's position
                 return 0;                           // Average max step value is 18 in Level 1.
             top = pq.poll();
             for (int direction = 1; direction <= 4; ++direction) {
                 if (movingBackward(direction, top.direction)) continue;
                 int addX = 0, addY = 0;
-                if (direction == MovingEntity.directionUp) addY -= (Sprite.SCALED_SIZE);
-                if (direction == MovingEntity.directionDown) addY += (Sprite.SCALED_SIZE);
-                if (direction == MovingEntity.directionLeft) addX -= (Sprite.SCALED_SIZE);
-                if (direction == MovingEntity.directionRight) addX += (Sprite.SCALED_SIZE);
-
-                if (Entity.board.getEntity(top.x + addX, top.y + addY) == null) {
-                    pq.add(new Node(top.x + addX, top.y + addY, direction, top));
+                if (direction == MovingEntity.directionUp) addY--;
+                if (direction == MovingEntity.directionDown) addY++;
+                if (direction == MovingEntity.directionLeft) addX--;
+                if (direction == MovingEntity.directionRight) addX++;
+                int _x = top.x + addX;
+                int _y = top.y + addY;
+                if (Entity.board.getEntity(_x * Sprite.SCALED_SIZE, _y * Sprite.SCALED_SIZE) == null) {
+                    pq.add(new Node(_x, _y, direction, top));
                 }
             }
         }

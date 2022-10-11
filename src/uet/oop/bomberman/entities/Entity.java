@@ -6,6 +6,8 @@ import uet.oop.bomberman.entities.breakable.Bomb;
 import uet.oop.bomberman.entities.breakable.Brick;
 import uet.oop.bomberman.entities.breakable.Portal;
 import uet.oop.bomberman.entities.breakable.item.Item;
+import uet.oop.bomberman.entities.character.enemy.Ballon;
+import uet.oop.bomberman.entities.character.enemy.Oneal;
 import uet.oop.bomberman.entities.unbreakable.Grass;
 import uet.oop.bomberman.entities.unbreakable.Wall;
 import uet.oop.bomberman.graphics.Sprite;
@@ -73,6 +75,13 @@ public abstract class Entity {
 
     public boolean isBomb() {
         return this instanceof Bomb;
+    }
+
+    public boolean isBallon() {
+        return this instanceof Ballon;
+    }
+    public boolean isOneal() {
+        return this instanceof Oneal;
     }
 
     public boolean canBePassed() {
