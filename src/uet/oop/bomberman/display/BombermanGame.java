@@ -4,7 +4,7 @@
  *
  ******************************************************************************/
 
-package uet.oop.bomberman;
+package uet.oop.bomberman.display;
 
 /**
  * The {@code BombermanGame} class is a data type for start and loop the
@@ -16,11 +16,11 @@ package uet.oop.bomberman;
  * @author Tran Thuy Duong
  */
 
-import com.sun.webkit.dom.EntityImpl;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import uet.oop.bomberman.Main;
 import uet.oop.bomberman.entities.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -30,12 +30,9 @@ import uet.oop.bomberman.util.Controller;
 
 import java.io.File;
 
-import java.io.FileNotFoundException;
-
-public class BombermanGame {
+public class BombermanGame extends DisplayScene {
     private GraphicsContext gc;
     private Canvas canvas;
-    private Scene scene;
     MediaPlayer bgmPlayer;
     private int level = 0;
 
@@ -63,10 +60,7 @@ public class BombermanGame {
         bgmPlayer = new MediaPlayer(bgm);
     }
 
-    public Scene getScene() {
-        return this.scene;
-    }
-
+    @Override
     public void reset() {
         controller = new Controller();
         level = 0;
@@ -76,14 +70,16 @@ public class BombermanGame {
     private void loadNextLevel() {
         Bomb.reset();
         ++level;
+        Main.switchPlayingStatus(3, "STAGE " + level);
         Entity.board = new BoardState(level);
     }
 
+    @Override
     public void update() {
         bgmPlayer.play();
         Entity.board.update();
         if (Entity.board.endGame) {
-            Main.switchPlayingStatus();
+            Main.switchPlayingStatus(4, null);
             bgmPlayer.stop();
         }
         if (Entity.board.nextLevel) {
@@ -91,6 +87,7 @@ public class BombermanGame {
         }
     }
 
+    @Override
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         Entity.board.render(gc);

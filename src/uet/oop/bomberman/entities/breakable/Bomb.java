@@ -94,9 +94,9 @@ public class Bomb extends BreakableEntity {
                         break;
                     }
                     if (entity.stack.peek().isBreakable()) {
-                        board.flames.add(new Flame(curX, curY, i, true));
+                        // board.flames.add(new Flame(curX, curY, i, true));
                         entity.destroyTop();
-                        //System.out.println(curX + " " + curY + " " + (curY * LoadLevel.nCol + curX));
+                        // System.out.println(curX + " " + curY + " " + (curY * LoadLevel.nCol + curX));
                         break;
                     }
                 }

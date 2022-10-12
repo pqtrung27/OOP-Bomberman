@@ -9,13 +9,18 @@ package uet.oop.bomberman;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
+import uet.oop.bomberman.display.BombermanGame;
+import uet.oop.bomberman.display.DisplayScene;
+import uet.oop.bomberman.display.FixedScene;
+import uet.oop.bomberman.display.Menu;
 import uet.oop.bomberman.graphics.Sprite;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 /**
@@ -37,15 +42,26 @@ public class Main extends Application {
 
     public static final double initialSceneHeight = HEIGHT * Sprite.SCALED_SIZE;
 
-    public static boolean playing = false;
+    /**
+     * Thuộc tính lưu trạng thái hiện tại của game.
+     * status = 0: Home scene
+     * status = 1: Playing
+     * status = 2: Pause scene
+     * status = 3: Level name
+     * status = 4: Game over
+     */
+    public static int status;
 
-    public static Menu menu;
-    public static BombermanGame game;
+    public static DisplayScene[] scenes = new DisplayScene[5];
     public static final Font FONT = Font.font("res/font/font.ttf", FontWeight.BOLD, 30);
 
     public static void main(String[] args) {
-        menu = new Menu();
-        game = new BombermanGame();
+        scenes[0] = new Menu();
+        scenes[1] = new BombermanGame();
+        scenes[2] = null;
+        scenes[3] = new FixedScene("Stage");
+        scenes[4] = new FixedScene("GAME OVER");
+        status = 0;
         Application.launch(Main.class);
     }
 
@@ -63,44 +79,45 @@ public class Main extends Application {
 
         stage.show();
 
-        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent t) {
-                Platform.exit();
-                System.exit(0);
-            }
+        stage.setOnCloseRequest(t -> {
+            Platform.exit();
+            System.exit(0);
         });
     }
 
     public Scene chooseScene() {
-        if (playing) {
-            return game.getScene();
-        }
-        return menu.getScene();
+        return scenes[status].getScene();
     }
 
     public void update() {
-        // System.out.println(playing);
-        if (playing) {
-            game.update();
-        } else {
-            menu.update();
-        }
+        scenes[status].update();
     }
 
     public void render() {
-        if (playing) {
-            game.render();
-        }
+        scenes[status].render();
     }
 
-    public static void switchPlayingStatus() {
-        if (playing) {
-            playing = false;
-            menu.reset();
-        } else {
-            playing = true;
-            game.reset();
+    public static void switchPlayingStatus(int newStatus, String mes) {
+        if (newStatus == 4) {
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    status = 0;
+                }
+            }, 1000L);
         }
+        if (newStatus == 3) {
+            scenes[3] = new FixedScene(mes);
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    status = 1;
+                }
+            }, 1000L);
+        }
+        status = newStatus;
+        scenes[status].reset();
     }
 }

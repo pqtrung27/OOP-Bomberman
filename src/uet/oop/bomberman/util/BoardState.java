@@ -84,7 +84,7 @@ public class BoardState implements Serializable {
             endGame = true;
             bombs.forEach(bomb -> bomb.setBroken(true));
         }
-        if (bomber.isInPortal() && movingObjects.size() == 1) {
+        if (bomber.isInPortal() && movingObjects.isEmpty()) {
             nextLevel = true;
         }
     }
