@@ -73,6 +73,9 @@ public class Bomb extends BreakableEntity {
      * Bomb nổ, phá hủy những đối tượng Brick xung quanh nó.
      */
     private void explode() {
+        if (isBroken) {
+            return;
+        }
         breakEntity();
         int xUnit = this.x / Sprite.SCALED_SIZE;
         int yUnit = this.y / Sprite.SCALED_SIZE;

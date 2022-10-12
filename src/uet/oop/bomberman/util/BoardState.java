@@ -46,6 +46,8 @@ public class BoardState implements Serializable {
         }
         endGame = false;
         nextLevel = false;
+        bombs.clear();
+        flames.clear();
     }
 
     public void render(GraphicsContext gc) {
@@ -75,7 +77,10 @@ public class BoardState implements Serializable {
         bomberCollide();
         enemyCollide();
 
-        if (bomber.isDead()) endGame = true;
+        if (bomber.isDead()) {
+            endGame = true;
+            bombs.forEach(bomb -> bomb.setBroken(true));
+        }
         if (bomber.isInPortal() && movingObjects.size() == 1) {
             nextLevel = true;
         }
