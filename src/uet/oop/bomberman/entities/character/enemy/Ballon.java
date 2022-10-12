@@ -2,6 +2,9 @@ package uet.oop.bomberman.entities.character.enemy;
 
 import uet.oop.bomberman.graphics.Sprite;
 
+import java.util.Date;
+import java.util.Random;
+
 public class Ballon extends Enemy {
     public Ballon(int x, int y) {
         super(x, y);
@@ -15,5 +18,7 @@ public class Ballon extends Enemy {
                 Sprite.balloom_dead
         };
         super.img = spriteList[0].getFxImage();
+        Random generator = new Random(Math.abs((new Date()).getTime()));
+        super.speed = generator.nextInt(2) + 1;
     }
 }

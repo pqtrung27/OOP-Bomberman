@@ -10,7 +10,7 @@ public abstract class MovingEntity extends Entity {
     protected int animate = 0;
     protected final int animate_MAX_VALUE = 7500;
 
-    protected int speed = 2;
+    protected int speed = 3;
     public static final int directionNone = 0;
     public static final int directionUp = 1;
     public static final int directionDown = 2;

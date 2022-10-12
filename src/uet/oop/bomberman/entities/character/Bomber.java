@@ -89,27 +89,27 @@ public class Bomber extends MovingEntity {
     public void move(int addX, int addY) {
         isMoving = true;
         Entity entity = board.getEntity(_x + addX, _y);
-        if (entity == null || entity.canBePassed()) {
+        if (entity == null || entity.canBePassed() || entity.isEnemy()) {
             _x += addX;
         } else {
             addX = 0;
             if (entity.getY() >= _y + Sprite.SCALED_SIZE - 31) {
-                addY = -2;
+                addY = -speed;
             } else if (entity.getY() + Sprite.SCALED_SIZE - 31 <= _y) {
-                addY = 2;
+                addY = speed;
             }
             move(addX, addY);
             return;
         }
         entity = board.getEntity(_x, _y + addY);
-        if (entity == null || entity.canBePassed()) {
+        if (entity == null || entity.canBePassed() || entity.isEnemy()) {
             _y += addY;
         } else {
             addY = 0;
             if (entity.getX() >= _x + Sprite.SCALED_SIZE - 31) {
-                addX = -2;
+                addX = -speed;
             } else if (entity.getX() + Sprite.SCALED_SIZE - 31 <= _x) {
-                addX = 2;
+                addX = speed;
             }
             move(addX, addY);
         }

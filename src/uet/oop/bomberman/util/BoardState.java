@@ -30,7 +30,7 @@ public class BoardState implements Serializable {
     public int nRow;
     public int nCol;
     private List<Layer> stillObjects = new ArrayList<>();
-    private List<MovingEntity> movingObjects = new ArrayList<>();
+    public List<MovingEntity> movingObjects = new ArrayList<>();
     public List<Bomb> bombs = new ArrayList<>();
     public List<Flame> flames = new ArrayList<>();
     private Bomber bomber;
@@ -52,12 +52,15 @@ public class BoardState implements Serializable {
         stillObjects.forEach(g -> g.render(gc));
         bombs.forEach(g -> g.render(gc));
         movingObjects.forEach(g -> g.render(gc));
+        bomber.render(gc);
+
         flames.forEach(f -> f.render(gc));
     }
 
     public void update() {
         stillObjects.forEach(Layer::update);
         movingObjects.forEach(Entity::update);
+        bomber.update();
         layBomb();
 
         //no lambda to avoid ConcurrentModificationException.
@@ -76,7 +79,7 @@ public class BoardState implements Serializable {
         enemyCollide();
 
         if (bomber.isDead()) endGame = true;
-        if (bomber.isInPortal() && movingObjects.size() == 1) {
+        if (bomber.isInPortal() && movingObjects.isEmpty()) {
             nextLevel = true;
         }
     }
@@ -112,7 +115,7 @@ public class BoardState implements Serializable {
         return layer.getTop();
     }
 
-    private boolean collide(Entity entity1, Entity entity2) {
+    public boolean collide(Entity entity1, Entity entity2) {
         int xTop1 = entity1.getX();
         int yTop1 = entity1.getY();
         int xBot1 = xTop1 + Sprite.SCALED_SIZE - 1;
@@ -136,19 +139,17 @@ public class BoardState implements Serializable {
             if (collide(bomber, flame)) bomber.kill();
         });
         movingObjects.forEach(movEn -> {
-            if (!(movEn instanceof Bomber))
-                if (collide(bomber, movEn)) bomber.kill();
+            if (collide(bomber, movEn)) bomber.kill();
         });
     }
 
     public void enemyCollide() {
         for (int i = 0; i < movingObjects.size(); ++i) {
             MovingEntity entity = movingObjects.get(i);
-            if (!(entity instanceof Bomber))
-                for (int j = 0; j < flames.size(); ++j) {
-                    Flame flame = flames.get(j);
-                    if (collide(entity, flame)) entity.kill();
-                }
+            for (int j = 0; j < flames.size(); ++j) {
+                Flame flame = flames.get(j);
+                if (collide(entity, flame)) entity.kill();
+            }
             if ((entity).isDead()) movingObjects.remove(i);
         }
     }
@@ -183,6 +184,9 @@ public class BoardState implements Serializable {
         nCol = scanner.nextInt();
         scanner.nextLine();
         movingObjects.clear();
+        bombs.forEach(bomb -> bomb.isBroken = true);
+        bombs.clear();
+        flames.clear();
         for (int i = 0; i < nRow; ++i) {
             String data = scanner.nextLine();
             for (int j = 0; j < nCol; ++j) {
@@ -211,7 +215,6 @@ public class BoardState implements Serializable {
                         break;
                     case 'p':
                         bomber = new Bomber(j, i);
-                        movingObjects.add(bomber);
                         break;
                     case '1':
                         movingObjects.add(new Ballon(j, i));

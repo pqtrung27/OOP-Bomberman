@@ -80,8 +80,13 @@ public abstract class Entity {
     public boolean isBallon() {
         return this instanceof Ballon;
     }
+
     public boolean isOneal() {
         return this instanceof Oneal;
+    }
+
+    public boolean isEnemy() {
+        return isBallon() || isOneal();
     }
 
     public boolean canBePassed() {

@@ -15,7 +15,7 @@ import java.util.TimerTask;
  */
 public abstract class BreakableEntity extends Entity {
     // Biến boolean kiểm tra trạng thái của đối tượng
-    protected boolean isBroken; // true = đã bị phá hủy
+    public boolean isBroken; // true = đã bị phá hủy
     protected boolean isExploding; // true = đang nổ
     protected int animate = 0;
     protected final int animate_MAX_VALUE = 7500;

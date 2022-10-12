@@ -1,5 +1,6 @@
 package uet.oop.bomberman.entities.character.enemy;
 
+import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.MovingEntity;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -23,7 +24,6 @@ public abstract class Enemy extends MovingEntity {
         super(x, y);
         _x = x * Sprite.SCALED_SIZE;
         _y = y * Sprite.SCALED_SIZE;
-        this.speed = 1;
         this.isDead = false;
     }
 
@@ -61,7 +61,7 @@ public abstract class Enemy extends MovingEntity {
                 Date date = new Date();
                 Long seed = Math.abs(date.getTime());
                 Random generator = new Random(seed);
-                //System.out.println(seed);
+                System.out.println(seed);
                 _direction = generator.nextInt(4) + 1;
             }
         }

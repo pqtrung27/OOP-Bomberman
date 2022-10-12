@@ -1,6 +1,7 @@
 package uet.oop.bomberman.entities.breakable;
 
 import javafx.scene.canvas.GraphicsContext;
+import uet.oop.bomberman.Main;
 import uet.oop.bomberman.entities.BreakableEntity;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.util.Layer;
@@ -30,6 +31,7 @@ public class Bomb extends BreakableEntity {
         sprite = Sprite.bomb;
         waiting = true;
         justLay = true;
+        isBroken = false;
 
         Timer timer = new Timer();
         // Hủy trạng thái đang đợi
@@ -73,6 +75,7 @@ public class Bomb extends BreakableEntity {
      * Bomb nổ, phá hủy những đối tượng Brick xung quanh nó.
      */
     private void explode() {
+        if (isBroken) return;
         breakEntity();
         int xUnit = this.x / Sprite.SCALED_SIZE;
         int yUnit = this.y / Sprite.SCALED_SIZE;
