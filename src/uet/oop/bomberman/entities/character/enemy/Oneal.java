@@ -18,7 +18,6 @@ public class Oneal extends Enemy {
                 Sprite.oneal_dead
         };
         super.img = spriteList[0].getFxImage();
-        Random generator = new Random(Math.abs((new Date()).getTime()));
-        super.speed = generator.nextInt(2) + 1;
+        super.speed = 1;
     }
 }

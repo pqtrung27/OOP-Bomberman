@@ -1,29 +1,44 @@
 package uet.oop.bomberman;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import uet.oop.bomberman.entities.MenuItem;
 
 public class Menu {
-    private Scene scene;
-    Button startButton = new Button("START");
-    Button quitButton = new Button("QUIT");
+    private final Scene scene;
+    private int currentItem = 0;
+    MenuItem[] menuItems;
 
     public Menu() {
         VBox root = new VBox();
         root.setAlignment(Pos.CENTER);
+        root.setBackground(new Background(new BackgroundFill(Color.BLACK,
+                CornerRadii.EMPTY,
+                Insets.EMPTY)));
 
-        //startButton.setBackground(null);
-        startButton.setPrefSize(100, 60);
-        startButton.setStyle("-fx-font-size: 20");
+        menuItems = new MenuItem[4];
 
-        quitButton.setPrefSize(100, 60);
-        quitButton.setStyle("-fx-font-size: 20");
+        menuItems[0] = new MenuItem("START");
+        menuItems[0].setOnActivate(Main::switchPlayingStatus);
 
-        root.getChildren().addAll(startButton, quitButton);
+        menuItems[1] = new MenuItem("LEADERBOARD");
 
+        menuItems[2] = new MenuItem("ABOUT");
+
+        menuItems[3] = new MenuItem("QUIT");
+        menuItems[3].setOnActivate(() -> System.exit(0));
+
+        currentItem = 0;
+        menuItems[currentItem].setActive(true);
+
+        root.getChildren().addAll(menuItems);
         scene = new Scene(root, Main.initialSceneWidth, Main.initialSceneHeight);
     }
 
@@ -31,15 +46,30 @@ public class Menu {
         return this.scene;
     }
 
+    public void reset() {
+        menuItems[currentItem].setActive(false);
+        currentItem = 0;
+        menuItems[currentItem].setActive(true);
+    }
+
     public void update() {
-        startButton.setOnKeyPressed(keyEvent -> {
-            if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-                Main.switchPlayingStatus();
-            }
-        });
-        quitButton.setOnKeyPressed(keyEvent -> {
-            if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-                System.exit(0);
+        scene.setOnKeyPressed(keyEvent -> {
+            switch (keyEvent.getCode()) {
+                case UP:
+                    if (currentItem > 0) {
+                        menuItems[currentItem].setActive(false);
+                        menuItems[--currentItem].setActive(true);
+                    }
+                    break;
+                case DOWN:
+                    if (currentItem < menuItems.length - 1) {
+                        menuItems[currentItem].setActive(false);
+                        menuItems[++currentItem].setActive(true);
+                    }
+                    break;
+                case ENTER:
+                    menuItems[currentItem].activate();
+                    break;
             }
         });
     }

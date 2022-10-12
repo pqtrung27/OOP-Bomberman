@@ -11,6 +11,8 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import uet.oop.bomberman.graphics.Sprite;
@@ -39,6 +41,7 @@ public class Main extends Application {
 
     public static Menu menu;
     public static BombermanGame game;
+    public static final Font FONT = Font.font("res/font/font.ttf", FontWeight.BOLD, 30);
 
     public static void main(String[] args) {
         menu = new Menu();
@@ -94,6 +97,7 @@ public class Main extends Application {
     public static void switchPlayingStatus() {
         if (playing) {
             playing = false;
+            menu.reset();
         } else {
             playing = true;
             game.reset();

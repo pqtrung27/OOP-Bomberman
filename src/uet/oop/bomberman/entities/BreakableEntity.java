@@ -39,6 +39,10 @@ public abstract class BreakableEntity extends Entity {
         return isBroken;
     }
 
+    public void setBroken(boolean broken) {
+        isBroken = broken;
+    }
+
     /**
      * Phương thức chuyển trạng thái của đối tượng.
      * Gán trạng thái đang nổ cho đối tượng.
