@@ -62,12 +62,12 @@ public class BombermanGame extends DisplayScene {
 
     @Override
     public void reset() {
-        controller = new Controller();
         level = 0;
         loadNextLevel();
     }
 
     private void loadNextLevel() {
+        controller = new Controller();
         Bomb.reset();
         ++level;
         Main.switchPlayingStatus(3, "STAGE " + level);
