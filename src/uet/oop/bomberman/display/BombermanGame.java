@@ -20,6 +20,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
 import uet.oop.bomberman.Main;
 import uet.oop.bomberman.entities.*;
 import javafx.scene.media.Media;
@@ -70,7 +71,7 @@ public class BombermanGame extends DisplayScene {
         controller = new Controller();
         Bomb.reset();
         ++level;
-        Main.switchPlayingStatus(3, "STAGE " + level);
+        Main.setPlayingStatus(3, "STAGE " + level);
         Entity.board = new BoardState(level);
     }
 
@@ -79,7 +80,7 @@ public class BombermanGame extends DisplayScene {
         bgmPlayer.play();
         Entity.board.update();
         if (Entity.board.endGame) {
-            Main.switchPlayingStatus(4, null);
+            Main.setPlayingStatus(4, "game over");
             bgmPlayer.stop();
         }
         if (Entity.board.nextLevel) {

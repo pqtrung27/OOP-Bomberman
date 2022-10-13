@@ -13,10 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import uet.oop.bomberman.display.BombermanGame;
-import uet.oop.bomberman.display.DisplayScene;
-import uet.oop.bomberman.display.FixedScene;
-import uet.oop.bomberman.display.Menu;
+import uet.oop.bomberman.display.*;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.Timer;
@@ -56,12 +53,15 @@ public class Main extends Application {
     public static final Font FONT = Font.font("res/font/font.ttf", FontWeight.BOLD, 30);
 
     public static void main(String[] args) {
-        scenes[0] = new Menu();
+        scenes[0] = new HomeScene();
         scenes[1] = new BombermanGame();
-        scenes[2] = null;
+        scenes[2] = new PauseScene();
         scenes[3] = new FixedScene("Stage");
         scenes[4] = new FixedScene("GAME OVER");
         status = 0;
+
+        ((HomeScene) scenes[0]).setCanContinue(false);
+
         Application.launch(Main.class);
     }
 
@@ -97,25 +97,37 @@ public class Main extends Application {
         scenes[status].render();
     }
 
-    public static void switchPlayingStatus(int newStatus, String mes) {
-        if (newStatus == 4) {
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    status = 0;
+    public static void setPlayingStatus(int newStatus, String mes) {
+        switch (newStatus) {
+            case 0:
+                if (mes.equals("return")) {
+                    ((HomeScene) scenes[0]).setCanContinue(true);
                 }
-            }, 1000L);
-        }
-        if (newStatus == 3) {
-            scenes[3] = new FixedScene(mes);
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    status = 1;
+                break;
+            case 1:
+                if (mes.equals("continue")){
+                    status = newStatus;
+                    return;
                 }
-            }, 1000L);
+                break;
+            case 3: // mes == "STAGE " + level
+                scenes[3] = new FixedScene(mes);
+                (new Timer()).schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        status = 1;
+                    }
+                }, 1000L);
+                break;
+            case 4: // mes = "game over"
+                ((HomeScene) scenes[0]).setCanContinue(false);
+                (new Timer()).schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        status = 0;
+                    }
+                }, 1000L);
+                break;
         }
         status = newStatus;
         scenes[status].reset();

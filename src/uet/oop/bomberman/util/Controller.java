@@ -1,6 +1,7 @@
 package uet.oop.bomberman.util;
 
 import javafx.scene.input.KeyEvent;
+import uet.oop.bomberman.Main;
 import uet.oop.bomberman.entities.character.Bomber;
 
 public class Controller {
@@ -17,6 +18,9 @@ public class Controller {
 
     public void listen(KeyEvent event) {
         switch (event.getCode()) {
+            case ESCAPE:
+                Main.setPlayingStatus(2, "pause");
+                break;
             case SPACE:
                 layBomb = true;
                 break;
