@@ -21,6 +21,8 @@ public class Bomber extends MovingEntity {
         this.isKilled = false;
         this.isDead = false;
         this.isMoving = false;
+        this.spriteOffsetTop = 8*3;
+        this.spriteOffsetRight = 4*3;
     }
 
     @Override
@@ -93,9 +95,9 @@ public class Bomber extends MovingEntity {
             _x += addX;
         } else {
             addX = 0;
-            if (entity.getY() >= _y + Sprite.SCALED_SIZE - 31) {
+            if (entity.getTopY() >= _y + Sprite.SCALED_SIZE - 31) {
                 addY = -speed;
-            } else if (entity.getY() + Sprite.SCALED_SIZE - 31 <= _y) {
+            } else if (entity.getTopY() + Sprite.SCALED_SIZE - 31 <= _y) {
                 addY = speed;
             }
             move(addX, addY);
@@ -106,9 +108,9 @@ public class Bomber extends MovingEntity {
             _y += addY;
         } else {
             addY = 0;
-            if (entity.getX() >= _x + Sprite.SCALED_SIZE - 31) {
+            if (entity.getTopX() >= _x + Sprite.SCALED_SIZE - 31) {
                 addX = -speed;
-            } else if (entity.getX() + Sprite.SCALED_SIZE - 31 <= _x) {
+            } else if (entity.getTopX() + Sprite.SCALED_SIZE - 31 <= _x) {
                 addX = speed;
             }
             move(addX, addY);

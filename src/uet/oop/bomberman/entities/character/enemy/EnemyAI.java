@@ -104,10 +104,10 @@ public class EnemyAI {
      * @return the next step.
      */
     public static int find(Enemy enemy, Bomber bomber, int preDir) {
-        bomberPosX = (bomber.getX() / Sprite.SCALED_SIZE);
-        bomberPosY = (bomber.getY() / Sprite.SCALED_SIZE);
+        bomberPosX = (bomber.getTopX() / Sprite.SCALED_SIZE);
+        bomberPosY = (bomber.getTopY() / Sprite.SCALED_SIZE);
 
-        Node initNode = new Node(enemy.getX() / Sprite.SCALED_SIZE, enemy.getY() / Sprite.SCALED_SIZE, preDir, null);
+        Node initNode = new Node(enemy.getTopX() / Sprite.SCALED_SIZE, enemy.getTopY() / Sprite.SCALED_SIZE, preDir, null);
         if (Math.abs(initNode.x - bomberPosX) >= 20) return 0;
         if (Math.abs(initNode.y - bomberPosY) >= 15) return 0;
 

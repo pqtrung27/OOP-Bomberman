@@ -13,8 +13,6 @@ import uet.oop.bomberman.entities.unbreakable.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.util.BoardState;
 
-import java.util.Comparator;
-
 public abstract class Entity {
     public static BoardState board;
 
@@ -22,6 +20,11 @@ public abstract class Entity {
     protected int x;
     //Tọa độ Y tính từ góc trái trên trong Canvas
     protected int y;
+
+    protected int spriteOffsetTop = 0;
+    protected int spriteOffsetBot = 0;
+    protected int spriteOffsetleft = 0;
+    protected int spriteOffsetRight = 0;
 
     protected Image img;
 
@@ -36,7 +39,6 @@ public abstract class Entity {
         this.y = yUnit * Sprite.SCALED_SIZE;
         this.img = img;
     }
-
     public int getX() {
         return this.x;
     }
@@ -44,13 +46,20 @@ public abstract class Entity {
     public int getY() {
         return this.y;
     }
+    public int getTopX() {
+        return this.x + spriteOffsetleft;
+    }
+
+    public int getTopY() {
+        return this.y + spriteOffsetTop;
+    }
 
     public int getBotX() {
-        return this.x + Sprite.SCALED_SIZE - 1;
+        return this.x + Sprite.SCALED_SIZE - spriteOffsetRight - 1;
     }
 
     public int getBotY() {
-        return this.y + Sprite.SCALED_SIZE - 1;
+        return this.y + Sprite.SCALED_SIZE - spriteOffsetBot - 1;
     }
 
     public void render(GraphicsContext gc) {
