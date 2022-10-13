@@ -80,12 +80,7 @@ public class BoardState implements Serializable {
 
         //no lambda to avoid ConcurrentModificationException.
         for (int i = bombs.size() - 1; i >= 0; --i) {
-            Wall temp = new Wall(0, 0);
-            temp.setX(bomber.getX());
-            temp.setY(bomber.getY());
-            temp.setBotX(bomber.getX() + Sprite.SCALED_SIZE - 1);
-            temp.setBotY(bomber.getY() + Sprite.SCALED_SIZE - 1);
-            if (!collide(temp, bombs.get(i))) {
+            if (!collide(bomber, bombs.get(i))) {
                 bombs.get(i).setJustLay(false);
             }
             bombs.get(i).update();
@@ -149,10 +144,14 @@ public class BoardState implements Serializable {
         int yTop2 = entity2.getTopY();
         int xBot2 = entity2.getBotX();
         int yBot2 = entity2.getBotY();
-        if (yTop2 <= yBot1 && yTop2 >= yTop1
-                || yBot2 >= yTop1 && yBot2 <= yBot1) {
-            if (xTop2 <= xBot1 && xTop2 >= xTop1
-                    || xBot2 >= xTop1 && xBot2 <= xBot1) {
+        if (yTop2 >= yTop1 && yTop2 <= yBot1
+                || yBot2 >= yTop1 && yBot2 <= yBot1
+                || yTop1 >= yTop2 && yTop1 <= yBot2
+                || yBot1 >= yTop2 && yBot1 <= yBot2) {
+            if (xTop2 >= xTop1 && xTop2 <= xBot1
+                    || xBot2 >= xTop1 && xBot2 <= xBot1
+                    || xTop1 >= xTop2 && xTop1 <= xBot2
+                    || xBot1 >= xTop2 && xBot1 <= xBot2) {
                 return true;
             }
         }
@@ -173,7 +172,9 @@ public class BoardState implements Serializable {
             MovingEntity entity = movingObjects.get(i);
             for (int j = 0; j < flames.size(); ++j) {
                 Flame flame = flames.get(j);
-                if (collide(entity, flame)) entity.kill();
+                if (collide(entity, flame)) {
+                    entity.kill();
+                }
             }
             if ((entity).isDead()) movingObjects.remove(i);
         }
@@ -190,21 +191,8 @@ public class BoardState implements Serializable {
         }
         if (Controller.layBomb) {
 
-            int bombX = (bomber.getX());
-            int bombY = (bomber.getY());
-
-            if (Controller.direction[MovingEntity.directionUp]) {
-                bombY -= bomber.getSpeed();
-            }
-            if (Controller.direction[MovingEntity.directionDown]) {
-                bombY += bomber.getSpeed();
-            }
-            if (Controller.direction[MovingEntity.directionLeft]) {
-                bombX -= bomber.getSpeed();
-            }
-            if (Controller.direction[MovingEntity.directionRight]) {
-                bombY += bomber.getSpeed();
-            }
+            int bombX = (bomber.getBotX() + bomber.getTopX()) / 2 + bomber.getSpeed();
+            int bombY = (bomber.getBotY() + bomber.getTopY()) / 2 + bomber.getSpeed();
 
             Bomb bom = new Bomb(bombX / (Sprite.SCALED_SIZE), bombY / Sprite.SCALED_SIZE);
             bom.setJustLay(true);

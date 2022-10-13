@@ -23,7 +23,7 @@ public abstract class Entity {
 
     protected int spriteOffsetTop = 0;
     protected int spriteOffsetBot = 0;
-    protected int spriteOffsetleft = 0;
+    protected int spriteOffsetLeft = 0;
     protected int spriteOffsetRight = 0;
 
     protected Image img;
@@ -39,6 +39,7 @@ public abstract class Entity {
         this.y = yUnit * Sprite.SCALED_SIZE;
         this.img = img;
     }
+
     public int getX() {
         return this.x;
     }
@@ -46,8 +47,9 @@ public abstract class Entity {
     public int getY() {
         return this.y;
     }
+
     public int getTopX() {
-        return this.x + spriteOffsetleft;
+        return this.x + spriteOffsetLeft;
     }
 
     public int getTopY() {

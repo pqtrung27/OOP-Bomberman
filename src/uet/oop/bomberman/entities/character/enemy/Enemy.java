@@ -15,9 +15,9 @@ public abstract class Enemy extends MovingEntity {
     protected final int deadSprite = 6;
     private int _direction;
 
+    private boolean isBlocked = false;
     private int _x;
     private int _y;
-    private int randomSeed = 0;
 
     public Enemy(int x, int y) {
         super(x, y);
@@ -50,19 +50,24 @@ public abstract class Enemy extends MovingEntity {
         int addX = 0;
         int addY = 0;
 
-        if (_x % Sprite.SCALED_SIZE == 0 && _y % Sprite.SCALED_SIZE == 0) {
-            if (this.isOneal()) {
-                _direction = board.EnemyCalDirection(this);
-            } else {
-                _direction = 0;
+        if (this._direction == 0 || !canMove(this._direction)) isBlocked = true;
+
+        if (this.isOneal()) {
+            if (_x % Sprite.SCALED_SIZE == 0 && _y % Sprite.SCALED_SIZE == 0) {
+                int temp = board.EnemyCalDirection(this);
+                if (temp != 0)
+                    _direction = temp;
             }
-            if (_direction == 0) {
-                Date date = new Date();
-                Long seed = Math.abs(date.getTime());
-                Random generator = new Random(seed);
-                System.out.println(seed);
-                _direction = generator.nextInt(4) + 1;
+        }
+
+        if (isBlocked) {
+            for (int i = 1; i <= 4; ++i) {
+                if (canMove(i)) {
+                    _direction = i;
+                    break;
+                }
             }
+            isBlocked = false;
         }
 
         if (_direction == directionUp) addY--;
@@ -76,11 +81,22 @@ public abstract class Enemy extends MovingEntity {
         }
     }
 
-    public void move(int addX, int addY) {
-        if (board.getEntityCollideWith(this, addX, addY) == null) {
-            _x += addX;
-            _y += addY;
+    private boolean canMove(int direction) {
+        int addX = 0;
+        int addY = 0;
+        if (direction == directionUp) addY--;
+        if (direction == directionDown) addY++;
+        if (direction == directionLeft) addX--;
+        if (direction == directionRight) addX++;
+        if (board.getEntityCollideWith(this, addX * speed, addY * speed) == null) {
+            return true;
         }
+        return false;
+    }
+
+    public void move(int addX, int addY) {
+        _x += addX;
+        _y += addY;
     }
 
     private void chooseSprite() {
