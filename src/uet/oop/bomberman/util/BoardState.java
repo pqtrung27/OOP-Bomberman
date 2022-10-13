@@ -159,6 +159,9 @@ public class BoardState implements Serializable {
     }
 
     public void bomberCollide() {
+        bombs.forEach(bomb -> {
+            if (bomb.isExploding() && collide(bomber, bomb)) bomber.kill();
+        });
         flames.forEach(flame -> {
             if (collide(bomber, flame)) bomber.kill();
         });

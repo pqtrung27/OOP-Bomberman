@@ -34,7 +34,7 @@ import java.io.File;
 public class BombermanGame extends DisplayScene {
     private GraphicsContext gc;
     private Canvas canvas;
-    MediaPlayer bgmPlayer;
+    private static MediaPlayer bgmPlayer;
     private int level = 0;
 
     Controller controller = new Controller();
@@ -77,11 +77,11 @@ public class BombermanGame extends DisplayScene {
 
     @Override
     public void update() {
-        bgmPlayer.play();
+        startBGM();
         Entity.board.update();
         if (Entity.board.endGame) {
             Main.setPlayingStatus(4, "game over");
-            bgmPlayer.stop();
+            stopBGM();
         }
         if (Entity.board.nextLevel) {
             loadNextLevel();
@@ -92,6 +92,14 @@ public class BombermanGame extends DisplayScene {
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         Entity.board.render(gc);
+    }
+
+    public static void startBGM() {
+        bgmPlayer.play();
+    }
+
+    public static void stopBGM(){
+        bgmPlayer.stop();
     }
 }
 

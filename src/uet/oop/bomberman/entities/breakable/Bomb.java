@@ -4,6 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.Main;
 import uet.oop.bomberman.entities.BreakableEntity;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.util.BoardState;
 import uet.oop.bomberman.util.Layer;
 
 import java.util.Timer;
@@ -75,7 +76,7 @@ public class Bomb extends BreakableEntity {
      * Bomb nổ, phá hủy những đối tượng Brick xung quanh nó.
      */
     private void explode() {
-        if (isBroken) {
+        if (isExploding || isBroken) {
             return;
         }
         breakEntity();
@@ -119,6 +120,14 @@ public class Bomb extends BreakableEntity {
             board.bombs.remove(this);
             return;
         }
+
+        for (int i = board.flames.size() - 1; i >= 0; --i) {
+            if(board.collide(board.flames.get(i), this)) {
+                this.explode();
+                break;
+            }
+        }
+
         animate();
         if (isExploding) {
             sprite = Sprite.movingSprite(Sprite.bomb_exploded, Sprite.bomb_exploded1, Sprite.bomb_exploded2, animate, 35);

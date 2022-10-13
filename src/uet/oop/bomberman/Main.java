@@ -101,11 +101,13 @@ public class Main extends Application {
         switch (newStatus) {
             case 0:
                 if (mes.equals("return")) {
+                    BombermanGame.stopBGM();
                     ((HomeScene) scenes[0]).setCanContinue(true);
                 }
                 break;
             case 1:
                 if (mes.equals("continue")){
+                    BombermanGame.startBGM();
                     status = newStatus;
                     return;
                 }
