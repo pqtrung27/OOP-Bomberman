@@ -21,5 +21,7 @@ public class Oneal extends Enemy {
         super.speed = 1;
         super.spriteOffsetTop = 2 * 3;
         super.spriteOffsetBot = 2 * 3;
+        super.spriteOffsetLeft = 1 * 3;
+        super.spriteOffsetRight = 1 * 3;
     }
 }
