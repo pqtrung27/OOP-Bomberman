@@ -19,9 +19,7 @@ import uet.oop.bomberman.graphics.Sprite;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class BoardState implements Serializable {
     public double boardOffsetX = 0;
@@ -53,10 +51,25 @@ public class BoardState implements Serializable {
     public void render(GraphicsContext gc) {
         stillObjects.forEach(g -> g.render(gc));
         bombs.forEach(g -> g.render(gc));
-        movingObjects.forEach(g -> g.render(gc));
-        bomber.render(gc);
-
         flames.forEach(f -> f.render(gc));
+
+        Collections.sort(movingObjects, new Comparator<MovingEntity>() {
+            @Override
+            public int compare(MovingEntity o1, MovingEntity o2) {
+                return Integer.compare(o1.getX(), o2.getX());
+            }
+        });
+        boolean bomberRender = false;
+        for (MovingEntity g : movingObjects) {
+            g.render(gc);
+            if (g.getY() >= bomber.getY()) {
+                bomberRender = true;
+                bomber.render(gc);
+            }
+        }
+        if (!bomberRender) {
+            bomber.render(gc);
+        }
     }
 
     public void update() {
@@ -109,32 +122,36 @@ public class BoardState implements Serializable {
 
     public Entity getEntityCollideWith(Entity entity, int addX, int addY) {
         Wall temp = new Wall(0, 0);
-        temp.setX(entity.getX() + addX);
-        temp.setY(entity.getY() + addY);
+        temp.setX(entity.getTopX() + addX);
+        temp.setY(entity.getTopY() + addY);
         temp.setBotX(entity.getBotX() + addX);
         temp.setBotY(entity.getBotY() + addY);
         for (Bomb bomb : bombs) {
             if (collide(bomb, temp) && !bomb.isJustLay())
                 return bomb;
         }
-        Layer layer = getLayer(temp.getX(), temp.getY());
+        Layer layer = getLayer(entity.getX() + addX, entity.getY() + addY);
         if (layer == null) return null;
         return layer.getTop();
     }
 
     public boolean collide(Entity entity1, Entity entity2) {
-        int xTop1 = entity1.getX();
-        int yTop1 = entity1.getY();
+        int xTop1 = entity1.getTopX();
+        int yTop1 = entity1.getTopY();
         int xBot1 = entity1.getBotX();
         int yBot1 = entity1.getBotY();
-        int xTop2 = entity2.getX();
-        int yTop2 = entity2.getY();
+        int xTop2 = entity2.getTopX();
+        int yTop2 = entity2.getTopY();
         int xBot2 = entity2.getBotX();
         int yBot2 = entity2.getBotY();
-        if (yTop2 <= yBot1 && yTop2 >= yTop1
-                || yBot2 >= yTop1 && yBot2 <= yBot1) {
-            if (xTop2 <= xBot1 && xTop2 >= xTop1
-                    || xBot2 >= xTop1 && xBot2 <= xBot1) {
+        if (yTop2 >= yTop1 && yTop2 <= yBot1
+                || yBot2 >= yTop1 && yBot2 <= yBot1
+                || yTop1 >= yTop2 && yTop1 <= yBot2
+                || yBot1 >= yTop2 && yBot1 <= yBot2) {
+            if (xTop2 >= xTop1 && xTop2 <= xBot1
+                    || xBot2 >= xTop1 && xBot2 <= xBot1
+                    || xTop1 >= xTop2 && xTop1 <= xBot2
+                    || xBot1 >= xTop2 && xBot1 <= xBot2) {
                 return true;
             }
         }
@@ -158,7 +175,9 @@ public class BoardState implements Serializable {
             MovingEntity entity = movingObjects.get(i);
             for (int j = 0; j < flames.size(); ++j) {
                 Flame flame = flames.get(j);
-                if (collide(entity, flame)) entity.kill();
+                if (collide(entity, flame)) {
+                    entity.kill();
+                }
             }
             if ((entity).isDead()) movingObjects.remove(i);
         }
@@ -172,18 +191,17 @@ public class BoardState implements Serializable {
     protected void layBomb() {
         if (!Controller.layBomb || bombs.size() == Bomb.maxBombNum) {
             Controller.layBomb = false;
-            return;
         }
-        int bombX = bomber.getX() / Sprite.SCALED_SIZE;
-        int bombY = bomber.getY() / Sprite.SCALED_SIZE;
+        if (Controller.layBomb) {
 
-        if (Controller.direction[MovingEntity.directionUp] ||
-                Controller.direction[MovingEntity.directionDown]) {
-            if (bomber.getY() % Sprite.SCALED_SIZE > Sprite.SCALED_SIZE / 2) bombY++;
+            int bombX = (bomber.getBotX() + bomber.getTopX()) / 2 + bomber.getSpeed();
+            int bombY = (bomber.getBotY() + bomber.getTopY()) / 2 + bomber.getSpeed();
+
+            Bomb bom = new Bomb(bombX / (Sprite.SCALED_SIZE), bombY / Sprite.SCALED_SIZE);
+            bom.setJustLay(true);
+            bombs.add(bom);
+            Controller.layBomb = false;
         }
-
-        bombs.add(new Bomb(bombX, bombY));
-        Controller.layBomb = false;
     }
 
     /**

@@ -19,5 +19,7 @@ public class Oneal extends Enemy {
         };
         super.img = spriteList[0].getFxImage();
         super.speed = 1;
+        super.spriteOffsetTop = 2 * 3;
+        super.spriteOffsetBot = 2 * 3;
     }
 }

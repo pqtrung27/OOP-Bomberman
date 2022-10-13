@@ -104,12 +104,12 @@ public class EnemyAI {
      * @return the next step.
      */
     public static int find(Enemy enemy, Bomber bomber, int preDir) {
-        bomberPosX = (bomber.getX() / Sprite.SCALED_SIZE);
-        bomberPosY = (bomber.getY() / Sprite.SCALED_SIZE);
+        bomberPosX = (bomber.getTopX() / Sprite.SCALED_SIZE);
+        bomberPosY = (bomber.getTopY() / Sprite.SCALED_SIZE);
 
-        Node initNode = new Node(enemy.getX() / Sprite.SCALED_SIZE, enemy.getY() / Sprite.SCALED_SIZE, preDir, null);
-        if (Math.abs(initNode.x - bomberPosX) >= 20) return 0;
-        if (Math.abs(initNode.y - bomberPosY) >= 15) return 0;
+        Node initNode = new Node(enemy.getTopX() / Sprite.SCALED_SIZE, enemy.getTopY() / Sprite.SCALED_SIZE, preDir, null);
+        if (Math.abs(initNode.x - bomberPosX) >= 25) return 0;
+        if (Math.abs(initNode.y - bomberPosY) >= 20) return 0;
 
         PriorityQueue<Node> pq = new PriorityQueue<>();
         pq.add(initNode);
@@ -120,8 +120,8 @@ public class EnemyAI {
             if (top.x == bomberPosX && top.y == bomberPosY) {
                 break;
             }
-            if (top.step >= 30 || pq.size() >= 30 || loop_count == 20)  // return 0 if it takes too long for the enemy to get to bomber's position
-                return 0;                           // Average max step value is 18 in Level 1.
+            if (top.step >= 30 || pq.size() >= 30 || loop_count == 30)  // return 0 if it takes too long for the enemy to get to bomber's position
+                return 0;                                               // Average max step value is 18 in Level 1.
             top = pq.poll();
             for (int direction = 1; direction <= 4; ++direction) {
                 if (movingBackward(direction, top.direction)) continue;
