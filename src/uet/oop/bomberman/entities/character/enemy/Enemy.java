@@ -1,6 +1,5 @@
 package uet.oop.bomberman.entities.character.enemy;
 
-import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.MovingEntity;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -78,7 +77,7 @@ public abstract class Enemy extends MovingEntity {
     }
 
     public void move(int addX, int addY) {
-        if (board.getEntity(_x + addX, _y + addY) == null) {
+        if (board.getEntityCollideWith(this, addX, addY) == null) {
             _x += addX;
             _y += addY;
         }

@@ -132,7 +132,8 @@ public class EnemyAI {
                 if (direction == MovingEntity.directionRight) addX++;
                 int _x = top.x + addX;
                 int _y = top.y + addY;
-                if (Entity.board.getEntity(_x * Sprite.SCALED_SIZE, _y * Sprite.SCALED_SIZE) == null) {
+                Enemy enemy1 = new Oneal(_x, _y);
+                if (Entity.board.getEntityCollideWith(enemy1, 0, 0) == null) {
                     pq.add(new Node(_x, _y, direction, top));
                 }
             }

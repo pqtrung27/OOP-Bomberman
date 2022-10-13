@@ -37,14 +37,14 @@ public class Bomber extends MovingEntity {
     }
 
     protected void powerUp() {
-        Entity entity = board.getEntity(this.x, this.y);
+        Entity entity = board.getEntityCollideWith(this, 0, 0);
         if (entity != null && entity.isItem()) {
             ((Item) entity).powerUp(this);
         }
     }
 
     public boolean isInPortal() {
-        Entity entity = board.getEntity(this.x, this.y);
+        Entity entity = board.getEntityCollideWith(this, 0, 0);
         return entity != null && entity.isPortal();
     }
 
@@ -88,7 +88,7 @@ public class Bomber extends MovingEntity {
 
     public void move(int addX, int addY) {
         isMoving = true;
-        Entity entity = board.getEntity(_x + addX, _y);
+        Entity entity = board.getEntityCollideWith(this, addX, 0);
         if (entity == null || entity.canBePassed() || entity.isEnemy()) {
             _x += addX;
         } else {
@@ -101,7 +101,7 @@ public class Bomber extends MovingEntity {
             move(addX, addY);
             return;
         }
-        entity = board.getEntity(_x, _y + addY);
+        entity = board.getEntityCollideWith(this, 0, addY);
         if (entity == null || entity.canBePassed() || entity.isEnemy()) {
             _y += addY;
         } else {

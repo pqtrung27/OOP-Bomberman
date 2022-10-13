@@ -45,6 +45,14 @@ public abstract class Entity {
         return this.y;
     }
 
+    public int getBotX() {
+        return this.x + Sprite.SCALED_SIZE - 1;
+    }
+
+    public int getBotY() {
+        return this.y + Sprite.SCALED_SIZE - 1;
+    }
+
     public void render(GraphicsContext gc) {
         gc.drawImage(img, x - board.boardOffsetX, y - board.boardOffsetY);
     }

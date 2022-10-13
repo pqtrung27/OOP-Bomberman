@@ -107,15 +107,17 @@ public class BoardState implements Serializable {
         return null;
     }
 
-    public Entity getEntity(int xTop, int yTop) {
+    public Entity getEntityCollideWith(Entity entity, int addX, int addY) {
         Wall temp = new Wall(0, 0);
-        temp.setX(xTop);
-        temp.setY(yTop);
+        temp.setX(entity.getX() + addX);
+        temp.setY(entity.getY() + addY);
+        temp.setBotX(entity.getBotX() + addX);
+        temp.setBotY(entity.getBotY() + addY);
         for (Bomb bomb : bombs) {
             if (collide(bomb, temp) && !bomb.isJustLay())
                 return bomb;
         }
-        Layer layer = getLayer(xTop, yTop);
+        Layer layer = getLayer(temp.getX(), temp.getY());
         if (layer == null) return null;
         return layer.getTop();
     }
@@ -123,12 +125,12 @@ public class BoardState implements Serializable {
     public boolean collide(Entity entity1, Entity entity2) {
         int xTop1 = entity1.getX();
         int yTop1 = entity1.getY();
-        int xBot1 = xTop1 + Sprite.SCALED_SIZE - 1;
-        int yBot1 = yTop1 + Sprite.SCALED_SIZE - 1;
+        int xBot1 = entity1.getBotX();
+        int yBot1 = entity1.getBotY();
         int xTop2 = entity2.getX();
         int yTop2 = entity2.getY();
-        int xBot2 = xTop2 + Sprite.SCALED_SIZE - 1;
-        int yBot2 = yTop2 + Sprite.SCALED_SIZE - 1;
+        int xBot2 = entity2.getBotX();
+        int yBot2 = entity2.getBotY();
         if (yTop2 <= yBot1 && yTop2 >= yTop1
                 || yBot2 >= yTop1 && yBot2 <= yBot1) {
             if (xTop2 <= xBot1 && xTop2 >= xTop1
@@ -169,8 +171,15 @@ public class BoardState implements Serializable {
             Controller.layBomb = false;
             return;
         }
-        bombs.add(new Bomb((bomber.getX() + bomber.getSpeed()) / Sprite.SCALED_SIZE,
-                (bomber.getY() + bomber.getSpeed()) / Sprite.SCALED_SIZE));
+        int bombX = bomber.getX() / Sprite.SCALED_SIZE;
+        int bombY = bomber.getY() / Sprite.SCALED_SIZE;
+
+        if (Controller.direction[MovingEntity.directionUp] ||
+                Controller.direction[MovingEntity.directionDown]) {
+            if (bomber.getY() % Sprite.SCALED_SIZE > Sprite.SCALED_SIZE / 2) bombY++;
+        }
+
+        bombs.add(new Bomb(bombX, bombY));
         Controller.layBomb = false;
     }
 
