@@ -1,50 +1,16 @@
 package uet.oop.bomberman.display;
 
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import uet.oop.bomberman.Main;
-import uet.oop.bomberman.entities.MenuItem;
+import uet.oop.bomberman.entities.Option;
 
-public class Menu extends DisplayScene {
-    private int currentItem = 0;
-    MenuItem[] menuItems;
-
-    public Menu() {
-        VBox root = new VBox();
-        root.setAlignment(Pos.CENTER);
-        root.setBackground(new Background(new BackgroundFill(Color.BLACK,
-                CornerRadii.EMPTY,
-                Insets.EMPTY)));
-
-        menuItems = new MenuItem[4];
-
-        menuItems[0] = new MenuItem("START");
-        menuItems[0].setOnActivate(() -> Main.switchPlayingStatus(1, null));
-
-        menuItems[1] = new MenuItem("LEADERBOARD");
-
-        menuItems[2] = new MenuItem("ABOUT");
-
-        menuItems[3] = new MenuItem("QUIT");
-        menuItems[3].setOnActivate(() -> System.exit(0));
-
-        currentItem = 0;
-        menuItems[currentItem].setActive(true);
-
-        root.getChildren().addAll(menuItems);
-        scene = new Scene(root, Main.initialSceneWidth, Main.initialSceneHeight);
-    }
+public abstract class Menu extends DisplayScene {
+    protected int minPos = 0;
+    protected int currentItem = 0;
+    protected Option[] menuItems;
 
     @Override
     public void reset() {
         menuItems[currentItem].setActive(false);
-        currentItem = 0;
+        currentItem = minPos;
         menuItems[currentItem].setActive(true);
     }
 
@@ -53,7 +19,7 @@ public class Menu extends DisplayScene {
         scene.setOnKeyPressed(keyEvent -> {
             switch (keyEvent.getCode()) {
                 case UP:
-                    if (currentItem > 0) {
+                    if (currentItem > minPos) {
                         menuItems[currentItem].setActive(false);
                         menuItems[--currentItem].setActive(true);
                     }
