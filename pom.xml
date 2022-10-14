@@ -27,6 +27,11 @@
             <artifactId>javafx-graphics</artifactId>
             <version>15</version>
         </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-media</artifactId>
+            <version>15</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -57,7 +62,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>uet.oop.bomberman.Main</mainClass>
+                            <mainClass>uet.oop.bomberman.Launcher</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

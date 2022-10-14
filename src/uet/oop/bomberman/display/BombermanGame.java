@@ -20,11 +20,10 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyCode;
-import uet.oop.bomberman.Main;
-import uet.oop.bomberman.entities.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import uet.oop.bomberman.Main;
+import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.breakable.Bomb;
 import uet.oop.bomberman.util.BoardState;
 import uet.oop.bomberman.util.Controller;
@@ -56,8 +55,8 @@ public class BombermanGame extends DisplayScene {
         scene.setOnKeyReleased(controller::release);
 
         //bay lac
-        String bgmFile = "res/audio/MainBGM.mp3";
-        Media bgm = new Media(new File(bgmFile).toURI().toString());
+        String bgmFile = "/audio/MainBGM.mp3";
+        Media bgm = new Media(getClass().getResource(bgmFile).toString());
         bgmPlayer = new MediaPlayer(bgm);
     }
 

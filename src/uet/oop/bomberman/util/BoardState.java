@@ -16,10 +16,11 @@ import uet.oop.bomberman.entities.unbreakable.Grass;
 import uet.oop.bomberman.entities.unbreakable.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.Serializable;
+import java.io.*;
+import java.net.URL;
 import java.util.*;
+
+import static java.lang.System.exit;
 
 public class BoardState implements Serializable {
     public double boardOffsetX = 0;
@@ -62,12 +63,12 @@ public class BoardState implements Serializable {
         boolean bomberRender = false;
         for (MovingEntity g : movingObjects) {
             g.render(gc);
-            if (g.getY() >= bomber.getY()) {
+            if (bomber != null && g.getY() >= bomber.getY()) {
                 bomberRender = true;
                 bomber.render(gc);
             }
         }
-        if (!bomberRender) {
+        if (bomber != null && !bomberRender) {
             bomber.render(gc);
         }
     }
@@ -75,7 +76,7 @@ public class BoardState implements Serializable {
     public void update() {
         stillObjects.forEach(Layer::update);
         movingObjects.forEach(Entity::update);
-        bomber.update();
+        if (bomber != null) bomber.update();
         layBomb();
 
         //no lambda to avoid ConcurrentModificationException.
@@ -92,13 +93,14 @@ public class BoardState implements Serializable {
 
         bomberCollide();
         enemyCollide();
-
-        if (bomber.isDead()) {
-            endGame = true;
-            bombs.forEach(bomb -> bomb.setBroken(true));
-        }
-        if (bomber.isInPortal() && movingObjects.isEmpty()) {
-            nextLevel = true;
+        if (bomber != null) {
+            if (bomber.isDead()) {
+                endGame = true;
+                bombs.forEach(bomb -> bomb.setBroken(true));
+            }
+            if (bomber.isInPortal() && movingObjects.isEmpty()) {
+                nextLevel = true;
+            }
         }
     }
 
@@ -211,60 +213,64 @@ public class BoardState implements Serializable {
      * @throws FileNotFoundException khi không tìm thấy tệp cấu hình cần tải
      */
     public void loadLevel(int level) throws FileNotFoundException {
-        String path = "res/levels/Level" + level + ".txt";
-        // System.out.println(path);
-        Scanner scanner = new Scanner(new FileInputStream(path));
-        scanner.nextInt();
-        nRow = scanner.nextInt();
-        nCol = scanner.nextInt();
-        scanner.nextLine();
-        movingObjects.clear();
-        bombs.forEach(bomb -> bomb.isBroken = true);
-        bombs.clear();
-        flames.clear();
-        for (int i = 0; i < nRow; ++i) {
-            String data = scanner.nextLine();
-            for (int j = 0; j < nCol; ++j) {
-                Layer layer = new Layer(j, i);
-                if (data.charAt(j) != '#') {
-                    layer.add(new Grass(j, i));
-                } else {
-                    layer.add(new Wall(j, i));
-                }
+        String path = "/levels/Level" + level + ".txt";
+        try {
+            InputStream fstream = this.getClass().getResourceAsStream(path);
+            Scanner scanner = new Scanner(fstream);
+            scanner.nextInt();
+            nRow = scanner.nextInt();
+            nCol = scanner.nextInt();
+            scanner.nextLine();
+            movingObjects.clear();
+            bombs.forEach(bomb -> bomb.isBroken = true);
+            bombs.clear();
+            flames.clear();
+            for (int i = 0; i < nRow; ++i) {
+                String data = scanner.nextLine();
+                for (int j = 0; j < nCol; ++j) {
+                    Layer layer = new Layer(j, i);
+                    if (data.charAt(j) != '#') {
+                        layer.add(new Grass(j, i));
+                    } else {
+                        layer.add(new Wall(j, i));
+                    }
 
-                switch (data.charAt(j)) {
-                    case '*':
+                    switch (data.charAt(j)) {
+                        case '*':
+                            layer.add(new Brick(j, i));
+                            break;
+                        case 'x':
+                            layer.add(new Portal(j, i));
+                            break;
+                        case 's':
+                            layer.add(new SpeedItem(j, i));
+                            break;
+                        case 'b':
+                            layer.add(new BombItem(j, i));
+                            break;
+                        case 'f':
+                            layer.add(new FlameItem(j, i));
+                            break;
+                        case 'p':
+                            bomber = new Bomber(j, i);
+                            break;
+                        case '1':
+                            movingObjects.add(new Ballon(j, i));
+                            break;
+                        case '2':
+                            movingObjects.add(new Oneal(j, i));
+                            break;
+                        default:
+                            break;
+                    }
+                    if (layer.stack.peek().isItem() || layer.stack.peek().isPortal()) {
                         layer.add(new Brick(j, i));
-                        break;
-                    case 'x':
-                        layer.add(new Portal(j, i));
-                        break;
-                    case 's':
-                        layer.add(new SpeedItem(j, i));
-                        break;
-                    case 'b':
-                        layer.add(new BombItem(j, i));
-                        break;
-                    case 'f':
-                        layer.add(new FlameItem(j, i));
-                        break;
-                    case 'p':
-                        bomber = new Bomber(j, i);
-                        break;
-                    case '1':
-                        movingObjects.add(new Ballon(j, i));
-                        break;
-                    case '2':
-                        movingObjects.add(new Oneal(j, i));
-                        break;
-                    default:
-                        break;
+                    }
+                    stillObjects.add(layer);
                 }
-                if (layer.stack.peek().isItem() || layer.stack.peek().isPortal()) {
-                    layer.add(new Brick(j, i));
-                }
-                stillObjects.add(layer);
             }
+        }catch (Exception e) {
+
         }
     }
 

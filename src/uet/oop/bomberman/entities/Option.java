@@ -19,16 +19,15 @@ public class Option extends HBox {
     private ImageView rightArrow;
     private Text text;
     private Runnable script;
+
     public Option(String name) {
         super(15);
         setAlignment(Pos.CENTER);
 
-        try {
-            leftArrow = new ImageView(new Image(new FileInputStream("res/textures/leftarrow.png")));
-            rightArrow = new ImageView(new Image(new FileInputStream("res/textures/rightarrow.png")));
-        } catch (FileNotFoundException e) {
-            System.out.println("Image file not Found!!!");
-        }
+        Image la = new Image("file:res/textures/leftarrow.png");
+        Image ra = new Image("file:res/textures/rightarrow.png");
+        leftArrow = new ImageView(la);
+        rightArrow = new ImageView(ra);
 
         text = new Text(name);
         text.setFont(Main.FONT);
