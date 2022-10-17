@@ -37,6 +37,7 @@ public abstract class MovingEntity extends Entity {
     }
 
     public void kill() {
+        if (isKilled || isDead) return;
         isKilled = true;
 
         Timer timer = new Timer();

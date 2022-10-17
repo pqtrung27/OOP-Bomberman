@@ -1,5 +1,6 @@
 package uet.oop.bomberman.entities.character.enemy;
 
+import uet.oop.bomberman.display.BombermanGame;
 import uet.oop.bomberman.entities.MovingEntity;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -18,6 +19,7 @@ public abstract class Enemy extends MovingEntity {
     private boolean isBlocked = false;
     private int _x;
     private int _y;
+    protected int point; // Số điểm nhận được sau khi giết Enemy, giá trị cụ thể được gán trong phương thức khởi tạo Enemy
 
     public Enemy(int x, int y) {
         super(x, y);
@@ -36,6 +38,14 @@ public abstract class Enemy extends MovingEntity {
             this.x = _x;
             this.y = _y;
         }
+    }
+
+    @Override
+    public void kill() {
+        if (isKilled || isDead) return;
+        super.kill();
+        BombermanGame.addScore(point);
+        System.out.println("You killed an enemy! Score +" + point + ". Current score: " + BombermanGame.score);
     }
 
     public void set_direction(int _direction) {
@@ -57,7 +67,7 @@ public abstract class Enemy extends MovingEntity {
                 int temp = board.EnemyCalDirection(this);
                 if (temp != 0)
                     _direction = temp;
-                else System.out.println(temp);
+                // else System.out.println(temp);
             }
         }
 

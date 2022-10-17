@@ -8,6 +8,7 @@ import java.util.Random;
 public class Oneal extends Enemy {
     public Oneal(int x, int y) {
         super(x, y);
+        point = 200;
         super.spriteList = new Sprite[]{
                 Sprite.oneal_left1,
                 Sprite.oneal_left2,

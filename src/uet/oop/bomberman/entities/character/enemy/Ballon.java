@@ -2,12 +2,10 @@ package uet.oop.bomberman.entities.character.enemy;
 
 import uet.oop.bomberman.graphics.Sprite;
 
-import java.util.Date;
-import java.util.Random;
-
 public class Ballon extends Enemy {
     public Ballon(int x, int y) {
         super(x, y);
+        point = 100;
         super.spriteList = new Sprite[]{
                 Sprite.balloom_left1,
                 Sprite.balloom_left2,

@@ -35,6 +35,7 @@ public class BombermanGame extends DisplayScene {
     private Canvas canvas;
     private static MediaPlayer bgmPlayer;
     private int level = 0;
+    public static int score = 0;
 
     Controller controller = new Controller();
 
@@ -63,6 +64,7 @@ public class BombermanGame extends DisplayScene {
     @Override
     public void reset() {
         level = 0;
+        score = 0;
         loadNextLevel();
     }
 
@@ -91,6 +93,10 @@ public class BombermanGame extends DisplayScene {
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         Entity.board.render(gc);
+    }
+
+    public static void addScore(int value) {
+        score += value;
     }
 
     public static void startBGM() {
