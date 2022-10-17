@@ -2,6 +2,9 @@ package uet.oop.bomberman.entities.character.enemy;
 
 import uet.oop.bomberman.graphics.Sprite;
 
+import java.util.Date;
+import java.util.Random;
+
 public class Ballon extends Enemy {
     public Ballon(int x, int y) {
         super(x, y);
@@ -16,9 +19,23 @@ public class Ballon extends Enemy {
                 Sprite.balloom_dead,
                 Sprite.balloom_score
         };
+        Random ran = new Random((new Date()).getTime() + (long) Math.ceil(_x) + (long) Math.ceil(_y));
+        super.speed = 1 + (double) ((int) (ran.nextDouble() * 10)) / 10;
         super.img = spriteList[0].getFxImage();
-        super.speed = 1;
         super.spriteOffsetTop = 0;
         super.spriteOffsetBot = 0;
     }
+
+    @Override
+    protected void calculateMove() {
+        if (this._direction == 0){
+            calMoveForNone();
+        } else {
+            if (Math.floor(_x) % Sprite.SCALED_SIZE == 0 && Math.floor(_y) % Sprite.SCALED_SIZE == 0) {
+                super.randomMovement();
+            }
+            super.calculateMove();
+        }
+    }
+
 }

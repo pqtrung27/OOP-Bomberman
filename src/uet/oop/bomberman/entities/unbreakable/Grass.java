@@ -15,8 +15,8 @@ public class Grass extends Entity {
     }
 
 
-    public void setTopX(int x) {
-        this.topX = x;
+    public void setTopX(double x) {
+        this.topX = (int) x;
     }
 
     @Override
@@ -24,8 +24,8 @@ public class Grass extends Entity {
         return this.topX;
     }
 
-    public void setTopY(int y) {
-        this.topY = y;
+    public void setTopY(double y) {
+        this.topY = (int) y;
     }
 
     @Override
@@ -33,8 +33,8 @@ public class Grass extends Entity {
         return this.topY;
     }
 
-    public void setBotX(int botX) {
-        this.botX = botX;
+    public void setBotX(double botX) {
+        this.botX = (int) botX;
     }
 
     @Override
@@ -42,8 +42,8 @@ public class Grass extends Entity {
         return this.botX;
     }
 
-    public void setBotY(int botY) {
-        this.botY = botY;
+    public void setBotY(double botY) {
+        this.botY = (int) botY;
     }
 
     @Override
