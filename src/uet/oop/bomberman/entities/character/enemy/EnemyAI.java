@@ -108,8 +108,8 @@ public class EnemyAI {
         bomberPosY = (bomber.getTopY() / Sprite.SCALED_SIZE);
 
         Node initNode = new Node(enemy.getTopX() / Sprite.SCALED_SIZE, enemy.getTopY() / Sprite.SCALED_SIZE, preDir, null);
-        if (Math.abs(initNode.x - bomberPosX) >= 25) return 0;
-        if (Math.abs(initNode.y - bomberPosY) >= 20) return 0;
+        if (Math.abs(initNode.x - bomberPosX) >= 20) return 0;
+        if (Math.abs(initNode.y - bomberPosY) >= 15) return 0;
 
         PriorityQueue<Node> pq = new PriorityQueue<>();
         pq.add(initNode);

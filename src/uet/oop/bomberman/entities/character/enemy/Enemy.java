@@ -4,9 +4,6 @@ import uet.oop.bomberman.display.BombermanGame;
 import uet.oop.bomberman.entities.MovingEntity;
 import uet.oop.bomberman.graphics.Sprite;
 
-import java.util.Date;
-import java.util.Random;
-
 public abstract class Enemy extends MovingEntity {
     private Sprite _sprite = Sprite.player_right;
     protected Sprite[] spriteList = new Sprite[7];
@@ -26,6 +23,7 @@ public abstract class Enemy extends MovingEntity {
         _x = x * Sprite.SCALED_SIZE;
         _y = y * Sprite.SCALED_SIZE;
         this.isDead = false;
+        this.isBlocked = true;
     }
 
     @Override
@@ -72,13 +70,16 @@ public abstract class Enemy extends MovingEntity {
         }
 
         if (isBlocked) {
-            while(!canMove(_direction)) {
+            int cnt = 0;
+            while(_direction == 0 || !canMove(_direction)) {
                 _direction++;
                 if (_direction == 5) {
                     _direction = 1;
                 }
+                cnt++;
+                if (cnt == 5) break;
             }
-            isBlocked = false;
+            if (cnt != 5) isBlocked = false;
         }
 
         if (_direction == directionUp) addY--;
@@ -119,11 +120,8 @@ public abstract class Enemy extends MovingEntity {
                 case MovingEntity.directionLeft:
                     _sprite = Sprite.movingSprite(spriteList[leftSprite], spriteList[leftSprite + 1], spriteList[leftSprite + 2], animate, 20);
                     break;
-                case MovingEntity.directionDown:
-                case MovingEntity.directionRight:
-                    _sprite = Sprite.movingSprite(spriteList[rightSprite], spriteList[rightSprite + 1], spriteList[rightSprite + 2], animate, 20);
-                    break;
                 default:
+                    _sprite = Sprite.movingSprite(spriteList[rightSprite], spriteList[rightSprite + 1], spriteList[rightSprite + 2], animate, 20);
                     break;
             }
         }
