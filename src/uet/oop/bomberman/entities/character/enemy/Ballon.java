@@ -13,7 +13,8 @@ public class Ballon extends Enemy {
                 Sprite.balloom_right1,
                 Sprite.balloom_right2,
                 Sprite.balloom_right3,
-                Sprite.balloom_dead
+                Sprite.balloom_dead,
+                Sprite.balloom_score
         };
         super.img = spriteList[0].getFxImage();
         super.speed = 1;

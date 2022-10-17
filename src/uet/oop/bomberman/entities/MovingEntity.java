@@ -40,11 +40,9 @@ public abstract class MovingEntity extends Entity {
         if (isKilled || isDead) return;
         isKilled = true;
 
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
+        (new Timer()).schedule(new TimerTask() {
             @Override
             public void run() {
-                isKilled = false;
                 isDead = true;
             }
         }, 750L);

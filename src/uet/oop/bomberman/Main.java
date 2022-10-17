@@ -60,7 +60,6 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         scenes[0] = new HomeScene();
-        // scenes[0] = new NewHighScore();
         scenes[1] = new BombermanGame();
         scenes[2] = new PauseScene();
         scenes[3] = new FixedScene("Stage");

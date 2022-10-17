@@ -28,8 +28,6 @@ import uet.oop.bomberman.entities.breakable.Bomb;
 import uet.oop.bomberman.util.BoardState;
 import uet.oop.bomberman.util.Controller;
 
-import java.io.File;
-
 public class BombermanGame extends DisplayScene {
     private GraphicsContext gc;
     private Canvas canvas;

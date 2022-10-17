@@ -1,5 +1,5 @@
-E 200
+l 300
 D 200
-F 200
+k 200
 Player1 0
 Player2 0

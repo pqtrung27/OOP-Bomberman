@@ -20,29 +20,40 @@ import java.util.List;
 import java.util.Scanner;
 
 public class LeaderBoard extends Menu {
+    private VBox names;
+    private VBox scores;
     public LeaderBoard() {
         text.setText("LEADERBOARD");
+
+        names = new VBox();
+        names.setAlignment(Pos.CENTER_LEFT);
+        names.setSpacing(10);
+
+        scores = new VBox();
+        scores.setAlignment(Pos.CENTER_RIGHT);
+        scores.setSpacing(10);
+
+        loadLeaderboard();
+
+        HBox scoreboard = new HBox(names, scores);
+        scoreboard.setAlignment(Pos.CENTER);
+        scoreboard.setSpacing(500);
 
         menuItems = new Option[1];
         menuItems[0] = new Option("BACK");
         menuItems[0].setOnActivate(() -> Main.setPlayingStatus(0, "back"));
+        menuItems[0].setActive(true);
 
         root.setSpacing(20);
         root.getChildren().add(text);
-        root.getChildren().add(loadLeaderboard());
+        root.getChildren().add(scoreboard);
         root.getChildren().addAll(menuItems);
     }
 
-    private HBox loadLeaderboard() {
-        VBox names = new VBox();
-        names.setAlignment(Pos.CENTER_LEFT);
-        names.setSpacing(10);
-
-        VBox scores = new VBox();
-        scores.setAlignment(Pos.CENTER_RIGHT);
-        scores.setSpacing(10);
-
+    private void loadLeaderboard() {
         try {
+            names.getChildren().clear();
+            scores.getChildren().clear();
             Scanner scanner = new Scanner(new FileInputStream("res/leaderboard.txt"));
             while (scanner.hasNext()) {
                 names.getChildren().add(createText(scanner.next()));
@@ -51,11 +62,11 @@ public class LeaderBoard extends Menu {
         } catch (FileNotFoundException e) {
             System.out.println("Leaderboard File Not Found!!!");
         }
+    }
 
-        HBox scoreboard = new HBox(names, scores);
-        scoreboard.setAlignment(Pos.CENTER);
-        scoreboard.setSpacing(500);
-        return scoreboard;
+    @Override
+    public void reset() {
+        loadLeaderboard();
     }
 
     private Text createText(String mes) {
@@ -89,6 +100,7 @@ public class LeaderBoard extends Menu {
             }
             players.add(new data(newName, newScore));
             Collections.sort(players);
+            scanner.close();
 
             FileWriter file = new FileWriter("res/leaderboard.txt");
             for (int i = 0; i < 5; ++i) {

@@ -35,6 +35,7 @@ public class NewHighScore extends Menu {
                 Main.setPlayingStatus(4, "game over");
             }
         });
+        menuItems[0].setActive(true);
 
         root.setSpacing(20);
         root.getChildren().add(text);

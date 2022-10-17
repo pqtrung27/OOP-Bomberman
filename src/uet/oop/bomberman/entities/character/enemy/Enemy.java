@@ -4,22 +4,24 @@ import uet.oop.bomberman.display.BombermanGame;
 import uet.oop.bomberman.entities.MovingEntity;
 import uet.oop.bomberman.graphics.Sprite;
 
-import java.util.Date;
-import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public abstract class Enemy extends MovingEntity {
     private Sprite _sprite = Sprite.player_right;
-    protected Sprite[] spriteList = new Sprite[7];
+    protected Sprite[] spriteList = new Sprite[8];
 
     protected final int leftSprite = 0;
     protected final int rightSprite = 3;
     protected final int deadSprite = 6;
+    protected final int scoreSprite = 7;
     private int _direction;
 
     private boolean isBlocked = false;
     private int _x;
     private int _y;
     protected int point; // Số điểm nhận được sau khi giết Enemy, giá trị cụ thể được gán trong phương thức khởi tạo Enemy
+    protected boolean isShowingPoint = false;
 
     public Enemy(int x, int y) {
         super(x, y);
@@ -43,7 +45,19 @@ public abstract class Enemy extends MovingEntity {
     @Override
     public void kill() {
         if (isKilled || isDead) return;
-        super.kill();
+        isKilled = true;
+        (new Timer()).schedule(new TimerTask() {
+            @Override
+            public void run() {
+                isShowingPoint = true;
+                (new Timer()).schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        isDead = true;
+                    }
+                }, 500);
+            }
+        }, 750L);
         BombermanGame.addScore(point);
         System.out.println("You killed an enemy! Score +" + point + ". Current score: " + BombermanGame.score);
     }
@@ -111,6 +125,11 @@ public abstract class Enemy extends MovingEntity {
     }
 
     private void chooseSprite() {
+        if (isDead) return;
+        if (isShowingPoint) {
+            _sprite = spriteList[scoreSprite];
+            return;
+        }
         if (isKilled) {
             _sprite = spriteList[deadSprite];
         } else {

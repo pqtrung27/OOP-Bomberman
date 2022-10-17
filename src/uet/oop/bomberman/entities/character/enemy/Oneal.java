@@ -16,7 +16,8 @@ public class Oneal extends Enemy {
                 Sprite.oneal_right1,
                 Sprite.oneal_right2,
                 Sprite.oneal_right3,
-                Sprite.oneal_dead
+                Sprite.oneal_dead,
+                Sprite.oneal_score
         };
         super.img = spriteList[0].getFxImage();
         super.speed = 1;
