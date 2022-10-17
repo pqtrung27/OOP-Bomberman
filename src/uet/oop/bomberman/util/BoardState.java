@@ -17,10 +17,7 @@ import uet.oop.bomberman.entities.unbreakable.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.io.*;
-import java.net.URL;
 import java.util.*;
-
-import static java.lang.System.exit;
 
 public class BoardState implements Serializable {
     public double boardOffsetX = 0;
@@ -104,37 +101,49 @@ public class BoardState implements Serializable {
         }
     }
 
-    public Layer getLayer(int xTop, int yTop) {
-        int xBot = xTop + Sprite.SCALED_SIZE - 1;
-        int yBot = yTop + Sprite.SCALED_SIZE - 1;
-        int xUnitTop = xTop / Sprite.SCALED_SIZE;
-        int yUnitTop = yTop / Sprite.SCALED_SIZE;
-        int xUnitBot = xBot / Sprite.SCALED_SIZE;
-        int yUnitBot = yBot / Sprite.SCALED_SIZE;
+    public Layer getLayerCollideWith(Entity entity) {
+
+        int xUnitTop = entity.getTopX() / Sprite.SCALED_SIZE;
+        int yUnitTop = entity.getTopY() / Sprite.SCALED_SIZE;
+        int xUnitBot = entity.getBotX() / Sprite.SCALED_SIZE;
+        int yUnitBot = entity.getBotY() / Sprite.SCALED_SIZE;
+
         Layer layer = stillObjects.get(yUnitTop * nCol + xUnitTop);
-        if (layer != null && !(layer.getTop().isGrass())) return layer;
+        if (layer != null && !(layer.getTop().isGrass())
+                && collide(entity, layer.getTop())) return layer;
+
         layer = stillObjects.get(yUnitBot * nCol + xUnitBot);
-        if (layer != null && !(layer.getTop().isGrass())) return layer;
+        if (layer != null && !(layer.getTop().isGrass())
+                && collide(entity, layer.getTop())) return layer;
+
         layer = stillObjects.get(yUnitTop * nCol + xUnitBot);
-        if (layer != null && !(layer.getTop().isGrass())) return layer;
+        if (layer != null && !(layer.getTop().isGrass())
+                && collide(entity, layer.getTop())) return layer;
+
         layer = stillObjects.get(yUnitBot * nCol + xUnitTop);
-        if (layer != null && !(layer.getTop().isGrass())) return layer;
+        if (layer != null && !(layer.getTop().isGrass())
+                && collide(entity, layer.getTop())) return layer;
+
         return null;
     }
 
     public Entity getEntityCollideWith(Entity entity, int addX, int addY) {
-        Wall temp = new Wall(0, 0);
-        temp.setX(entity.getTopX() + addX);
-        temp.setY(entity.getTopY() + addY);
+        Grass temp = new Grass(0, 0);
+        temp.setTopX(entity.getTopX() + addX);
+        temp.setTopY(entity.getTopY() + addY);
         temp.setBotX(entity.getBotX() + addX);
         temp.setBotY(entity.getBotY() + addY);
+
         for (Bomb bomb : bombs) {
             if (collide(bomb, temp) && !bomb.isJustLay())
                 return bomb;
         }
-        Layer layer = getLayer(entity.getX() + addX, entity.getY() + addY);
+
+        Layer layer = getLayerCollideWith(temp);
         if (layer == null) return null;
-        return layer.getTop();
+        if (collide(temp, layer.getTop()))
+            return layer.getTop();
+        return null;
     }
 
     public boolean collide(Entity entity1, Entity entity2) {
@@ -173,6 +182,7 @@ public class BoardState implements Serializable {
     }
 
     public void enemyCollide() {
+
         for (int i = 0; i < movingObjects.size(); ++i) {
             MovingEntity entity = movingObjects.get(i);
             for (int j = 0; j < flames.size(); ++j) {
@@ -181,8 +191,11 @@ public class BoardState implements Serializable {
                     entity.kill();
                 }
             }
-            if ((entity).isDead()) movingObjects.remove(i);
+            if ((entity).isDead()) {
+                movingObjects.remove(i);
+            }
         }
+
     }
 
     public int EnemyCalDirection(Enemy enemy) {
@@ -269,7 +282,7 @@ public class BoardState implements Serializable {
                     stillObjects.add(layer);
                 }
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
 
         }
     }

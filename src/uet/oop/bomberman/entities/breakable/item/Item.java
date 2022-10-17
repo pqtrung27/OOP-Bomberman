@@ -16,6 +16,10 @@ public abstract class Item extends BreakableEntity {
      */
     public Item(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
+        this.spriteOffsetTop = 3*3;
+        this.spriteOffsetBot = 3*3;
+        this.spriteOffsetLeft = 3*3;
+        this.spriteOffsetRight = 3*3;
     }
 
     /**
