@@ -81,8 +81,12 @@ public class BombermanGame extends DisplayScene {
         startBGM();
         Entity.board.update();
         if (Entity.board.endGame) {
-            Main.setPlayingStatus(4, "game over");
             stopBGM();
+            if (LeaderBoard.checkHighScore(score)) {
+                // System.out.println("New high score!");
+                Main.setPlayingStatus(6, "new high score");
+            }
+            else Main.setPlayingStatus(4, "game over");
         }
         if (Entity.board.nextLevel) {
             loadNextLevel();
@@ -97,6 +101,10 @@ public class BombermanGame extends DisplayScene {
 
     public static void addScore(int value) {
         score += value;
+    }
+
+    public static int getScore() {
+        return score;
     }
 
     public static void startBGM() {

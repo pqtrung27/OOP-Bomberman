@@ -29,7 +29,7 @@ public abstract class Menu extends DisplayScene {
 
         text = new Text("SCENE NAME");
         text.setFont(Main.FONT);
-        text.setStyle("-fx-font-size: 30");
+        text.setStyle("-fx-font-size: 40");
         text.setFill(Color.YELLOW);
 
         scene = new Scene(root, Main.initialSceneWidth, Main.initialSceneHeight);

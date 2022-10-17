@@ -46,10 +46,11 @@ public class Main extends Application {
      * status = 3: Level name
      * status = 4: Game over
      * status = 5: Leaderboard
+     * status = 6: New high score
      */
     public static int status;
 
-    public static DisplayScene[] scenes = new DisplayScene[6];
+    public static DisplayScene[] scenes = new DisplayScene[7];
     public static final Font FONT = Font.loadFont("file:res/font/font.ttf", 30);
 
     public static void main(String[] args) {
@@ -59,11 +60,13 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         scenes[0] = new HomeScene();
+        // scenes[0] = new NewHighScore();
         scenes[1] = new BombermanGame();
         scenes[2] = new PauseScene();
         scenes[3] = new FixedScene("Stage");
         scenes[4] = new FixedScene("GAME OVER");
         scenes[5] = new LeaderBoard();
+        scenes[6] = new NewHighScore();
         status = 0;
         ((HomeScene) scenes[0]).setCanContinue(false);
 

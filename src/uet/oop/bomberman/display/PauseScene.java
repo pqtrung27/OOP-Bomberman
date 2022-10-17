@@ -6,7 +6,6 @@ import uet.oop.bomberman.entities.Option;
 public class PauseScene extends Menu {
     public PauseScene() {
         text.setText("GAME PAUSED");
-        text.setStyle("-fx-font-size: 40");
 
         menuItems = new Option[2];
 
