@@ -11,7 +11,6 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import uet.oop.bomberman.display.*;
 import uet.oop.bomberman.graphics.Sprite;
@@ -46,11 +45,12 @@ public class Main extends Application {
      * status = 2: Pause scene
      * status = 3: Level name
      * status = 4: Game over
+     * status = 5: Leaderboard
      */
     public static int status;
 
-    public static DisplayScene[] scenes = new DisplayScene[5];
-    public static final Font FONT = Font.font("res/font/font.ttf", FontWeight.BOLD, 30);
+    public static DisplayScene[] scenes = new DisplayScene[6];
+    public static final Font FONT = Font.loadFont("file:res/font/font.ttf", 30);
 
     public static void main(String[] args) {
         scenes[0] = new HomeScene();
@@ -58,6 +58,7 @@ public class Main extends Application {
         scenes[2] = new PauseScene();
         scenes[3] = new FixedScene("Stage");
         scenes[4] = new FixedScene("GAME OVER");
+        scenes[5] = new LeaderBoard();
         status = 0;
 
         ((HomeScene) scenes[0]).setCanContinue(false);
@@ -106,7 +107,7 @@ public class Main extends Application {
                 }
                 break;
             case 1:
-                if (mes.equals("continue")){
+                if (mes.equals("continue")) {
                     BombermanGame.startBGM();
                     status = newStatus;
                     return;

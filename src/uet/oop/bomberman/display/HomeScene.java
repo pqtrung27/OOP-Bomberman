@@ -1,23 +1,12 @@
 package uet.oop.bomberman.display;
 
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import uet.oop.bomberman.Main;
 import uet.oop.bomberman.entities.Option;
 
 public class HomeScene extends Menu {
     public HomeScene() {
-        VBox root = new VBox();
-        root.setAlignment(Pos.CENTER);
-        root.setBackground(new Background(new BackgroundFill(Color.BLACK,
-                CornerRadii.EMPTY,
-                Insets.EMPTY)));
+        text.setText("BOMBERMAN");
+        text.setStyle("-fx-font-size: 80");
 
         menuItems = new Option[6];
 
@@ -30,6 +19,7 @@ public class HomeScene extends Menu {
         menuItems[2] = new Option("INSTRUCTION");
 
         menuItems[3] = new Option("LEADERBOARD");
+        menuItems[3].setOnActivate(() -> Main.setPlayingStatus(5, "leaderboard"));
 
         menuItems[4] = new Option("ABOUT");
 
@@ -39,8 +29,8 @@ public class HomeScene extends Menu {
         currentItem = 0;
         menuItems[currentItem].setActive(true);
 
+        root.getChildren().add(text);
         root.getChildren().addAll(menuItems);
-        scene = new Scene(root, Main.initialSceneWidth, Main.initialSceneHeight);
     }
 
     public void setCanContinue(boolean canContinue) {
