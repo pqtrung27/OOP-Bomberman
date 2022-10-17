@@ -6,6 +6,14 @@
 
     <name>Bomberman</name>
 
+    <properties>
+        <jpro.version>2022.1.5</jpro.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <javafx.version>15</javafx.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.openjfx</groupId>

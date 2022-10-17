@@ -1,5 +1,6 @@
-l 300
-D 200
-k 200
 Player1 0
-Player2 0
+Player1 0
+Player1 0
+Player1 0
+Player1 0
+
