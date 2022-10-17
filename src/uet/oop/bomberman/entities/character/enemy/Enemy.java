@@ -53,10 +53,11 @@ public abstract class Enemy extends MovingEntity {
         if (this._direction == 0 || !canMove(this._direction)) isBlocked = true;
 
         if (this.isOneal()) {
-            if (_x % Sprite.SCALED_SIZE == 0 && _y % Sprite.SCALED_SIZE == 0) {
+            if (_x % Sprite.SCALED_SIZE <= speed && _y % Sprite.SCALED_SIZE <= speed) {
                 int temp = board.EnemyCalDirection(this);
                 if (temp != 0)
                     _direction = temp;
+                else System.out.println(temp);
             }
         }
 

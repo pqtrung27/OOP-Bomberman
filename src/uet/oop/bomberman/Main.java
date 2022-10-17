@@ -53,6 +53,11 @@ public class Main extends Application {
     public static final Font FONT = Font.loadFont("file:res/font/font.ttf", 30);
 
     public static void main(String[] args) {
+        launch(Main.class);
+    }
+
+    @Override
+    public void start(Stage stage) {
         scenes[0] = new HomeScene();
         scenes[1] = new BombermanGame();
         scenes[2] = new PauseScene();
@@ -60,14 +65,8 @@ public class Main extends Application {
         scenes[4] = new FixedScene("GAME OVER");
         scenes[5] = new LeaderBoard();
         status = 0;
-
         ((HomeScene) scenes[0]).setCanContinue(false);
 
-        Application.launch(Main.class);
-    }
-
-    @Override
-    public void start(Stage stage) {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {

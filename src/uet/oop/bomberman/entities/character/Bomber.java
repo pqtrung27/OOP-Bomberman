@@ -21,8 +21,8 @@ public class Bomber extends MovingEntity {
         this.isKilled = false;
         this.isDead = false;
         this.isMoving = false;
-        this.spriteOffsetTop = 8*3;
-        this.spriteOffsetRight = 4*3;
+        this.spriteOffsetTop = 8 * 3;
+        this.spriteOffsetRight = 4 * 3;
     }
 
     @Override
@@ -40,14 +40,14 @@ public class Bomber extends MovingEntity {
 
     protected void powerUp() {
         Entity entity = board.getEntityCollideWith(this, 0, 0);
-        if (entity != null && entity.isItem()) {
+        if (entity != null && board.collide(this, entity) && entity.isItem()) {
             ((Item) entity).powerUp(this);
         }
     }
 
     public boolean isInPortal() {
         Entity entity = board.getEntityCollideWith(this, 0, 0);
-        return entity != null && entity.isPortal();
+        return entity != null &&board.collide(this, entity) && entity.isPortal();
     }
 
     protected void calculateMove() {

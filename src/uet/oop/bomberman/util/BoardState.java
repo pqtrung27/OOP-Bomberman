@@ -16,9 +16,7 @@ import uet.oop.bomberman.entities.unbreakable.Grass;
 import uet.oop.bomberman.entities.unbreakable.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.Serializable;
+import java.io.*;
 import java.util.*;
 
 public class BoardState implements Serializable {
@@ -62,12 +60,12 @@ public class BoardState implements Serializable {
         boolean bomberRender = false;
         for (MovingEntity g : movingObjects) {
             g.render(gc);
-            if (g.getY() >= bomber.getY()) {
+            if (bomber != null && g.getY() >= bomber.getY()) {
                 bomberRender = true;
                 bomber.render(gc);
             }
         }
-        if (!bomberRender) {
+        if (bomber != null && !bomberRender) {
             bomber.render(gc);
         }
     }
@@ -75,7 +73,7 @@ public class BoardState implements Serializable {
     public void update() {
         stillObjects.forEach(Layer::update);
         movingObjects.forEach(Entity::update);
-        bomber.update();
+        if (bomber != null) bomber.update();
         layBomb();
 
         //no lambda to avoid ConcurrentModificationException.
@@ -92,47 +90,60 @@ public class BoardState implements Serializable {
 
         bomberCollide();
         enemyCollide();
-
-        if (bomber.isDead()) {
-            endGame = true;
-            bombs.forEach(bomb -> bomb.setBroken(true));
-        }
-        if (bomber.isInPortal() && movingObjects.isEmpty()) {
-            nextLevel = true;
+        if (bomber != null) {
+            if (bomber.isDead()) {
+                endGame = true;
+                bombs.forEach(bomb -> bomb.setBroken(true));
+            }
+            if (bomber.isInPortal() && movingObjects.isEmpty()) {
+                nextLevel = true;
+            }
         }
     }
 
-    public Layer getLayer(int xTop, int yTop) {
-        int xBot = xTop + Sprite.SCALED_SIZE - 1;
-        int yBot = yTop + Sprite.SCALED_SIZE - 1;
-        int xUnitTop = xTop / Sprite.SCALED_SIZE;
-        int yUnitTop = yTop / Sprite.SCALED_SIZE;
-        int xUnitBot = xBot / Sprite.SCALED_SIZE;
-        int yUnitBot = yBot / Sprite.SCALED_SIZE;
+    public Layer getLayerCollideWith(Entity entity) {
+
+        int xUnitTop = entity.getTopX() / Sprite.SCALED_SIZE;
+        int yUnitTop = entity.getTopY() / Sprite.SCALED_SIZE;
+        int xUnitBot = entity.getBotX() / Sprite.SCALED_SIZE;
+        int yUnitBot = entity.getBotY() / Sprite.SCALED_SIZE;
+
         Layer layer = stillObjects.get(yUnitTop * nCol + xUnitTop);
-        if (layer != null && !(layer.getTop().isGrass())) return layer;
+        if (layer != null && !(layer.getTop().isGrass())
+                && collide(entity, layer.getTop())) return layer;
+
         layer = stillObjects.get(yUnitBot * nCol + xUnitBot);
-        if (layer != null && !(layer.getTop().isGrass())) return layer;
+        if (layer != null && !(layer.getTop().isGrass())
+                && collide(entity, layer.getTop())) return layer;
+
         layer = stillObjects.get(yUnitTop * nCol + xUnitBot);
-        if (layer != null && !(layer.getTop().isGrass())) return layer;
+        if (layer != null && !(layer.getTop().isGrass())
+                && collide(entity, layer.getTop())) return layer;
+
         layer = stillObjects.get(yUnitBot * nCol + xUnitTop);
-        if (layer != null && !(layer.getTop().isGrass())) return layer;
+        if (layer != null && !(layer.getTop().isGrass())
+                && collide(entity, layer.getTop())) return layer;
+
         return null;
     }
 
     public Entity getEntityCollideWith(Entity entity, int addX, int addY) {
-        Wall temp = new Wall(0, 0);
-        temp.setX(entity.getTopX() + addX);
-        temp.setY(entity.getTopY() + addY);
+        Grass temp = new Grass(0, 0);
+        temp.setTopX(entity.getTopX() + addX);
+        temp.setTopY(entity.getTopY() + addY);
         temp.setBotX(entity.getBotX() + addX);
         temp.setBotY(entity.getBotY() + addY);
+
         for (Bomb bomb : bombs) {
             if (collide(bomb, temp) && !bomb.isJustLay())
                 return bomb;
         }
-        Layer layer = getLayer(entity.getX() + addX, entity.getY() + addY);
+
+        Layer layer = getLayerCollideWith(temp);
         if (layer == null) return null;
-        return layer.getTop();
+        if (collide(temp, layer.getTop()))
+            return layer.getTop();
+        return null;
     }
 
     public boolean collide(Entity entity1, Entity entity2) {
@@ -171,6 +182,7 @@ public class BoardState implements Serializable {
     }
 
     public void enemyCollide() {
+
         for (int i = 0; i < movingObjects.size(); ++i) {
             MovingEntity entity = movingObjects.get(i);
             for (int j = 0; j < flames.size(); ++j) {
@@ -179,8 +191,11 @@ public class BoardState implements Serializable {
                     entity.kill();
                 }
             }
-            if ((entity).isDead()) movingObjects.remove(i);
+            if ((entity).isDead()) {
+                movingObjects.remove(i);
+            }
         }
+
     }
 
     public int EnemyCalDirection(Enemy enemy) {
@@ -211,60 +226,64 @@ public class BoardState implements Serializable {
      * @throws FileNotFoundException khi không tìm thấy tệp cấu hình cần tải
      */
     public void loadLevel(int level) throws FileNotFoundException {
-        String path = "res/levels/Level" + level + ".txt";
-        // System.out.println(path);
-        Scanner scanner = new Scanner(new FileInputStream(path));
-        scanner.nextInt();
-        nRow = scanner.nextInt();
-        nCol = scanner.nextInt();
-        scanner.nextLine();
-        movingObjects.clear();
-        bombs.forEach(bomb -> bomb.isBroken = true);
-        bombs.clear();
-        flames.clear();
-        for (int i = 0; i < nRow; ++i) {
-            String data = scanner.nextLine();
-            for (int j = 0; j < nCol; ++j) {
-                Layer layer = new Layer(j, i);
-                if (data.charAt(j) != '#') {
-                    layer.add(new Grass(j, i));
-                } else {
-                    layer.add(new Wall(j, i));
-                }
+        String path = "/levels/Level" + level + ".txt";
+        try {
+            InputStream fstream = this.getClass().getResourceAsStream(path);
+            Scanner scanner = new Scanner(fstream);
+            scanner.nextInt();
+            nRow = scanner.nextInt();
+            nCol = scanner.nextInt();
+            scanner.nextLine();
+            movingObjects.clear();
+            bombs.forEach(bomb -> bomb.isBroken = true);
+            bombs.clear();
+            flames.clear();
+            for (int i = 0; i < nRow; ++i) {
+                String data = scanner.nextLine();
+                for (int j = 0; j < nCol; ++j) {
+                    Layer layer = new Layer(j, i);
+                    if (data.charAt(j) != '#') {
+                        layer.add(new Grass(j, i));
+                    } else {
+                        layer.add(new Wall(j, i));
+                    }
 
-                switch (data.charAt(j)) {
-                    case '*':
+                    switch (data.charAt(j)) {
+                        case '*':
+                            layer.add(new Brick(j, i));
+                            break;
+                        case 'x':
+                            layer.add(new Portal(j, i));
+                            break;
+                        case 's':
+                            layer.add(new SpeedItem(j, i));
+                            break;
+                        case 'b':
+                            layer.add(new BombItem(j, i));
+                            break;
+                        case 'f':
+                            layer.add(new FlameItem(j, i));
+                            break;
+                        case 'p':
+                            bomber = new Bomber(j, i);
+                            break;
+                        case '1':
+                            movingObjects.add(new Ballon(j, i));
+                            break;
+                        case '2':
+                            movingObjects.add(new Oneal(j, i));
+                            break;
+                        default:
+                            break;
+                    }
+                    if (layer.stack.peek().isItem() || layer.stack.peek().isPortal()) {
                         layer.add(new Brick(j, i));
-                        break;
-                    case 'x':
-                        layer.add(new Portal(j, i));
-                        break;
-                    case 's':
-                        layer.add(new SpeedItem(j, i));
-                        break;
-                    case 'b':
-                        layer.add(new BombItem(j, i));
-                        break;
-                    case 'f':
-                        layer.add(new FlameItem(j, i));
-                        break;
-                    case 'p':
-                        bomber = new Bomber(j, i);
-                        break;
-                    case '1':
-                        movingObjects.add(new Ballon(j, i));
-                        break;
-                    case '2':
-                        movingObjects.add(new Oneal(j, i));
-                        break;
-                    default:
-                        break;
+                    }
+                    stillObjects.add(layer);
                 }
-                if (layer.stack.peek().isItem() || layer.stack.peek().isPortal()) {
-                    layer.add(new Brick(j, i));
-                }
-                stillObjects.add(layer);
             }
+        } catch (Exception e) {
+
         }
     }
 
