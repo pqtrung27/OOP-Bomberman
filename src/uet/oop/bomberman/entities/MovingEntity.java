@@ -13,9 +13,9 @@ public abstract class MovingEntity extends Entity {
     protected int speed = 3;
     public static final int directionNone = 0;
     public static final int directionUp = 1;
-    public static final int directionDown = 2;
-    public static final int directionLeft = 3;
-    public static final int directionRight = 4;
+    public static final int directionRight = 2;
+    public static final int directionDown = 3;
+    public static final int directionLeft = 4;
     protected boolean isMoving;
     protected boolean isDead;
     protected boolean isKilled;

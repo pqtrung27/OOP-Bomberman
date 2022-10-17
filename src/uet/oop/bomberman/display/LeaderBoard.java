@@ -89,6 +89,7 @@ public class LeaderBoard extends Menu {
             }
             players.add(new data(newName, newScore));
             Collections.sort(players);
+            scanner.close();
 
             FileWriter file = new FileWriter("res/leaderboard.txt");
             for (int i = 0; i < 5; ++i) {

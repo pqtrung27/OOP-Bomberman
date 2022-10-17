@@ -72,10 +72,10 @@ public abstract class Enemy extends MovingEntity {
         }
 
         if (isBlocked) {
-            for (int i = 1; i <= 4; ++i) {
-                if (canMove(i)) {
-                    _direction = i;
-                    break;
+            while(!canMove(_direction)) {
+                _direction++;
+                if (_direction == 5) {
+                    _direction = 1;
                 }
             }
             isBlocked = false;
