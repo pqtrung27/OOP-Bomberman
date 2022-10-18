@@ -10,7 +10,7 @@ import java.util.Random;
 public class Kondoria extends Enemy {
     public Kondoria(int x, int y) {
         super(x, y);
-        point = 200;
+        point = 1000;
         super.spriteList = new Sprite[]{
                 Sprite.kondoria_left1,
                 Sprite.kondoria_left2,
@@ -19,7 +19,7 @@ public class Kondoria extends Enemy {
                 Sprite.kondoria_right2,
                 Sprite.kondoria_right3,
                 Sprite.kondoria_dead,
-                //Sprite.kondoria_score
+                Sprite.kondoria_score
         };
         Random ran = new Random((new Date()).getTime() + (long) Math.ceil(_x) + (long) Math.ceil(_y));
         super.speed = 0.1 + (double) ((int) (ran.nextDouble()/2 * 10)) / 10;
