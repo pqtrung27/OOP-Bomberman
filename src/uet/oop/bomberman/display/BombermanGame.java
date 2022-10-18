@@ -25,6 +25,7 @@ import javafx.scene.media.MediaPlayer;
 import uet.oop.bomberman.Main;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.breakable.Bomb;
+import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.util.Board;
 import uet.oop.bomberman.util.Controller;
 
@@ -63,9 +64,7 @@ public class BombermanGame extends DisplayScene {
     public void reset() {
         level = 0;
         score = 0;
-        Entity.board.bomber.setBombRange(1);
-        Entity.board.bomber.setBombCount(0);
-        Entity.board.bomber.setMaxBombCount(1);
+        Bomber.reset();
         loadNextLevel();
     }
 

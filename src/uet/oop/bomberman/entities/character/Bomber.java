@@ -6,13 +6,15 @@ import uet.oop.bomberman.entities.breakable.item.Item;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.util.Controller;
 
-public class Bomber extends MovingEntity {
+public class Bomber extends MovingEntity implements CanLayBomb {
 
     private final int xPadding = Sprite.SCALED_SIZE * 4;
     private Sprite _sprite = Sprite.player_right;
     private int _direction;
 
-    private int maxBombCount = 1;
+    private static int maxBombCount = 1;
+    private static int bombRange = 1;
+    private int bombCount = 0;
     private int _x;
     private int _y;
 
@@ -46,6 +48,27 @@ public class Bomber extends MovingEntity {
 
     public void setMaxBombCount(int maxBombCount) {
         this.maxBombCount = maxBombCount;
+    }
+
+    public int getBombCount() {
+        return bombCount;
+    }
+
+    public void setBombCount(int bombCount) {
+        this.bombCount = bombCount;
+    }
+
+    public int getBombRange() {
+        return bombRange;
+    }
+
+    public void setBombRange(int bombRange) {
+        this.bombRange = bombRange;
+    }
+
+    public static void reset() {
+        maxBombCount = 1;
+        bombRange = 1;
     }
 
     protected void powerUp() {

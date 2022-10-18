@@ -8,6 +8,7 @@ import uet.oop.bomberman.entities.breakable.item.FlameItem;
 import uet.oop.bomberman.entities.breakable.Portal;
 import uet.oop.bomberman.entities.breakable.item.SpeedItem;
 import uet.oop.bomberman.entities.character.Bomber;
+import uet.oop.bomberman.entities.character.CanLayBomb;
 import uet.oop.bomberman.entities.character.enemy.*;
 import uet.oop.bomberman.entities.unbreakable.Grass;
 import uet.oop.bomberman.entities.unbreakable.Wall;
@@ -225,11 +226,16 @@ public class Board implements Serializable {
 
 
     protected void layBomb(MovingEntity entity) {
+        if (!entity.isBomber() && !entity.isKondoria()) {
+            return;
+        }
+
         boolean layNow = false;
-        if (entity.isBomber() && Controller.layBomb && bomber.getBombCount() < bomber.getMaxBombCount()) {
+        CanLayBomb canLay = (CanLayBomb) entity;
+        if (canLay.isBomber() && Controller.layBomb && bomber.getBombCount() < bomber.getMaxBombCount()) {
             Controller.layBomb = false;
             layNow = true;
-        } else if (entity.isKondoria() && entity.getBombCount() < 1
+        } else if (!canLay.isBomber() && canLay.getBombCount() < 1
                 && getEntityCollideWith(entity, 0, 0) == null) {
             Kondoria kon = (Kondoria) entity;
             if (!kon.didJustLayBomb()) {
@@ -245,8 +251,8 @@ public class Board implements Serializable {
             double bombX = entity.getTopX() + entity.getSpeed();
             double bombY = entity.getTopY() + entity.getSpeed();
 
-            Bomb bom = new Bomb((int) bombX / (Sprite.SCALED_SIZE), (int) bombY / Sprite.SCALED_SIZE, entity);
-            entity.setBombCount(entity.getBombCount()+1);
+            Bomb bom = new Bomb((int) bombX / (Sprite.SCALED_SIZE), (int) bombY / Sprite.SCALED_SIZE, canLay);
+            canLay.setBombCount(canLay.getBombCount()+1);
             bom.setJustLay(true);
             bombs.add(bom);
             Controller.layBomb = false;

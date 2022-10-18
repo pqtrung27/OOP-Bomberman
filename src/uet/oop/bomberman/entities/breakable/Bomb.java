@@ -2,12 +2,11 @@ package uet.oop.bomberman.entities.breakable;
 
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.entities.BreakableEntity;
-import uet.oop.bomberman.entities.MovingEntity;
+import uet.oop.bomberman.entities.character.CanLayBomb;
 import uet.oop.bomberman.entities.unbreakable.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.util.Layer;
 
-import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -22,14 +21,14 @@ public class Bomb extends BreakableEntity {
     private boolean justLay;
     private long delayTime;
 
-    private MovingEntity whoLay;
+    private CanLayBomb whoLay;
 
     /**
      * Khởi tạo đối tượng sử dụng phương thức khởi tạo của lớp cha BreakableEntity.
      * Gán trạng thái đang đợi cho đối tượng.
      * Cài đặt Timer, hủy trạng thái đang đợi sau 2s.
      */
-    public Bomb(int xUnit, int yUnit, MovingEntity whoLay) {
+    public Bomb(int xUnit, int yUnit, CanLayBomb whoLay) {
         super(xUnit, yUnit, Sprite.bomb.getFxImage());
         sprite = Sprite.bomb;
         waiting = true;
@@ -57,7 +56,7 @@ public class Bomb extends BreakableEntity {
      * Có thể được sử dụng sau khi Bomber nhận power-up FlameItem.
      * Phạm vi nổ lớn nhất của bomb = 3.
      */
-    public MovingEntity getWhoLay() {
+    public CanLayBomb getWhoLay() {
         return this.whoLay;
     }
 

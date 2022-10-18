@@ -2,17 +2,18 @@ package uet.oop.bomberman.entities.character.enemy;
 
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.breakable.Brick;
+import uet.oop.bomberman.entities.character.CanLayBomb;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.util.StdRandom;
 
-import java.util.Date;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Kondoria extends Enemy {
+public class Kondoria extends Enemy implements CanLayBomb {
 
     private boolean justLayBomb = false;
+    private int bombRange = 1;
+    private int bombCount = 0;
 
     public Kondoria(int x, int y) {
         super(x, y);
@@ -50,6 +51,22 @@ public class Kondoria extends Enemy {
                 justLayBomb = false;
             }
         }, 50000L);
+    }
+
+    public int getBombCount() {
+        return bombCount;
+    }
+
+    public void setBombCount(int bombCount) {
+        this.bombCount = bombCount;
+    }
+
+    public int getBombRange() {
+        return bombRange;
+    }
+
+    public void setBombRange(int bombRange) {
+        this.bombRange = bombRange;
     }
 
     @Override
