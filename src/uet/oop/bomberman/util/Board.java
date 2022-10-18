@@ -233,7 +233,7 @@ public class Board implements Serializable {
                 && getEntityCollideWith(entity, 0, 0) == null) {
             Kondoria kon = (Kondoria) entity;
             if (!kon.didJustLayBomb()) {
-                layNow = (StdRandom.uniformInt(100) == 1);
+                layNow = (StdRandom.uniformInt(1000) == 1);
                 if (layNow) {
                     kon.setJustLayBomb();
                 }

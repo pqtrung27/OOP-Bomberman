@@ -3,9 +3,6 @@ package uet.oop.bomberman.entities.character.enemy;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.util.StdRandom;
 
-import java.util.Date;
-import java.util.Random;
-
 public class Oneal extends Enemy {
     public Oneal(int x, int y) {
         super(x, y);
