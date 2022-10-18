@@ -19,11 +19,23 @@ public class Oneal extends Enemy {
                 Sprite.oneal_dead,
                 Sprite.oneal_score
         };
+        Random ran = new Random((new Date()).getTime() + (long) Math.ceil(_x) + (long) Math.ceil(_y));
+        super.speed = 1 + (double) ((int) (ran.nextDouble() * 10)) / 10;
         super.img = spriteList[0].getFxImage();
-        super.speed = 1;
-        super.spriteOffsetTop = 0;
-        super.spriteOffsetBot = 0;
-        super.spriteOffsetLeft = 0;
-        super.spriteOffsetRight = 0;
+    }
+
+    @Override
+    protected void calculateMove() {
+        if (this._direction == 0) {
+            calMoveForNone();
+        } else {
+            if (this._direction == 0 || !canMove(this._direction)) isBlocked = true;
+            if (_x % Sprite.SCALED_SIZE == 0 && _y % Sprite.SCALED_SIZE == 0) {
+                int temp = board.EnemyCalDirection(this);
+                if (temp != 0) _direction = temp;
+                else if (isBlocked) super.randomMovement();
+            }
+        }
+        super.calculateMove();
     }
 }

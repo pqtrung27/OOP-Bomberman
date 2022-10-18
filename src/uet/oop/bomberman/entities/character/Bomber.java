@@ -88,7 +88,7 @@ public class Bomber extends MovingEntity {
         }
     }
 
-    public void move(int addX, int addY) {
+    public void move(double addX, double addY) {
         isMoving = true;
         Entity entity = board.getEntityCollideWith(this, addX, 0);
         if (entity == null || entity.canBePassed() || entity.isEnemy()) {

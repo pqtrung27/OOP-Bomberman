@@ -8,10 +8,7 @@ import uet.oop.bomberman.entities.breakable.item.FlameItem;
 import uet.oop.bomberman.entities.breakable.Portal;
 import uet.oop.bomberman.entities.breakable.item.SpeedItem;
 import uet.oop.bomberman.entities.character.Bomber;
-import uet.oop.bomberman.entities.character.enemy.Ballon;
-import uet.oop.bomberman.entities.character.enemy.Enemy;
-import uet.oop.bomberman.entities.character.enemy.EnemyAI;
-import uet.oop.bomberman.entities.character.enemy.Oneal;
+import uet.oop.bomberman.entities.character.enemy.*;
 import uet.oop.bomberman.entities.unbreakable.Grass;
 import uet.oop.bomberman.entities.unbreakable.Wall;
 import uet.oop.bomberman.graphics.Sprite;
@@ -26,7 +23,7 @@ public class BoardState implements Serializable {
     public int nRow;
     public int nCol;
     private List<Layer> stillObjects = new ArrayList<>();
-    public List<MovingEntity> movingObjects = new ArrayList<>();
+    public List<Enemy> enemies = new ArrayList<>();
     public List<Bomb> bombs = new ArrayList<>();
     public List<Flame> flames = new ArrayList<>();
     private Bomber bomber;
@@ -51,14 +48,14 @@ public class BoardState implements Serializable {
         bombs.forEach(g -> g.render(gc));
         flames.forEach(f -> f.render(gc));
 
-        Collections.sort(movingObjects, new Comparator<MovingEntity>() {
+        Collections.sort(enemies, new Comparator<MovingEntity>() {
             @Override
             public int compare(MovingEntity o1, MovingEntity o2) {
                 return Integer.compare(o1.getX(), o2.getX());
             }
         });
         boolean bomberRender = false;
-        for (MovingEntity g : movingObjects) {
+        for (MovingEntity g : enemies) {
             g.render(gc);
             if (bomber != null && g.getY() >= bomber.getY()) {
                 bomberRender = true;
@@ -72,7 +69,7 @@ public class BoardState implements Serializable {
 
     public void update() {
         stillObjects.forEach(Layer::update);
-        movingObjects.forEach(Entity::update);
+        enemies.forEach(Entity::update);
         if (bomber != null) bomber.update();
         layBomb();
 
@@ -95,7 +92,7 @@ public class BoardState implements Serializable {
                 endGame = true;
                 bombs.forEach(bomb -> bomb.setBroken(true));
             }
-            if (bomber.isInPortal() && movingObjects.isEmpty()) {
+            if (bomber.isInPortal() && enemies.isEmpty()) {
                 nextLevel = true;
             }
         }
@@ -127,7 +124,7 @@ public class BoardState implements Serializable {
         return null;
     }
 
-    public Entity getEntityCollideWith(Entity entity, int addX, int addY) {
+    public Entity getEntityCollideWith(Entity entity, double addX, double addY) {
         Grass temp = new Grass(0, 0);
         temp.setTopX(entity.getTopX() + addX);
         temp.setTopY(entity.getTopY() + addY);
@@ -176,15 +173,15 @@ public class BoardState implements Serializable {
         flames.forEach(flame -> {
             if (collide(bomber, flame)) bomber.kill();
         });
-        movingObjects.forEach(movEn -> {
-            if (collide(bomber, movEn)) bomber.kill();
+        enemies.forEach(movEn -> {
+            if (!movEn.isKilled() && collide(bomber, movEn)) bomber.kill();
         });
     }
 
     public void enemyCollide() {
 
-        for (int i = 0; i < movingObjects.size(); ++i) {
-            MovingEntity entity = movingObjects.get(i);
+        for (int i = 0; i < enemies.size(); ++i) {
+            MovingEntity entity = enemies.get(i);
             for (int j = 0; j < flames.size(); ++j) {
                 Flame flame = flames.get(j);
                 if (collide(entity, flame)) {
@@ -192,7 +189,7 @@ public class BoardState implements Serializable {
                 }
             }
             if ((entity).isDead()) {
-                movingObjects.remove(i);
+                enemies.remove(i);
             }
         }
 
@@ -209,10 +206,10 @@ public class BoardState implements Serializable {
         }
         if (Controller.layBomb) {
 
-            int bombX = (bomber.getBotX() + bomber.getTopX()) / 2 + bomber.getSpeed();
-            int bombY = (bomber.getBotY() + bomber.getTopY()) / 2 + bomber.getSpeed();
+            double bombX = (bomber.getBotX() + bomber.getTopX()) / 2 + bomber.getSpeed();
+            double bombY = (bomber.getBotY() + bomber.getTopY()) / 2 + bomber.getSpeed();
 
-            Bomb bom = new Bomb(bombX / (Sprite.SCALED_SIZE), bombY / Sprite.SCALED_SIZE);
+            Bomb bom = new Bomb((int) bombX / (Sprite.SCALED_SIZE), (int) bombY / Sprite.SCALED_SIZE);
             bom.setJustLay(true);
             bombs.add(bom);
             Controller.layBomb = false;
@@ -234,7 +231,7 @@ public class BoardState implements Serializable {
             nRow = scanner.nextInt();
             nCol = scanner.nextInt();
             scanner.nextLine();
-            movingObjects.clear();
+            enemies.clear();
             bombs.forEach(bomb -> bomb.isBroken = true);
             bombs.clear();
             flames.clear();
@@ -268,10 +265,13 @@ public class BoardState implements Serializable {
                             bomber = new Bomber(j, i);
                             break;
                         case '1':
-                            movingObjects.add(new Ballon(j, i));
+                            enemies.add(new Ballon(j, i));
                             break;
                         case '2':
-                            movingObjects.add(new Oneal(j, i));
+                            enemies.add(new Oneal(j, i));
+                            break;
+                        case '3':
+                            enemies.add(new Doll(j, i));
                             break;
                         default:
                             break;

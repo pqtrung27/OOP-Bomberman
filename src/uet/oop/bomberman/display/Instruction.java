@@ -10,40 +10,56 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import uet.oop.bomberman.Main;
 import uet.oop.bomberman.entities.Option;
+import uet.oop.bomberman.graphics.Sprite;
 
 public class Instruction extends DisplayScene {
     private Page[] pages;
     private int currentPage = 0;
     public Instruction() {
-        pages = new Page[3];
-        pages[0] = new Page("CONTROLS");
-        pages[1] = new Page("CHARACTERS");
-        pages[2] = new Page("POWER-UPS");
+        pages = new Page[5];
+        pages[0] = new Page("PLAYER");
+        pages[1] = new Page("CONTROLS");
+        pages[2] = new Page("ENTITIES");
+        pages[3] = new Page("ENEMIES");
+        pages[4] = new Page("POWER-UPS");
 
+        setPlayerBody();
         setControlsBody();
-        setCharactersBody();
+        setEntitiesBody();
+        setEnemiesBody();
         setPowerUpsBody();
     }
 
-    private void setControlsBody() {
+    private void setPlayerBody() {
         pages[0].addBody(createInstruction(
-                null,
-            createLabel(" ←↑→↓"),
-            createDescription("use up, down, left, right keys\nto direct bomberman player")
-        ));
-        pages[0].addBody(createInstruction(
-                null,
-            createLabel("SPACE"),
-            createDescription("use space to lay a bomb\nin player's current position")
-        ));
-        pages[0].addBody(createInstruction(
-                null,
-                createLabel("ESCAPE"),
-                createDescription("use escape to pause game")
+                createLabel("PLAYER", Sprite.player_right.getFxImage()),
+                createDescription("you control bomberman\nthroughout the game.\n" +
+                        "in order to pass each stage,\nyou must kill every enemy,\n" +
+                        "and reveal the portal which\ncan only be used once\n" +
+                        "every enemy is defeated")
         ));
     }
 
-    private void setCharactersBody() {
+    private void setControlsBody() {
+        pages[1].addBody(createInstruction(
+                createLabel(" ←↑→↓", null),
+                createDescription("use up, down, left, right keys\nto direct bomberman player")
+        ));
+        pages[1].addBody(createInstruction(
+                createLabel("SPACE", null),
+                createDescription("use space to lay a bomb\nin player's current position")
+        ));
+        pages[1].addBody(createInstruction(
+                createLabel("ESCAPE", null),
+                createDescription("use escape to pause the game")
+        ));
+    }
+
+    private void setEntitiesBody() {
+        
+    }
+
+    private void setEnemiesBody() {
 
     }
 
@@ -51,28 +67,29 @@ public class Instruction extends DisplayScene {
 
     }
 
-    private HBox createInstruction(Image img, VBox label, VBox description) {
-        HBox ins = new HBox();
-        if (img != null) {
-            ins.getChildren().add(new ImageView(img));
-        }
-        ins.getChildren().add(label);
-        ins.getChildren().add(description);
+    private HBox createInstruction(VBox label, VBox description) {
+        HBox ins = new HBox(label, description);
         ins.setSpacing(50);
         // ins.setAlignment(Pos.CENTER);
         ins.setVisible(true);
         return ins;
     }
 
-    private VBox createLabel(String mes) {
+    private VBox createLabel(String mes, Image img) {
         Text label = new Text(mes);
         label.setFont(Main.FONT);
         label.setFill(Color.YELLOW);
         label.setStyle("-fx-font-size: 25");
+
         VBox labelBox = new VBox(label);
         labelBox.setAlignment(Pos.CENTER_RIGHT);
         labelBox.setMinWidth(250);
         labelBox.setMaxWidth(250);
+        labelBox.setSpacing(10);
+
+        if (img != null) {
+            labelBox.getChildren().add(new ImageView(img));
+        }
         // labelBox.setStyle("-fx-border-color: WHITE; -fx-border-width: 2");
         return labelBox;
     }
@@ -82,6 +99,7 @@ public class Instruction extends DisplayScene {
         description.setFont(Main.FONT);
         description.setFill(Color.WHITE);
         description.setStyle("-fx-font-size: 25");
+
         VBox descriptionBox = new VBox(description);
         descriptionBox.setAlignment(Pos.CENTER_LEFT);
         return descriptionBox;

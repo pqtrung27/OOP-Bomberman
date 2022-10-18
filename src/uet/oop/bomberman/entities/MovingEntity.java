@@ -10,7 +10,7 @@ public abstract class MovingEntity extends Entity {
     protected int animate = 0;
     protected final int animate_MAX_VALUE = 7500;
 
-    protected int speed = 3;
+    protected double speed = 3.0;
     public static final int directionNone = 0;
     public static final int directionUp = 1;
     public static final int directionRight = 2;
@@ -28,11 +28,11 @@ public abstract class MovingEntity extends Entity {
         super(xUnit, yUnit, img);
     }
 
-    public int getSpeed() {
+    public double getSpeed() {
         return speed;
     }
 
-    public void setSpeed(int speed) {
+    public void setSpeed(double speed) {
         this.speed = speed;
     }
 
