@@ -17,7 +17,7 @@ public class Minvo extends Enemy {
                 Sprite.minvo_right2,
                 Sprite.minvo_right3,
                 Sprite.minvo_dead,
-                //Sprite.minvo_score
+                Sprite.minvo_score
         };
         Random ran = new Random((new Date()).getTime() + (long) Math.ceil(_x) + (long) Math.ceil(_y));
         super.speed = 1.6 + (double) ((int) (ran.nextDouble() * 10)) / 10;

@@ -21,7 +21,7 @@ public class Doll extends Enemy {
                 Sprite.doll_right2,
                 Sprite.doll_right3,
                 Sprite.doll_dead,
-                //Sprite.doll_score
+                Sprite.doll_score
         };
         Random ran = new Random((new Date()).getTime() + (long) Math.ceil(_x) + (long) Math.ceil(_y));
         super.speed = 1 + (double) ((int) (ran.nextDouble() * 10)) / 10;

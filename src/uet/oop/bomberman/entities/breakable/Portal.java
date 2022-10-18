@@ -1,6 +1,7 @@
 package uet.oop.bomberman.entities.breakable;
 
 import javafx.scene.canvas.GraphicsContext;
+import uet.oop.bomberman.entities.BreakableEntity;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.unbreakable.Grass;
 import uet.oop.bomberman.graphics.Sprite;
@@ -10,7 +11,7 @@ import uet.oop.bomberman.graphics.Sprite;
  *
  * @author TTD
  */
-public class Portal extends Entity {
+public class Portal extends BreakableEntity {
     private Grass base;
     public Portal(int xUnit, int yUnit) {
         super(xUnit, yUnit, Sprite.portal.getFxImage());

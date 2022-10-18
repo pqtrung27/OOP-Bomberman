@@ -14,7 +14,7 @@ import uet.oop.bomberman.entities.Option;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class Instruction extends DisplayScene {
-    private Page[] pages;
+    private final Page[] pages;
     private int currentPage = 0;
     public Instruction() {
         pages = new Page[6];
@@ -55,6 +55,10 @@ public class Instruction extends DisplayScene {
         pages[1].addBody(createInstruction(
                 createLabel("ESCAPE", null),
                 createDescription("use escape to pause the game")
+        ));
+        pages[1].addBody(createInstruction(
+                createLabel("ENTER", null),
+                createDescription("use enter to select any options")
         ));
     }
 
@@ -227,7 +231,7 @@ public class Instruction extends DisplayScene {
     }
 
     private class Page extends Menu {
-        private VBox body = new VBox();
+        private final VBox body = new VBox();
         public Page(String name) {
             text.setText(name);
 
