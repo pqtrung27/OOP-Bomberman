@@ -20,7 +20,7 @@ public class Ballon extends Enemy {
                 Sprite.balloom_score
         };
         Random ran = new Random((new Date()).getTime() + (long) Math.ceil(_x) + (long) Math.ceil(_y));
-        super.speed = 1 + (double) ((int) (ran.nextDouble() * 10)) / 10;
+        super.speed = 0.5 + (double) ((int) (ran.nextDouble() * 10)) / 10;
         super.img = spriteList[0].getFxImage();
         super.spriteOffsetTop = 0;
         super.spriteOffsetBot = 0;

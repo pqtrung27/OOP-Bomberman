@@ -24,7 +24,7 @@ public class Doll extends Enemy {
                 //Sprite.doll_score
         };
         Random ran = new Random((new Date()).getTime() + (long) Math.ceil(_x) + (long) Math.ceil(_y));
-        super.speed = 1.3 + (double) ((int) (ran.nextDouble() * 10)) / 10;
+        super.speed = 1 + (double) ((int) (ran.nextDouble() * 10)) / 10;
         super.img = spriteList[0].getFxImage();
         this._direction = 0;
         initSpeed = speed;
