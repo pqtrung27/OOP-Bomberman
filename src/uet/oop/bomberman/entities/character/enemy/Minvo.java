@@ -14,7 +14,7 @@ public class Minvo extends Enemy {
                 Sprite.minvo_right2,
                 Sprite.minvo_right3,
                 Sprite.minvo_dead,
-                //Sprite.minvo_score
+                Sprite.minvo_score
         };
         super.speed = 1.6 + (double) ((int) (StdRandom.uniformDouble() * 10)) / 10;
         if (speed == 2.5) speed = 2.4;

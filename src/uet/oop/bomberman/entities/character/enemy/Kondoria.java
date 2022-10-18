@@ -25,7 +25,7 @@ public class Kondoria extends Enemy {
                 Sprite.kondoria_right2,
                 Sprite.kondoria_right3,
                 Sprite.kondoria_dead,
-                //Sprite.kondoria_score
+                Sprite.kondoria_score
         };
         super.speed = 0.1 + (double) ((int) (StdRandom.uniformDouble() * 10)) / 10;
         if (speed == 0.5) speed = 0.6;

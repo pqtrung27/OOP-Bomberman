@@ -22,7 +22,7 @@ public class Doll extends Enemy {
                 Sprite.doll_right2,
                 Sprite.doll_right3,
                 Sprite.doll_dead,
-                //Sprite.doll_score
+                Sprite.doll_score
         };
         super.speed = 1.6 + (double) ((int) (StdRandom.uniformDouble() * 10)) / 10;
         super.img = spriteList[0].getFxImage();

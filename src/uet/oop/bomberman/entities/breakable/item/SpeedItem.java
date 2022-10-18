@@ -21,7 +21,7 @@ public class SpeedItem extends Item {
         if (isBroken()) {
             return false;
         }
-        bomberman.setSpeed(bomberman.getSpeed() * 2);
+        bomberman.setSpeed(bomberman.getSpeed() + 1);
         breakEntity();
         return true;
     }
