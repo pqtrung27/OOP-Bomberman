@@ -56,7 +56,30 @@ public class Instruction extends DisplayScene {
     }
 
     private void setEntitiesBody() {
-        
+        pages[2].addBody(createInstruction(
+                createLabel("BOMB", Sprite.bomb.getFxImage()),
+                createDescription("bombs can be laid down\n" +
+                                "to break  other entities,\n" +
+                                "can be powered-up when\n" +
+                                "player take power-up items")
+        ));
+        pages[2].addBody(createInstruction(
+                createLabel("WALL", Sprite.wall.getFxImage()),
+                createDescription("walls aren't damaged\n" +
+                                "by bomb flames")
+        ));
+        pages[2].addBody(createInstruction(
+                createLabel("BRICK", Sprite.brick.getFxImage()),
+                createDescription("bricks dissolve when hit by\n" +
+                                "bomb flames, sometimes they hide\n" +
+                                "portal and power-up items under")
+        ));
+        pages[2].addBody(createInstruction(
+                createLabel("PORTAL", Sprite.portal.getFxImage()),
+                createDescription("portal is used to\n" +
+                                "proceed to next level and\n" +
+                                "can be damaged by bomb flames")
+        ));
     }
 
     private void setEnemiesBody() {
@@ -138,7 +161,7 @@ public class Instruction extends DisplayScene {
         public Page(String name) {
             text.setText(name);
 
-            body.setSpacing(15);
+            body.setSpacing(10);
 
             menuItems = new Option[3];
 
