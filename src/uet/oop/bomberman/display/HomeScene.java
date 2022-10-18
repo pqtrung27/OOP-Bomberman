@@ -17,6 +17,7 @@ public class HomeScene extends Menu {
         menuItems[1].setOnActivate(() -> Main.setPlayingStatus(1, "start"));
 
         menuItems[2] = new Option("INSTRUCTION");
+        menuItems[2].setOnActivate(() -> Main.setPlayingStatus(7, "instruction"));
 
         menuItems[3] = new Option("LEADERBOARD");
         menuItems[3].setOnActivate(() -> Main.setPlayingStatus(5, "leaderboard"));

@@ -47,10 +47,11 @@ public class Main extends Application {
      * status = 4: Game over
      * status = 5: Leaderboard
      * status = 6: New high score
+     * status = 7: Instruction
      */
     public static int status;
 
-    public static DisplayScene[] scenes = new DisplayScene[7];
+    public static DisplayScene[] scenes = new DisplayScene[8];
     public static final Font FONT = Font.loadFont("file:res/font/font.ttf", 30);
 
     public static void main(String[] args) {
@@ -66,6 +67,8 @@ public class Main extends Application {
         scenes[4] = new FixedScene("GAME OVER");
         scenes[5] = new LeaderBoard();
         scenes[6] = new NewHighScore();
+        scenes[7] = new Instruction();
+        //scenes[0] = new Instruction();
         status = 0;
         ((HomeScene) scenes[0]).setCanContinue(false);
 
