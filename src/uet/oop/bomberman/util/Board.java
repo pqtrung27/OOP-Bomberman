@@ -26,7 +26,7 @@ public class Board implements Serializable {
     public List<Enemy> enemies = new ArrayList<>();
     public List<Bomb> bombs = new ArrayList<>();
     public List<Flame> flames = new ArrayList<>();
-    private Bomber bomber;
+    public Bomber bomber;
     public boolean endGame = false;
     public boolean nextLevel = false;
 

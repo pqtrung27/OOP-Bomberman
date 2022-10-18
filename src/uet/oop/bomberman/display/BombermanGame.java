@@ -63,7 +63,9 @@ public class BombermanGame extends DisplayScene {
     public void reset() {
         level = 0;
         score = 0;
-        //Bomb.reset();
+        Entity.board.bomber.setBombRange(1);
+        Entity.board.bomber.setBombCount(0);
+        Entity.board.bomber.setMaxBombCount(1);
         loadNextLevel();
     }
 
