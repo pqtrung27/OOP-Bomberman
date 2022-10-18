@@ -16,7 +16,7 @@ import uet.oop.bomberman.graphics.Sprite;
 import java.io.*;
 import java.util.*;
 
-public class BoardState implements Serializable {
+public class Board implements Serializable {
     public double boardOffsetX = 0;
     public double boardOffsetY = 0;
     // Kích thước map của màn chơi
@@ -30,7 +30,7 @@ public class BoardState implements Serializable {
     public boolean endGame = false;
     public boolean nextLevel = false;
 
-    public BoardState(int level) {
+    public Board(int level) {
         // create map
         try {
             loadLevel(level);
@@ -69,14 +69,24 @@ public class BoardState implements Serializable {
 
     public void update() {
         stillObjects.forEach(Layer::update);
-        enemies.forEach(Entity::update);
+        enemies.forEach(enemy -> {
+            enemy.update();
+            layBomb(enemy);
+        });
         if (bomber != null) bomber.update();
-        layBomb();
+        layBomb(bomber);
 
         //no lambda to avoid ConcurrentModificationException.
         for (int i = bombs.size() - 1; i >= 0; --i) {
-            if (!collide(bomber, bombs.get(i))) {
-                bombs.get(i).setJustLay(false);
+            bombs.get(i).setJustLay(false);
+            for (int j = enemies.size() - 1; j >= 0; --j) {
+                if (collide(enemies.get(j), bombs.get(i))) {
+                    bombs.get(i).setJustLay(true);
+                    break;
+                }
+            }
+            if (collide(bomber, bombs.get(i))) {
+                bombs.get(i).setJustLay(true);
             }
             bombs.get(i).update();
         }
@@ -105,23 +115,36 @@ public class BoardState implements Serializable {
         int xUnitBot = (int) entity.getBotX() / Sprite.SCALED_SIZE;
         int yUnitBot = (int) entity.getBotY() / Sprite.SCALED_SIZE;
 
+        Layer ans = null;
         Layer layer = stillObjects.get(yUnitTop * nCol + xUnitTop);
         if (layer != null && !(layer.getTop().isGrass())
-                && collide(entity, layer.getTop())) return layer;
+                && collide(entity, layer.getTop())) {
+            if (layer.getTop().isWall()) return layer;
+            else ans = layer;
+        }
 
         layer = stillObjects.get(yUnitBot * nCol + xUnitBot);
         if (layer != null && !(layer.getTop().isGrass())
-                && collide(entity, layer.getTop())) return layer;
+                && collide(entity, layer.getTop())) {
+            if (layer.getTop().isWall()) return layer;
+            else ans = layer;
+        }
 
         layer = stillObjects.get(yUnitTop * nCol + xUnitBot);
         if (layer != null && !(layer.getTop().isGrass())
-                && collide(entity, layer.getTop())) return layer;
+                && collide(entity, layer.getTop())) {
+            if (layer.getTop().isWall()) return layer;
+            else ans = layer;
+        }
 
         layer = stillObjects.get(yUnitBot * nCol + xUnitTop);
         if (layer != null && !(layer.getTop().isGrass())
-                && collide(entity, layer.getTop())) return layer;
+                && collide(entity, layer.getTop())) {
+            if (layer.getTop().isWall()) return layer;
+            else ans = layer;
+        }
 
-        return null;
+        return ans;
     }
 
     public Entity getEntityCollideWith(Entity entity, double addX, double addY) {
@@ -132,8 +155,9 @@ public class BoardState implements Serializable {
         temp.setBotY(entity.getBotY() + addY);
 
         for (Bomb bomb : bombs) {
-            if (collide(bomb, temp) && !bomb.isJustLay())
+            if (collide(bomb, temp) && !bomb.isJustLay()) {
                 return bomb;
+            }
         }
 
         Layer layer = getLayerCollideWith(temp);
@@ -200,16 +224,29 @@ public class BoardState implements Serializable {
     }
 
 
-    protected void layBomb() {
-        if (!Controller.layBomb || bombs.size() == Bomb.maxBombNum) {
+    protected void layBomb(MovingEntity entity) {
+        boolean layNow = false;
+        if (entity.isBomber() && Controller.layBomb && bomber.getBombCount() < bomber.getMaxBombCount()) {
             Controller.layBomb = false;
+            layNow = true;
+        } else if (entity.isKondoria() && entity.getBombCount() < 1
+                && getEntityCollideWith(entity, 0, 0) == null) {
+            Kondoria kon = (Kondoria) entity;
+            if (!kon.didJustLayBomb()) {
+                layNow = (StdRandom.uniformInt(100) == 1);
+                if (layNow) {
+                    kon.setJustLayBomb();
+                }
+            }
         }
-        if (Controller.layBomb) {
 
-            double bombX = (bomber.getBotX() + bomber.getTopX()) / 2 + bomber.getSpeed();
-            double bombY = (bomber.getBotY() + bomber.getTopY()) / 2 + bomber.getSpeed();
+        if (layNow) {
 
-            Bomb bom = new Bomb((int) bombX / (Sprite.SCALED_SIZE), (int) bombY / Sprite.SCALED_SIZE);
+            double bombX = entity.getTopX() + entity.getSpeed();
+            double bombY = entity.getTopY() + entity.getSpeed();
+
+            Bomb bom = new Bomb((int) bombX / (Sprite.SCALED_SIZE), (int) bombY / Sprite.SCALED_SIZE, entity);
+            entity.setBombCount(entity.getBombCount()+1);
             bom.setJustLay(true);
             bombs.add(bom);
             Controller.layBomb = false;

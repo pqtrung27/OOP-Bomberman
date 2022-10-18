@@ -20,6 +20,9 @@ public abstract class MovingEntity extends Entity {
     protected boolean isDead;
     protected boolean isKilled;
 
+    protected int bombRange = 1;
+    private int bombCount = 0;
+
     public MovingEntity(int xUnit, int yUnit) {
         super(xUnit, yUnit);
     }
@@ -46,6 +49,22 @@ public abstract class MovingEntity extends Entity {
                 isDead = true;
             }
         }, 750L);
+    }
+
+    public int getBombCount() {
+        return bombCount;
+    }
+
+    public void setBombCount(int bombCount) {
+        this.bombCount = bombCount;
+    }
+
+    public int getBombRange() {
+        return bombRange;
+    }
+
+    public void setBombRange(int bombRange) {
+        this.bombRange = bombRange;
     }
 
     public boolean isDead() {

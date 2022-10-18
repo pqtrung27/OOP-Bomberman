@@ -1,5 +1,5 @@
-D 400
-Player1 0
-Player1 0
-Player1 0
-Player1 0
+A 4000
+A 2000
+A 1000
+A 1000
+A 1000

@@ -25,7 +25,7 @@ import javafx.scene.media.MediaPlayer;
 import uet.oop.bomberman.Main;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.breakable.Bomb;
-import uet.oop.bomberman.util.BoardState;
+import uet.oop.bomberman.util.Board;
 import uet.oop.bomberman.util.Controller;
 
 public class BombermanGame extends DisplayScene {
@@ -68,10 +68,10 @@ public class BombermanGame extends DisplayScene {
 
     private void loadNextLevel() {
         controller = new Controller();
-        Bomb.reset();
+        //Bomb.reset();
         ++level;
         Main.setPlayingStatus(3, "STAGE " + level);
-        Entity.board = new BoardState(level);
+        Entity.board = new Board(level);
     }
 
     @Override

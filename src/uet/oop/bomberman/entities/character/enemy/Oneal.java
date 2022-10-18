@@ -1,6 +1,7 @@
 package uet.oop.bomberman.entities.character.enemy;
 
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.util.StdRandom;
 
 import java.util.Date;
 import java.util.Random;
@@ -19,8 +20,7 @@ public class Oneal extends Enemy {
                 Sprite.oneal_dead,
                 Sprite.oneal_score
         };
-        Random ran = new Random((new Date()).getTime() + (long) Math.ceil(_x) + (long) Math.ceil(_y));
-        super.speed = 0.6 + (double) ((int) (ran.nextDouble() * 10)) / 10;
+        super.speed = 0.6 + (double) ((int) (StdRandom.uniformDouble() * 10)) / 10;
         if (speed == 1.5) speed = 1.4;
         super.img = spriteList[0].getFxImage();
     }

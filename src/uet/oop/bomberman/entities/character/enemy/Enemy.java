@@ -4,9 +4,7 @@ import uet.oop.bomberman.display.BombermanGame;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.MovingEntity;
 import uet.oop.bomberman.graphics.Sprite;
-
-import java.util.Date;
-import java.util.Random;
+import uet.oop.bomberman.util.StdRandom;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -89,10 +87,9 @@ public abstract class Enemy extends MovingEntity {
     protected void randomMovement() {
         if (this._direction == 0 || !canMove(this._direction)) isBlocked = true;
         int temp = 0;
-        Random ran = new Random((new Date()).getTime() + (long) Math.ceil(_x) + (long) Math.ceil(_y));
-        if (isBlocked || ran.nextInt() % 2 == 0) {
+        if (isBlocked || StdRandom.uniformInt(100) % 2 == 0) {
             int cnt = 0;
-            temp = ran.nextInt(4) + 1;
+            temp = StdRandom.uniformInt(4) + 1;
             while (!canMove(temp)) {
                 temp++;
                 if (temp == 5) {
@@ -137,7 +134,7 @@ public abstract class Enemy extends MovingEntity {
         if (direction == directionDown) addY++;
         if (direction == directionLeft) addX--;
         if (direction == directionRight) addX++;
-        double tempSpeed = Math.ceil(speed);
+        double tempSpeed = Math.ceil(speed) + 1;
         Entity temp = board.getEntityCollideWith(this, addX * tempSpeed, addY * tempSpeed);
         if (temp == null) {
             return true;
@@ -152,8 +149,8 @@ public abstract class Enemy extends MovingEntity {
         if (_direction == directionLeft) addX--;
         if (_direction == directionRight) addX++;
         if (addX != 0 || addY != 0) {
-            _x += addX;
-            _y += addY;
+            _x += addX * speed;
+            _y += addY * speed;
         }
     }
 

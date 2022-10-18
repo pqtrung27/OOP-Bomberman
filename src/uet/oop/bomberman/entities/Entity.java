@@ -6,15 +6,18 @@ import uet.oop.bomberman.entities.breakable.Bomb;
 import uet.oop.bomberman.entities.breakable.Brick;
 import uet.oop.bomberman.entities.breakable.Portal;
 import uet.oop.bomberman.entities.breakable.item.Item;
+import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.entities.character.enemy.Ballom;
+import uet.oop.bomberman.entities.character.enemy.Enemy;
+import uet.oop.bomberman.entities.character.enemy.Kondoria;
 import uet.oop.bomberman.entities.character.enemy.Oneal;
 import uet.oop.bomberman.entities.unbreakable.Grass;
 import uet.oop.bomberman.entities.unbreakable.Wall;
 import uet.oop.bomberman.graphics.Sprite;
-import uet.oop.bomberman.util.BoardState;
+import uet.oop.bomberman.util.Board;
 
 public abstract class Entity {
-    public static BoardState board;
+    public static Board board;
 
     //Tọa độ X tính từ góc trái trên trong Canvas
     protected double x;
@@ -104,8 +107,16 @@ public abstract class Entity {
         return this instanceof Oneal;
     }
 
+    public boolean isKondoria() {
+        return this instanceof Kondoria;
+    }
+
     public boolean isEnemy() {
-        return isBallon() || isOneal();
+        return this instanceof Enemy;
+    }
+
+    public boolean isBomber() {
+        return this instanceof Bomber;
     }
 
     public boolean canBePassed() {

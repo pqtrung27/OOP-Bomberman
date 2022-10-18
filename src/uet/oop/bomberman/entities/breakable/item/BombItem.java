@@ -13,7 +13,9 @@ public class BombItem extends Item {
         if (isBroken()) {
             return false;
         }
-        Bomb.increaseBombNum();
+        if (bomberman.getMaxBombCount() < 3) {
+            bomberman.setMaxBombCount(bomberman.getMaxBombCount()+1);
+        }
         breakEntity();
         return true;
     }

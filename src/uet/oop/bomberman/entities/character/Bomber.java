@@ -11,6 +11,8 @@ public class Bomber extends MovingEntity {
     private final int xPadding = Sprite.SCALED_SIZE * 4;
     private Sprite _sprite = Sprite.player_right;
     private int _direction;
+
+    private int maxBombCount = 1;
     private int _x;
     private int _y;
 
@@ -36,6 +38,14 @@ public class Bomber extends MovingEntity {
             powerUp();
             calculateMove();
         }
+    }
+
+    public int getMaxBombCount() {
+        return maxBombCount;
+    }
+
+    public void setMaxBombCount(int maxBombCount) {
+        this.maxBombCount = maxBombCount;
     }
 
     protected void powerUp() {

@@ -2,6 +2,7 @@ package uet.oop.bomberman.entities.breakable;
 
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.entities.BreakableEntity;
+import uet.oop.bomberman.entities.MovingEntity;
 import uet.oop.bomberman.entities.unbreakable.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.util.Layer;
@@ -16,33 +17,39 @@ import java.util.TimerTask;
  * @author TTD
  */
 public class Bomb extends BreakableEntity {
-    public static int range = 1;
-    public static int maxBombNum = 1;
     private Sprite sprite;
     private boolean waiting;
     private boolean justLay;
+    private long delayTime;
+
+    private MovingEntity whoLay;
 
     /**
      * Khởi tạo đối tượng sử dụng phương thức khởi tạo của lớp cha BreakableEntity.
      * Gán trạng thái đang đợi cho đối tượng.
      * Cài đặt Timer, hủy trạng thái đang đợi sau 2s.
      */
-    public Bomb(int xUnit, int yUnit) {
+    public Bomb(int xUnit, int yUnit, MovingEntity whoLay) {
         super(xUnit, yUnit, Sprite.bomb.getFxImage());
         sprite = Sprite.bomb;
         waiting = true;
         justLay = true;
         isBroken = false;
-
+        this.whoLay = whoLay;
+        if (whoLay.isBomber()) {
+            delayTime = 2000;
+        } else {
+            delayTime = 5000;
+        }
         Timer timer = new Timer();
         // Hủy trạng thái đang đợi
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                waiting = false;
-                explode();
+            waiting = false;
+            explode();
             }
-        }, 2000L);
+        }, delayTime);
     }
 
     /**
@@ -50,26 +57,8 @@ public class Bomb extends BreakableEntity {
      * Có thể được sử dụng sau khi Bomber nhận power-up FlameItem.
      * Phạm vi nổ lớn nhất của bomb = 3.
      */
-    public static void increaseRange() {
-        if (Bomb.range < 3) {
-            ++Bomb.range;
-        }
-    }
-
-    /**
-     * Phương thức tăng số lượng bomb có thể đặt.
-     * Có thể được sử dụng sau khi Bomber nhận power-up BombItem.
-     * Số Bomb lớn nhất có thể đặt = 3.
-     */
-    public static void increaseBombNum() {
-        if (Bomb.maxBombNum < 3) {
-            ++maxBombNum;
-        }
-    }
-
-    public static void reset() {
-        maxBombNum = 1;
-        range = 1;
+    public MovingEntity getWhoLay() {
+        return this.whoLay;
     }
 
     /**
@@ -86,7 +75,7 @@ public class Bomb extends BreakableEntity {
         int[] addX = {-1, 1, 0, 0};
         int[] addY = {0, 0, -1, 1};
         for (int i = 0; i < addX.length; ++i) {
-            for (int k = 1; k <= range; ++k) {
+            for (int k = 1; k <= whoLay.getBombRange(); ++k) {
                 int curX = xUnit + addX[i] * k;
                 int curY = yUnit + addY[i] * k;
                 Wall temp = new Wall(curX, curY);
@@ -102,7 +91,7 @@ public class Bomb extends BreakableEntity {
                         break;
                     }
                 }
-                board.flames.add(new Flame(curX, curY, i, k == range));
+                board.flames.add(new Flame(curX, curY, i, k == whoLay.getBombRange()));
             }
         }
     }
@@ -119,6 +108,7 @@ public class Bomb extends BreakableEntity {
     public void update() {
         if (isBroken) {
             board.bombs.remove(this);
+            whoLay.setBombCount(whoLay.getBombCount()-1);
             return;
         }
 
