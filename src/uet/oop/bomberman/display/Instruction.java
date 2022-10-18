@@ -8,6 +8,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import uet.oop.bomberman.Main;
 import uet.oop.bomberman.entities.Option;
 import uet.oop.bomberman.graphics.Sprite;
@@ -16,17 +17,19 @@ public class Instruction extends DisplayScene {
     private Page[] pages;
     private int currentPage = 0;
     public Instruction() {
-        pages = new Page[5];
+        pages = new Page[6];
         pages[0] = new Page("PLAYER");
         pages[1] = new Page("CONTROLS");
         pages[2] = new Page("ENTITIES");
         pages[3] = new Page("ENEMIES");
-        pages[4] = new Page("POWER-UPS");
+        pages[4] = new Page("ENEMIES");
+        pages[5] = new Page("POWER-UPS");
 
         setPlayerBody();
         setControlsBody();
         setEntitiesBody();
-        setEnemiesBody();
+        setEnemies1Body();
+        setEnemies2Body();
         setPowerUpsBody();
     }
 
@@ -82,8 +85,60 @@ public class Instruction extends DisplayScene {
         ));
     }
 
-    private void setEnemiesBody() {
+    private void setEnemies1Body() {
+        Text description = new Text("there are 8 types of enemy characters\n" +
+                "each type moves in its own particular fashion\n" +
+                "player will earn points when an enemy is killed");
+        description.setFont(Main.FONT);
+        description.setFill(Color.YELLOW);
+        description.setStyle("-fx-font-size: 25");
+        description.setTextAlignment(TextAlignment.CENTER);
+        HBox desBox = new HBox(description);
+        desBox.setAlignment(Pos.CENTER);
+        pages[3].addBody(desBox);
 
+        pages[3].addBody(createInstruction(
+                createLabel("", null),
+                createDescription("points   speed   smart   wallpass")
+        ));
+        pages[3].addBody(createInstruction(
+                createLabel("BALLOOM", Sprite.balloom_left1.getFxImage()),
+                createDescription("100      slow    low     no")
+        ));
+        pages[3].addBody(createInstruction(
+                createLabel("ONEAL", Sprite.oneal_left1.getFxImage()),
+                createDescription("200      normal  normal  no")
+        ));
+        pages[3].addBody(createInstruction(
+                createLabel("DOLL", Sprite.doll_left1.getFxImage()),
+                createDescription("400      normal  low     no")
+        ));
+    }
+
+    private void setEnemies2Body() {
+        Text description = new Text("there are 8 types of enemy characters\n" +
+                "each type moves in its own particular fashion\n" +
+                "player will earn points when an enemy is killed");
+        description.setFont(Main.FONT);
+        description.setFill(Color.YELLOW);
+        description.setStyle("-fx-font-size: 25");
+        description.setTextAlignment(TextAlignment.CENTER);
+        HBox desBox = new HBox(description);
+        desBox.setAlignment(Pos.CENTER);
+        pages[4].addBody(desBox);
+
+        pages[4].addBody(createInstruction(
+                createLabel("", null),
+                createDescription("points   speed   smart   wallpass")
+        ));
+        pages[4].addBody(createInstruction(
+                createLabel("MINVO", Sprite.minvo_left1.getFxImage()),
+                createDescription("800      fast    normal  no")
+        ));
+        pages[4].addBody(createInstruction(
+                createLabel("KONDORIA", Sprite.kondoria_left1.getFxImage()),
+                createDescription("1000     slow    high    yes")
+        ));
     }
 
     private void setPowerUpsBody() {
@@ -106,8 +161,8 @@ public class Instruction extends DisplayScene {
 
         VBox labelBox = new VBox(label);
         labelBox.setAlignment(Pos.CENTER_RIGHT);
-        labelBox.setMinWidth(250);
-        labelBox.setMaxWidth(250);
+        labelBox.setMinWidth(230);
+        labelBox.setMaxWidth(230);
         labelBox.setSpacing(10);
 
         if (img != null) {
