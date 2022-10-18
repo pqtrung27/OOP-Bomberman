@@ -3,10 +3,6 @@ package uet.oop.bomberman.graphics;
 import javafx.scene.image.*;
 import javafx.scene.image.Image;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.nio.IntBuffer;
-
 /**
  * Lưu trữ thông tin các pixel của 1 sprite (hình ảnh game)
  */
@@ -64,15 +60,15 @@ public class Sprite {
 	|--------------------------------------------------------------------------
 	 */
 	//BALLOM
-	public static Sprite balloom_left1 = new Sprite(DEFAULT_SIZE, 9, 0, SpriteSheet.tiles, 16, 16);
-	public static Sprite balloom_left2 = new Sprite(DEFAULT_SIZE, 9, 1, SpriteSheet.tiles, 16, 16);
-	public static Sprite balloom_left3 = new Sprite(DEFAULT_SIZE, 9, 2, SpriteSheet.tiles, 16, 16);
+	public static Sprite ballom_left1 = new Sprite(DEFAULT_SIZE, 9, 0, SpriteSheet.tiles, 16, 16);
+	public static Sprite ballom_left2 = new Sprite(DEFAULT_SIZE, 9, 1, SpriteSheet.tiles, 16, 16);
+	public static Sprite ballom_left3 = new Sprite(DEFAULT_SIZE, 9, 2, SpriteSheet.tiles, 16, 16);
 	
-	public static Sprite balloom_right1 = new Sprite(DEFAULT_SIZE, 10, 0, SpriteSheet.tiles, 16, 16);
-	public static Sprite balloom_right2 = new Sprite(DEFAULT_SIZE, 10, 1, SpriteSheet.tiles, 16, 16);
-	public static Sprite balloom_right3 = new Sprite(DEFAULT_SIZE, 10, 2, SpriteSheet.tiles, 16, 16);
+	public static Sprite ballom_right1 = new Sprite(DEFAULT_SIZE, 10, 0, SpriteSheet.tiles, 16, 16);
+	public static Sprite ballom_right2 = new Sprite(DEFAULT_SIZE, 10, 1, SpriteSheet.tiles, 16, 16);
+	public static Sprite ballom_right3 = new Sprite(DEFAULT_SIZE, 10, 2, SpriteSheet.tiles, 16, 16);
 	
-	public static Sprite balloom_dead = new Sprite(DEFAULT_SIZE, 9, 3, SpriteSheet.tiles, 16, 16);
+	public static Sprite ballom_dead = new Sprite(DEFAULT_SIZE, 9, 3, SpriteSheet.tiles, 16, 16);
 	
 	//ONEAL
 	public static Sprite oneal_left1 = new Sprite(DEFAULT_SIZE, 11, 0, SpriteSheet.tiles, 16, 16);
@@ -186,7 +182,7 @@ public class Sprite {
 	public static Sprite powerup_detonator = new Sprite(DEFAULT_SIZE, 4, 10, SpriteSheet.tiles, 16, 16);
 	public static Sprite powerup_bombpass = new Sprite(DEFAULT_SIZE, 5, 10, SpriteSheet.tiles, 16, 16);
 	public static Sprite powerup_flamepass = new Sprite(DEFAULT_SIZE, 6, 10, SpriteSheet.tiles, 16, 16);
-	public static Sprite balloom_score = new Sprite(DEFAULT_SIZE, 8, 10, SpriteSheet.tiles, 16, 16);
+	public static Sprite ballom_score = new Sprite(DEFAULT_SIZE, 8, 10, SpriteSheet.tiles, 16, 16);
 	public static Sprite oneal_score = new Sprite(DEFAULT_SIZE, 9, 10, SpriteSheet.tiles, 16, 16);
 
 	public Sprite(int size, int x, int y, SpriteSheet sheet, int rw, int rh) {

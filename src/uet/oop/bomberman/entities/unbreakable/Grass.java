@@ -5,10 +5,10 @@ import uet.oop.bomberman.graphics.Sprite;
 
 public class Grass extends Entity {
 
-    private int topX;
-    private int topY;
-    private int botX;
-    private int botY;
+    private double topX;
+    private double topY;
+    private double botX;
+    private double botY;
 
     public Grass(int xUnit, int yUnit) {
         super(xUnit, yUnit, Sprite.grass.getFxImage());
@@ -16,38 +16,38 @@ public class Grass extends Entity {
 
 
     public void setTopX(double x) {
-        this.topX = (int) x;
+        this.topX = x;
     }
 
     @Override
-    public int getTopX() {
+    public double getTopX() {
         return this.topX;
     }
 
     public void setTopY(double y) {
-        this.topY = (int) y;
+        this.topY = y;
     }
 
     @Override
-    public int getTopY() {
+    public double getTopY() {
         return this.topY;
     }
 
     public void setBotX(double botX) {
-        this.botX = (int) botX;
+        this.botX = botX;
     }
 
     @Override
-    public int getBotX() {
+    public double getBotX() {
         return this.botX;
     }
 
     public void setBotY(double botY) {
-        this.botY = (int) botY;
+        this.botY = botY;
     }
 
     @Override
-    public int getBotY() {
+    public double getBotY() {
         return this.botY;
     }
 
