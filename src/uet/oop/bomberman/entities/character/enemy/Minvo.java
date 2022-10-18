@@ -5,22 +5,22 @@ import uet.oop.bomberman.graphics.Sprite;
 import java.util.Date;
 import java.util.Random;
 
-public class Oneal extends Enemy {
-    public Oneal(int x, int y) {
+public class Minvo extends Enemy {
+    public Minvo(int x, int y) {
         super(x, y);
-        point = 200;
+        point = 800;
         super.spriteList = new Sprite[]{
-                Sprite.oneal_left1,
-                Sprite.oneal_left2,
-                Sprite.oneal_left3,
-                Sprite.oneal_right1,
-                Sprite.oneal_right2,
-                Sprite.oneal_right3,
-                Sprite.oneal_dead,
-                Sprite.oneal_score
+                Sprite.minvo_left1,
+                Sprite.minvo_left2,
+                Sprite.minvo_left3,
+                Sprite.minvo_right1,
+                Sprite.minvo_right2,
+                Sprite.minvo_right3,
+                Sprite.minvo_dead,
+                //Sprite.minvo_score
         };
         Random ran = new Random((new Date()).getTime() + (long) Math.ceil(_x) + (long) Math.ceil(_y));
-        super.speed = 0.5 + (double) ((int) (ran.nextDouble() * 10)) / 10;
+        super.speed = 1.6 + (double) ((int) (ran.nextDouble() * 10)) / 10;
         super.img = spriteList[0].getFxImage();
     }
 

@@ -273,6 +273,9 @@ public class BoardState implements Serializable {
                         case '3':
                             enemies.add(new Doll(j, i));
                             break;
+                        case '4':
+                            enemies.add(new Minvo(j, i));
+                            break;
                         default:
                             break;
                     }
