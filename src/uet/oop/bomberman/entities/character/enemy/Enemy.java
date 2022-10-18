@@ -1,6 +1,7 @@
 package uet.oop.bomberman.entities.character.enemy;
 
 import uet.oop.bomberman.display.BombermanGame;
+import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.MovingEntity;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -20,8 +21,8 @@ public abstract class Enemy extends MovingEntity {
     protected int _direction = directionNone;
 
     protected boolean isBlocked;
-    protected int _x;
-    protected int _y;
+    protected double _x;
+    protected double _y;
     protected int point; // Số điểm nhận được sau khi giết Enemy, giá trị cụ thể được gán trong phương thức khởi tạo Enemy
     protected boolean isShowingPoint = false;
     private boolean isVanishing = false;
@@ -87,19 +88,31 @@ public abstract class Enemy extends MovingEntity {
 
     protected void randomMovement() {
         if (this._direction == 0 || !canMove(this._direction)) isBlocked = true;
+        int temp = 0;
         Random ran = new Random((new Date()).getTime() + (long) Math.ceil(_x) + (long) Math.ceil(_y));
         if (isBlocked || ran.nextInt() % 2 == 0) {
             int cnt = 0;
-            _direction = ran.nextInt(4) + 1;
-            while (!canMove(_direction)) {
-                _direction++;
-                if (_direction == 5) {
-                    _direction = 1;
+            temp = ran.nextInt(4) + 1;
+            while (!canMove(temp)) {
+                temp++;
+                if (temp == 5) {
+                    temp = 1;
                 }
                 cnt++;
-                if (cnt == 5) break;
+                if (cnt == 5) return;
             }
+            _direction = temp;
         }
+    }
+
+    protected void aiMovement() {
+        if (this._direction == 0 ||  !canMove(this._direction)) isBlocked = true;
+        if (x % Sprite.SCALED_SIZE <= speed && y % Sprite.SCALED_SIZE <= speed) {
+            int temp = board.EnemyAIDirection(this);
+            if (temp != 0) _direction = temp;
+            else if (isBlocked) randomMovement();
+        }
+        move();
     }
 
     protected void calMoveForNone() {
@@ -111,17 +124,10 @@ public abstract class Enemy extends MovingEntity {
         }
     }
 
-    protected void calculateMove() {
+    abstract protected void calculateMove();
 
-        int addX = 0;
-        int addY = 0;
-        if (_direction == directionUp) addY--;
-        if (_direction == directionDown) addY++;
-        if (_direction == directionLeft) addX--;
-        if (_direction == directionRight) addX++;
-        if (addX != 0 || addY != 0) {
-            move(addX * speed, addY * speed);
-        }
+    protected boolean canPass(Entity entity) {
+        return entity.canBePassed();
     }
 
     protected boolean canMove(int direction) {
@@ -131,12 +137,24 @@ public abstract class Enemy extends MovingEntity {
         if (direction == directionDown) addY++;
         if (direction == directionLeft) addX--;
         if (direction == directionRight) addX++;
-        return board.getEntityCollideWith(this, Math.round(addX * speed), Math.round(addY * speed)) == null;
+        double tempSpeed = Math.ceil(speed);
+        Entity temp = board.getEntityCollideWith(this, addX * tempSpeed, addY * tempSpeed);
+        if (temp == null) {
+            return true;
+        } else return canPass(temp);
     }
 
-    public void move(double addX, double addY) {
-        _x += Math.round(addX);
-        _y += Math.round(addY);
+    public void move() {
+        int addX = 0;
+        int addY = 0;
+        if (_direction == directionUp) addY--;
+        if (_direction == directionDown) addY++;
+        if (_direction == directionLeft) addX--;
+        if (_direction == directionRight) addX++;
+        if (addX != 0 || addY != 0) {
+            _x += addX;
+            _y += addY;
+        }
     }
 
     private void chooseSprite() {

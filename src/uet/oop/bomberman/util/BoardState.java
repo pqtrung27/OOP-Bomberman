@@ -51,7 +51,7 @@ public class BoardState implements Serializable {
         Collections.sort(enemies, new Comparator<MovingEntity>() {
             @Override
             public int compare(MovingEntity o1, MovingEntity o2) {
-                return Integer.compare(o1.getX(), o2.getX());
+                return Double.compare(o1.getX(), o2.getX());
             }
         });
         boolean bomberRender = false;
@@ -100,10 +100,10 @@ public class BoardState implements Serializable {
 
     public Layer getLayerCollideWith(Entity entity) {
 
-        int xUnitTop = entity.getTopX() / Sprite.SCALED_SIZE;
-        int yUnitTop = entity.getTopY() / Sprite.SCALED_SIZE;
-        int xUnitBot = entity.getBotX() / Sprite.SCALED_SIZE;
-        int yUnitBot = entity.getBotY() / Sprite.SCALED_SIZE;
+        int xUnitTop = (int) entity.getTopX() / Sprite.SCALED_SIZE;
+        int yUnitTop = (int) entity.getTopY() / Sprite.SCALED_SIZE;
+        int xUnitBot = (int) entity.getBotX() / Sprite.SCALED_SIZE;
+        int yUnitBot = (int) entity.getBotY() / Sprite.SCALED_SIZE;
 
         Layer layer = stillObjects.get(yUnitTop * nCol + xUnitTop);
         if (layer != null && !(layer.getTop().isGrass())
@@ -144,14 +144,14 @@ public class BoardState implements Serializable {
     }
 
     public boolean collide(Entity entity1, Entity entity2) {
-        int xTop1 = entity1.getTopX();
-        int yTop1 = entity1.getTopY();
-        int xBot1 = entity1.getBotX();
-        int yBot1 = entity1.getBotY();
-        int xTop2 = entity2.getTopX();
-        int yTop2 = entity2.getTopY();
-        int xBot2 = entity2.getBotX();
-        int yBot2 = entity2.getBotY();
+        double xTop1 = entity1.getTopX();
+        double yTop1 = entity1.getTopY();
+        double xBot1 = entity1.getBotX();
+        double yBot1 = entity1.getBotY();
+        double xTop2 = entity2.getTopX();
+        double yTop2 = entity2.getTopY();
+        double xBot2 = entity2.getBotX();
+        double yBot2 = entity2.getBotY();
         if (yTop2 >= yTop1 && yTop2 <= yBot1
                 || yBot2 >= yTop1 && yBot2 <= yBot1
                 || yTop1 >= yTop2 && yTop1 <= yBot2
@@ -195,7 +195,7 @@ public class BoardState implements Serializable {
 
     }
 
-    public int EnemyCalDirection(Enemy enemy) {
+    public int EnemyAIDirection(Enemy enemy) {
         return EnemyAI.find(enemy, bomber, enemy.get_direction());
     }
 
@@ -265,7 +265,7 @@ public class BoardState implements Serializable {
                             bomber = new Bomber(j, i);
                             break;
                         case '1':
-                            enemies.add(new Ballon(j, i));
+                            enemies.add(new Ballom(j, i));
                             break;
                         case '2':
                             enemies.add(new Oneal(j, i));
@@ -275,6 +275,9 @@ public class BoardState implements Serializable {
                             break;
                         case '4':
                             enemies.add(new Minvo(j, i));
+                            break;
+                        case '5':
+                            enemies.add(new Kondoria(j, i));
                             break;
                         default:
                             break;

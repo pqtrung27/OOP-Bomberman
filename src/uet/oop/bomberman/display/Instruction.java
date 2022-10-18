@@ -106,7 +106,7 @@ public class Instruction extends DisplayScene {
                 createDescription("points   speed   smart   wallpass")
         ));
         pages[3].addBody(createInstruction(
-                createLabel("BALLOOM", Sprite.balloom_left1.getFxImage()),
+                createLabel("BALLOM", Sprite.ballom_left1.getFxImage()),
                 createDescription("100      slow    low     no")
         ));
         pages[3].addBody(createInstruction(

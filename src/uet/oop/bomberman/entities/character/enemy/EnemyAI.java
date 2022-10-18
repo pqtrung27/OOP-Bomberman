@@ -104,10 +104,10 @@ public class EnemyAI {
      * @return the next step.
      */
     public static int find(Enemy enemy, Bomber bomber, int preDir) {
-        bomberPosX = (bomber.getTopX() / Sprite.SCALED_SIZE);
-        bomberPosY = (bomber.getTopY() / Sprite.SCALED_SIZE);
+        bomberPosX = (int) (bomber.getTopX() / Sprite.SCALED_SIZE);
+        bomberPosY = (int) (bomber.getTopY() / Sprite.SCALED_SIZE);
 
-        Node initNode = new Node(enemy.getTopX() / Sprite.SCALED_SIZE, enemy.getTopY() / Sprite.SCALED_SIZE, preDir, null);
+        Node initNode = new Node((int) enemy.getTopX() / Sprite.SCALED_SIZE, (int) enemy.getTopY() / Sprite.SCALED_SIZE, preDir, null);
         if (Math.abs(initNode.x - bomberPosX) >= 20) return 0;
         if (Math.abs(initNode.y - bomberPosY) >= 15) return 0;
 
@@ -130,12 +130,15 @@ public class EnemyAI {
                 if (direction == MovingEntity.directionDown) addY++;
                 if (direction == MovingEntity.directionLeft) addX--;
                 if (direction == MovingEntity.directionRight) addX++;
-                int _x = top.x + addX;
-                int _y = top.y + addY;
-                Enemy enemy1 = new Oneal(_x, _y);
-                if (Entity.board.getEntityCollideWith(enemy1, 0, 0) == null) {
-                    pq.add(new Node(_x, _y, direction, top));
+                try {
+                    Enemy enemy1 = enemy.getClass().getConstructor(int.class, int.class).newInstance(top.x, top.y);
+                    if (enemy1.canMove(direction)) {
+                        pq.add(new Node(top.x + addX, top.y + addY, direction, top));
+                    }
+                } catch (Exception e) {
+                    System.out.println("Enemy does not have this constructor");
                 }
+
             }
         }
         Node top = pq.peek();

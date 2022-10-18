@@ -6,7 +6,7 @@ import uet.oop.bomberman.entities.breakable.Bomb;
 import uet.oop.bomberman.entities.breakable.Brick;
 import uet.oop.bomberman.entities.breakable.Portal;
 import uet.oop.bomberman.entities.breakable.item.Item;
-import uet.oop.bomberman.entities.character.enemy.Ballon;
+import uet.oop.bomberman.entities.character.enemy.Ballom;
 import uet.oop.bomberman.entities.character.enemy.Oneal;
 import uet.oop.bomberman.entities.unbreakable.Grass;
 import uet.oop.bomberman.entities.unbreakable.Wall;
@@ -17,9 +17,9 @@ public abstract class Entity {
     public static BoardState board;
 
     //Tọa độ X tính từ góc trái trên trong Canvas
-    protected int x;
+    protected double x;
     //Tọa độ Y tính từ góc trái trên trong Canvas
-    protected int y;
+    protected double y;
 
     protected int spriteOffsetTop = 0;
     protected int spriteOffsetBot = 0;
@@ -40,27 +40,27 @@ public abstract class Entity {
         this.img = img;
     }
 
-    public int getX() {
+    public double getX() {
         return this.x;
     }
 
-    public int getY() {
+    public double getY() {
         return this.y;
     }
 
-    public int getTopX() {
+    public double getTopX() {
         return this.x + spriteOffsetLeft;
     }
 
-    public int getTopY() {
+    public double getTopY() {
         return this.y + spriteOffsetTop;
     }
 
-    public int getBotX() {
+    public double getBotX() {
         return this.x + Sprite.SCALED_SIZE - spriteOffsetRight - 1;
     }
 
-    public int getBotY() {
+    public double getBotY() {
         return this.y + Sprite.SCALED_SIZE - spriteOffsetBot - 1;
     }
 
@@ -97,7 +97,7 @@ public abstract class Entity {
     }
 
     public boolean isBallon() {
-        return this instanceof Ballon;
+        return this instanceof Ballom;
     }
 
     public boolean isOneal() {

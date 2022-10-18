@@ -80,8 +80,8 @@ public class Bomb extends BreakableEntity {
             return;
         }
         breakEntity();
-        int xUnit = this.x / Sprite.SCALED_SIZE;
-        int yUnit = this.y / Sprite.SCALED_SIZE;
+        int xUnit = (int) this.x / Sprite.SCALED_SIZE;
+        int yUnit = (int) this.y / Sprite.SCALED_SIZE;
 
         int[] addX = {-1, 1, 0, 0};
         int[] addY = {0, 0, -1, 1};

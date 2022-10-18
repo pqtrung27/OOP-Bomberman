@@ -5,21 +5,21 @@ import uet.oop.bomberman.graphics.Sprite;
 import java.util.Date;
 import java.util.Random;
 
-public class Ballon extends Enemy {
-    public Ballon(int x, int y) {
+public class Ballom extends Enemy {
+    public Ballom(int x, int y) {
         super(x, y);
         point = 100;
         super.spriteList = new Sprite[]{
-                Sprite.balloom_left1,
-                Sprite.balloom_left2,
-                Sprite.balloom_left3,
-                Sprite.balloom_right1,
-                Sprite.balloom_right2,
-                Sprite.balloom_right3,
-                Sprite.balloom_dead,
-                Sprite.balloom_score
+                Sprite.ballom_left1,
+                Sprite.ballom_left2,
+                Sprite.ballom_left3,
+                Sprite.ballom_right1,
+                Sprite.ballom_right2,
+                Sprite.ballom_right3,
+                Sprite.ballom_dead,
+                Sprite.ballom_score
         };
-        Random ran = new Random((new Date()).getTime() + (long) Math.ceil(_x) + (long) Math.ceil(_y));
+        Random ran = new Random((new Date()).getTime());
         super.speed = 0.5 + (double) ((int) (ran.nextDouble() * 10)) / 10;
         super.img = spriteList[0].getFxImage();
         super.spriteOffsetTop = 0;
@@ -31,10 +31,10 @@ public class Ballon extends Enemy {
         if (this._direction == 0){
             calMoveForNone();
         } else {
-            if (Math.floor(_x) % Sprite.SCALED_SIZE == 0 && Math.floor(_y) % Sprite.SCALED_SIZE == 0) {
+            if (x % Sprite.SCALED_SIZE == 0 && y % Sprite.SCALED_SIZE == 0) {
                 super.randomMovement();
             }
-            super.calculateMove();
+            super.move();
         }
     }
 

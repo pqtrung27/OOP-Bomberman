@@ -58,7 +58,7 @@ public class Doll extends Enemy {
             this.speed = initSpeed + accel;
             if (accel > 0) accel -= 0.1;
             else accel = 0;
-            super.calculateMove();
+            super.move();
         }
     }
 }
