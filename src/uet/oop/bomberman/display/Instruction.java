@@ -142,7 +142,22 @@ public class Instruction extends DisplayScene {
     }
 
     private void setPowerUpsBody() {
-
+        pages[5].addBody(createInstruction(
+                createLabel("BOMBS", Sprite.powerup_bombs.getFxImage()),
+                createDescription("increase  the amount of bombs\n" +
+                                        "dropped at a time by 1\n" +
+                                        "collectible multiple times")
+        ));
+        pages[5].addBody(createInstruction(
+                createLabel("FLAMES", Sprite.powerup_flames.getFxImage()),
+                createDescription("increases bomb explosion range\n" +
+                                        "in four directions by 1\n" +
+                                        "collectible multiple times")
+        ));
+        pages[5].addBody(createInstruction(
+                createLabel("SPEED", Sprite.powerup_speed.getFxImage()),
+                createDescription("increases movement speed")
+        ));
     }
 
     private HBox createInstruction(VBox label, VBox description) {
