@@ -1,6 +1,8 @@
 package uet.oop.bomberman.entities.breakable;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import uet.oop.bomberman.entities.BreakableEntity;
 import uet.oop.bomberman.entities.character.CanLayBomb;
 import uet.oop.bomberman.entities.unbreakable.Wall;
@@ -22,6 +24,7 @@ public class Bomb extends BreakableEntity {
     private long delayTime;
 
     private CanLayBomb whoLay;
+    private static MediaPlayer explosionSound;
 
     /**
      * Khởi tạo đối tượng sử dụng phương thức khởi tạo của lớp cha BreakableEntity.
@@ -30,6 +33,11 @@ public class Bomb extends BreakableEntity {
      */
     public Bomb(int xUnit, int yUnit, CanLayBomb whoLay) {
         super(xUnit, yUnit, Sprite.bomb.getFxImage());
+
+        explosionSound = new MediaPlayer(
+                new Media(getClass().getResource("/audio/explosion.mp3").toString())
+        );
+
         sprite = Sprite.bomb;
         waiting = true;
         justLay = true;
@@ -68,6 +76,7 @@ public class Bomb extends BreakableEntity {
             return;
         }
         breakEntity();
+        explosionSound.play();
         int xUnit = (int) this.x / Sprite.SCALED_SIZE;
         int yUnit = (int) this.y / Sprite.SCALED_SIZE;
 
