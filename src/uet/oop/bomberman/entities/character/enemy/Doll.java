@@ -1,10 +1,9 @@
 package uet.oop.bomberman.entities.character.enemy;
 
+import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.character.Enemy;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.util.StdRandom;
-
-import java.util.Date;
-import java.util.Random;
 
 public class Doll extends Enemy {
 
@@ -29,6 +28,11 @@ public class Doll extends Enemy {
         this._direction = 0;
         initSpeed = super.speed;
         accel = initSpeed;
+    }
+
+    @Override
+    protected boolean canPass(Entity entity) {
+        return entity.canBePassed();
     }
 
     private int reverseDirection(int dir) {

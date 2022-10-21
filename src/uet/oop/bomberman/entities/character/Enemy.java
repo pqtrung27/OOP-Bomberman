@@ -1,10 +1,11 @@
-package uet.oop.bomberman.entities.character.enemy;
+package uet.oop.bomberman.entities.character;
 
 import uet.oop.bomberman.display.BombermanGame;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.MovingEntity;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.util.StdRandom;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -103,8 +104,8 @@ public abstract class Enemy extends MovingEntity {
     }
 
     protected void aiMovement() {
-        if (this._direction == 0 ||  !canMove(this._direction)) isBlocked = true;
-        if (x % Sprite.SCALED_SIZE <= speed && y % Sprite.SCALED_SIZE <= speed) {
+        if (this._direction == 0 || !canMove(this._direction)) isBlocked = true;
+        if ((x + speed) % Sprite.SCALED_SIZE <= speed * 2 && (y + speed) % Sprite.SCALED_SIZE <= speed * 2) {
             int temp = board.EnemyAIDirection(this);
             if (temp != 0) _direction = temp;
             else if (isBlocked) randomMovement();
@@ -123,18 +124,16 @@ public abstract class Enemy extends MovingEntity {
 
     abstract protected void calculateMove();
 
-    protected boolean canPass(Entity entity) {
-        return entity.canBePassed();
-    }
+    abstract protected boolean canPass(Entity entity);
 
-    protected boolean canMove(int direction) {
+    public boolean canMove(int direction) {
         int addX = 0;
         int addY = 0;
         if (direction == directionUp) addY--;
         if (direction == directionDown) addY++;
         if (direction == directionLeft) addX--;
         if (direction == directionRight) addX++;
-        double tempSpeed = Math.ceil(speed) + 1;
+        double tempSpeed = Math.ceil(speed);
         Entity temp = board.getEntityCollideWith(this, addX * tempSpeed, addY * tempSpeed);
         if (temp == null) {
             return true;

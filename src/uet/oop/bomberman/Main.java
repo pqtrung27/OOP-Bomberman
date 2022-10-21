@@ -31,8 +31,8 @@ import java.util.TimerTask;
 
 public class Main extends Application {
 
-    public static final int WIDTH = 20;
-    public static final int HEIGHT = 13;
+    public static final int WIDTH = 20  ;
+    public static final int HEIGHT = 15;
 
     public static final double initialSceneWidth = WIDTH * Sprite.SCALED_SIZE;
 
@@ -60,6 +60,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
+        stage.setResizable(false);
         scenes[0] = new HomeScene();
         scenes[1] = new BombermanGame();
         scenes[2] = new PauseScene();

@@ -8,7 +8,7 @@ import uet.oop.bomberman.entities.breakable.Portal;
 import uet.oop.bomberman.entities.breakable.item.Item;
 import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.entities.character.enemy.Ballom;
-import uet.oop.bomberman.entities.character.enemy.Enemy;
+import uet.oop.bomberman.entities.character.Enemy;
 import uet.oop.bomberman.entities.character.enemy.Kondoria;
 import uet.oop.bomberman.entities.character.enemy.Oneal;
 import uet.oop.bomberman.entities.unbreakable.Grass;
@@ -68,7 +68,7 @@ public abstract class Entity {
     }
 
     public void render(GraphicsContext gc) {
-        gc.drawImage(img, x - board.boardOffsetX, y - board.boardOffsetY);
+        gc.drawImage(img, x - board.boardOffsetX, y + Sprite.SCALED_SIZE / 2 - board.boardOffsetY);
     }
 
     public boolean isWall() {

@@ -1,10 +1,9 @@
 package uet.oop.bomberman.entities.character.enemy;
 
+import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.character.Enemy;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.util.StdRandom;
-
-import java.util.Date;
-import java.util.Random;
 
 public class Ballom extends Enemy {
     public Ballom(int x, int y) {
@@ -28,14 +27,19 @@ public class Ballom extends Enemy {
 
     @Override
     protected void calculateMove() {
-        if (this._direction == 0){
+        if (this._direction == 0) {
             calMoveForNone();
         } else {
-            if (x % Sprite.SCALED_SIZE == 0 && y % Sprite.SCALED_SIZE == 0) {
+            if ((x + speed) % Sprite.SCALED_SIZE <= speed * 2 && (y + speed) % Sprite.SCALED_SIZE <= speed * 2) {
                 super.randomMovement();
             }
             super.move();
         }
+    }
+
+    @Override
+    protected boolean canPass(Entity entity) {
+        return entity.canBePassed();
     }
 
 }

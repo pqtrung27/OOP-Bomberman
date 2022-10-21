@@ -9,6 +9,8 @@ import uet.oop.bomberman.entities.breakable.Portal;
 import uet.oop.bomberman.entities.breakable.item.SpeedItem;
 import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.entities.character.CanLayBomb;
+import uet.oop.bomberman.entities.character.Enemy;
+import uet.oop.bomberman.entities.character.EnemyAI;
 import uet.oop.bomberman.entities.character.enemy.*;
 import uet.oop.bomberman.entities.unbreakable.Grass;
 import uet.oop.bomberman.entities.unbreakable.Wall;
@@ -81,7 +83,7 @@ public class Board implements Serializable {
         for (int i = bombs.size() - 1; i >= 0; --i) {
             bombs.get(i).setJustLay(false);
             for (int j = enemies.size() - 1; j >= 0; --j) {
-                if (collide(enemies.get(j), bombs.get(i))) {
+                if (collide(bombs.get(i), enemies.get(j))) {
                     bombs.get(i).setJustLay(true);
                     break;
                 }
@@ -91,6 +93,7 @@ public class Board implements Serializable {
             }
             bombs.get(i).update();
         }
+
         //no lambda to avoid ConcurrentModificationException.
         for (int i = flames.size() - 1; i >= 0; --i) {
             flames.get(i).update();
@@ -116,36 +119,55 @@ public class Board implements Serializable {
         int xUnitBot = (int) entity.getBotX() / Sprite.SCALED_SIZE;
         int yUnitBot = (int) entity.getBotY() / Sprite.SCALED_SIZE;
 
-        Layer ans = null;
+        ArrayList<Layer> res = new ArrayList<>();
         Layer layer = stillObjects.get(yUnitTop * nCol + xUnitTop);
         if (layer != null && !(layer.getTop().isGrass())
                 && collide(entity, layer.getTop())) {
-            if (layer.getTop().isWall()) return layer;
-            else ans = layer;
+            res.add(layer);
         }
 
         layer = stillObjects.get(yUnitBot * nCol + xUnitBot);
         if (layer != null && !(layer.getTop().isGrass())
                 && collide(entity, layer.getTop())) {
-            if (layer.getTop().isWall()) return layer;
-            else ans = layer;
+            res.add(layer);
         }
 
         layer = stillObjects.get(yUnitTop * nCol + xUnitBot);
         if (layer != null && !(layer.getTop().isGrass())
                 && collide(entity, layer.getTop())) {
-            if (layer.getTop().isWall()) return layer;
-            else ans = layer;
+            res.add(layer);
         }
 
         layer = stillObjects.get(yUnitBot * nCol + xUnitTop);
         if (layer != null && !(layer.getTop().isGrass())
                 && collide(entity, layer.getTop())) {
-            if (layer.getTop().isWall()) return layer;
-            else ans = layer;
+            res.add(layer);
         }
 
-        return ans;
+
+        if (res.size() == 0) return null;
+        res.sort(new Comparator<Layer>() {
+            @Override
+            public int compare(Layer o1, Layer o2) {
+
+                Entity e1 = o1.getTop();
+                Entity e2 = o2.getTop();
+
+                if (!e1.canBePassed() && e2.canBePassed()) {
+                    return -1;
+                } else if (e1.canBePassed() && !e2.canBePassed()) {
+                    return 1;
+                } else if (!e1.canBePassed() && !e2.canBePassed()) {
+                    if (e1.isWall()) {
+                        return -1;
+                    } else if (e2.isWall()) {
+                        return 1;
+                    } else return 0;
+                }
+                return 0;
+            }
+        });
+        return res.get(0);
     }
 
     public Entity getEntityCollideWith(Entity entity, double addX, double addY) {
@@ -155,16 +177,16 @@ public class Board implements Serializable {
         temp.setBotX(entity.getBotX() + addX);
         temp.setBotY(entity.getBotY() + addY);
 
+        Layer layer = getLayerCollideWith(temp);
+        if (layer != null && collide(temp, layer.getTop()))
+            return layer.getTop();
+
         for (Bomb bomb : bombs) {
-            if (collide(bomb, temp) && !bomb.isJustLay()) {
+            if (!bomb.isJustLay() && collide(bomb, temp)) {
                 return bomb;
             }
         }
 
-        Layer layer = getLayerCollideWith(temp);
-        if (layer == null) return null;
-        if (collide(temp, layer.getTop()))
-            return layer.getTop();
         return null;
     }
 
@@ -239,9 +261,12 @@ public class Board implements Serializable {
                 && getEntityCollideWith(entity, 0, 0) == null) {
             Kondoria kon = (Kondoria) entity;
             if (!kon.didJustLayBomb()) {
-                layNow = (StdRandom.uniformInt(1000) == 1);
-                if (layNow) {
-                    kon.setJustLayBomb();
+                if (Math.abs(kon.getX() - bomber.getX()) / Sprite.SCALED_SIZE <= kon.getBombRange() * 2
+                        || Math.abs(kon.getY() - bomber.getY()) / Sprite.SCALED_SIZE <= kon.getBombRange() * 2){
+                    layNow = (StdRandom.uniformInt(1000) == 1);
+                    if (layNow) {
+                        kon.setJustLayBomb();
+                    }
                 }
             }
         }
@@ -252,7 +277,7 @@ public class Board implements Serializable {
             double bombY = entity.getTopY() + entity.getSpeed();
 
             Bomb bom = new Bomb((int) bombX / (Sprite.SCALED_SIZE), (int) bombY / Sprite.SCALED_SIZE, canLay);
-            canLay.setBombCount(canLay.getBombCount()+1);
+            canLay.setBombCount(canLay.getBombCount() + 1);
             bom.setJustLay(true);
             bombs.add(bom);
             Controller.layBomb = false;

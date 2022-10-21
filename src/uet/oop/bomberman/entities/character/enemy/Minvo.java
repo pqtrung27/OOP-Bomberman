@@ -1,5 +1,7 @@
 package uet.oop.bomberman.entities.character.enemy;
 
+import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.character.Enemy;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.util.StdRandom;
 public class Minvo extends Enemy {
@@ -16,9 +18,14 @@ public class Minvo extends Enemy {
                 Sprite.minvo_dead,
                 Sprite.minvo_score
         };
-        super.speed = 1.6 + (double) ((int) (StdRandom.uniformDouble() * 10)) / 10;
-        if (speed == 2.5) speed = 2.4;
+        super.speed = 1.5 + (double) ((int) (StdRandom.uniformDouble()/3 * 10)) / 10;
+        if (speed == 1.5) speed = 1.6;
         super.img = spriteList[0].getFxImage();
+    }
+
+    @Override
+    protected boolean canPass(Entity entity) {
+        return entity.canBePassed();
     }
 
     @Override

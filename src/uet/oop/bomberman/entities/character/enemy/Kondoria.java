@@ -1,8 +1,8 @@
 package uet.oop.bomberman.entities.character.enemy;
 
 import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.breakable.Brick;
 import uet.oop.bomberman.entities.character.CanLayBomb;
+import uet.oop.bomberman.entities.character.Enemy;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.util.StdRandom;
 
@@ -35,7 +35,10 @@ public class Kondoria extends Enemy implements CanLayBomb {
 
     @Override
     protected boolean canPass(Entity entity) {
-        return entity instanceof Brick;
+        if (!entity.canBePassed()) {
+            return entity.isBrick();
+        }
+        return true;
     }
 
     public boolean didJustLayBomb() {
@@ -52,6 +55,7 @@ public class Kondoria extends Enemy implements CanLayBomb {
             }
         }, 50000L);
     }
+
 
     public int getBombCount() {
         return bombCount;

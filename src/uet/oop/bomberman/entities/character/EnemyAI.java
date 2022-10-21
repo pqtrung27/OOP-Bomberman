@@ -6,7 +6,7 @@
  *
  ******************************************************************************/
 
-package uet.oop.bomberman.entities.character.enemy;
+package uet.oop.bomberman.entities.character;
 
 /**
  * The {@code EnemyAI} class is a data type for computing the running
@@ -23,14 +23,12 @@ package uet.oop.bomberman.entities.character.enemy;
  * @author Tran Thuy Duong
  */
 
-import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.MovingEntity;
-import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.*;
 
-public class EnemyAI {
+public final class EnemyAI {
 
     private static int bomberPosX;
     private static int bomberPosY;
@@ -107,7 +105,8 @@ public class EnemyAI {
         bomberPosX = (int) (bomber.getTopX() / Sprite.SCALED_SIZE);
         bomberPosY = (int) (bomber.getTopY() / Sprite.SCALED_SIZE);
 
-        Node initNode = new Node((int) enemy.getTopX() / Sprite.SCALED_SIZE, (int) enemy.getTopY() / Sprite.SCALED_SIZE, preDir, null);
+        Node initNode = new Node((int) (enemy.getTopX() + enemy.getSpeed() * 2) / Sprite.SCALED_SIZE
+                , (int) (enemy.getTopY() + enemy.getSpeed() * 2) / Sprite.SCALED_SIZE, preDir, null);
         if (Math.abs(initNode.x - bomberPosX) >= 20) return 0;
         if (Math.abs(initNode.y - bomberPosY) >= 15) return 0;
 

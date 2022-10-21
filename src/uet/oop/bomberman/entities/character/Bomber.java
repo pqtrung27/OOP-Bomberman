@@ -113,7 +113,7 @@ public class Bomber extends MovingEntity implements CanLayBomb {
         }
 
         if (_direction == MovingEntity.directionDown && _y + Sprite.SCALED_SIZE > Main.initialSceneHeight + board.boardOffsetY - xPadding) {
-            board.boardOffsetY = Math.min(board.nRow * Sprite.SCALED_SIZE - Main.initialSceneHeight
+            board.boardOffsetY = Math.min((board.nRow+1) * Sprite.SCALED_SIZE - Main.initialSceneHeight
                     , _y + Sprite.SCALED_SIZE - Main.initialSceneHeight + xPadding);
         }
         if (_direction == MovingEntity.directionUp && _y <= xPadding + board.boardOffsetY) {
