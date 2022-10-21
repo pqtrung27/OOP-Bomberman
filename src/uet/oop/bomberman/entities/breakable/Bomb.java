@@ -24,7 +24,7 @@ public class Bomb extends BreakableEntity {
     private long delayTime;
 
     private CanLayBomb whoLay;
-    private static MediaPlayer explosionSound;
+    private MediaPlayer explosionSound;
 
     /**
      * Khởi tạo đối tượng sử dụng phương thức khởi tạo của lớp cha BreakableEntity.
