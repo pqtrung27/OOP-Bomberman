@@ -107,10 +107,10 @@ public final class EnemyAI {
 
         Node initNode = new Node((int) (enemy.getTopX() + enemy.getSpeed() * 2) / Sprite.SCALED_SIZE
                 , (int) (enemy.getTopY() + enemy.getSpeed() * 2) / Sprite.SCALED_SIZE, preDir, null);
-        if (Math.abs(initNode.x - bomberPosX) >= 20) return 0;
+        if (Math.abs(initNode.x - bomberPosX) >= 15) return 0;
         if (Math.abs(initNode.y - bomberPosY) >= 15) return 0;
 
-        PriorityQueue<Node> pq = new PriorityQueue<>();
+        Queue<Node> pq = new ArrayDeque<>();
         pq.add(initNode);
         int loop_count = 0;
         while (!pq.isEmpty()) {
@@ -119,7 +119,7 @@ public final class EnemyAI {
             if (top.x == bomberPosX && top.y == bomberPosY) {
                 break;
             }
-            if (top.step >= 30 || pq.size() >= 30 || loop_count == 30)  // return 0 if it takes too long for the enemy to get to bomber's position
+            if (top.step >= 15 || pq.size() >= 15 || loop_count == 15)  // return 0 if it takes too long for the enemy to get to bomber's position
                 return 0;                                               // Average max step value is 18 in Level 1.
             top = pq.poll();
             for (int direction = 1; direction <= 4; ++direction) {
