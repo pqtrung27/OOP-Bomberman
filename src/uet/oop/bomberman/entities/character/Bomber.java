@@ -1,5 +1,7 @@
 package uet.oop.bomberman.entities.character;
 
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import uet.oop.bomberman.Main;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.breakable.item.Item;
@@ -75,6 +77,9 @@ public class Bomber extends MovingEntity implements CanLayBomb {
         Entity entity = board.getEntityCollideWith(this, 0, 0);
         if (entity != null && board.collide(this, entity) && entity.isItem()) {
             ((Item) entity).powerUp(this);
+            (new MediaPlayer(
+                    new Media(getClass().getResource("/audio/PowerUpSE.wav").toString())
+            )).play();
         }
     }
 

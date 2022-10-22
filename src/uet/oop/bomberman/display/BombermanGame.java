@@ -118,8 +118,8 @@ public class BombermanGame extends DisplayScene {
         Entity.board.render(gc);
 
         gc.setFill(Color.WHITE);
-        gc.fillText("LIVES: " + lives, 750, 35);
-        gc.fillText(String.valueOf(score), 500, 35);
+        gc.fillText("LEFT: " + lives, 750, 35);
+        gc.fillText(String.valueOf(score), 450, 35);
     }
 
     public static void addScore(int value) {

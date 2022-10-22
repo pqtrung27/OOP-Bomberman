@@ -216,6 +216,7 @@ public class Board implements Serializable {
     }
 
     public void bomberCollide() {
+        if (bomber.isKilled()) return;
         bombs.forEach(bomb -> {
             if (bomb.isExploding() && collide(bomber, bomb)) bomber.kill();
         });
@@ -225,10 +226,14 @@ public class Board implements Serializable {
         enemies.forEach(movEn -> {
             if (!movEn.isKilled() && collide(bomber, movEn)) bomber.kill();
         });
+        if (bomber.isKilled()) {
+            (new MediaPlayer(
+                    new Media(getClass().getResource("/audio/BomberKilledSE.wav").toString())
+            )).play();
+        }
     }
 
     public void enemyCollide() {
-
         for (int i = 0; i < enemies.size(); ++i) {
             MovingEntity entity = enemies.get(i);
             for (int j = 0; j < flames.size(); ++j) {
@@ -264,6 +269,9 @@ public class Board implements Serializable {
         if (canLay.isBomber() && Controller.layBomb && bomber.getBombCount() < bomber.getMaxBombCount()) {
             Controller.layBomb = false;
             layNow = true;
+            (new MediaPlayer(
+                    new Media(getClass().getResource("/audio/LayBombSE.wav").toString())
+            )).play();
         } else if (!canLay.isBomber() && canLay.getBombCount() < 1
                 && getEntityCollideWith(entity, 0, 0) == null) {
             Kondoria kon = (Kondoria) entity;

@@ -52,6 +52,10 @@ public abstract class MovingEntity extends Entity {
         return isDead;
     }
 
+    public boolean isKilled() {
+        return isKilled;
+    }
+
     protected void animate() {
         if (animate < animate_MAX_VALUE) {
             animate++;
