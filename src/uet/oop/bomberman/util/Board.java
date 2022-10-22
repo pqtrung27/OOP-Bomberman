@@ -1,6 +1,8 @@
 package uet.oop.bomberman.util;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.breakable.*;
 import uet.oop.bomberman.entities.breakable.item.BombItem;
@@ -237,6 +239,11 @@ public class Board implements Serializable {
             }
             if ((entity).isDead()) {
                 enemies.remove(i);
+                if (enemies.isEmpty()) {
+                    (new MediaPlayer(
+                            new Media(getClass().getResource("/audio/KillAllEnemiesSE.wav").toString())
+                    )).play();
+                }
             }
         }
 

@@ -35,7 +35,7 @@ public class Bomb extends BreakableEntity {
         super(xUnit, yUnit, Sprite.bomb.getFxImage());
 
         explosionSound = new MediaPlayer(
-                new Media(getClass().getResource("/audio/explosion.mp3").toString())
+                new Media(getClass().getResource("/audio/ExplosionSE.mp3").toString())
         );
 
         sprite = Sprite.bomb;

@@ -30,8 +30,9 @@ public class NewHighScore extends Menu {
         menuItems[0] = new Option("ENTER");
         menuItems[0].setOnActivate(() -> {
             String name = textField.getText();
+
             if (name.length() > 0) {
-                LeaderBoard.setHighScore(name, BombermanGame.getScore());
+                LeaderBoard.setHighScore(name.toUpperCase(), BombermanGame.getScore());
                 Main.setPlayingStatus(4, "game over");
             }
         });

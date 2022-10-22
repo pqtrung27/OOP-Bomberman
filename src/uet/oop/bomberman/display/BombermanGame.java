@@ -16,18 +16,23 @@ package uet.oop.bomberman.display;
  * @author Tran Thuy Duong
  */
 
+import com.sun.webkit.dom.EntityImpl;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import uet.oop.bomberman.Main;
 import uet.oop.bomberman.entities.*;
-import uet.oop.bomberman.entities.breakable.Bomb;
 import uet.oop.bomberman.entities.character.Bomber;
+import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.util.Board;
 import uet.oop.bomberman.util.Controller;
+
 
 public class BombermanGame extends DisplayScene {
     private GraphicsContext gc;
@@ -35,6 +40,8 @@ public class BombermanGame extends DisplayScene {
     private static MediaPlayer bgmPlayer;
     private int level = 0;
     public static int score = 0;
+    public static int lives = 0;
+    public static final Font INFOFONT = Font.loadFont("file:res/font/RetroGaming.ttf", 30);
 
     Controller controller = new Controller();
 
@@ -42,6 +49,7 @@ public class BombermanGame extends DisplayScene {
         // Tao Canvas
         canvas = new Canvas(Main.initialSceneWidth, Main.initialSceneHeight);
         gc = canvas.getGraphicsContext2D();
+        gc.setFont(INFOFONT);
 
         // Tao root container
         Group root = new Group();
@@ -64,6 +72,7 @@ public class BombermanGame extends DisplayScene {
     public void reset() {
         level = 0;
         score = 0;
+        lives = 3;
         Bomber.reset();
         loadNextLevel();
     }
@@ -82,6 +91,12 @@ public class BombermanGame extends DisplayScene {
         Entity.board.update();
         if (Entity.board.endGame) {
             stopBGM();
+            --lives;
+            if (lives > 0) {
+                --level;
+                loadNextLevel();
+                return;
+            }
             if (LeaderBoard.checkHighScore(score)) {
                 // System.out.println("New high score!");
                 Main.setPlayingStatus(6, "new high score");
@@ -96,7 +111,15 @@ public class BombermanGame extends DisplayScene {
     @Override
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+
+        gc.setFill(Color.GRAY);
+        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+
         Entity.board.render(gc);
+
+        gc.setFill(Color.WHITE);
+        gc.fillText("LIVES: " + lives, 750, 35);
+        gc.fillText(String.valueOf(score), 500, 35);
     }
 
     public static void addScore(int value) {

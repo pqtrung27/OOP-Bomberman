@@ -32,7 +32,7 @@ import java.util.TimerTask;
 public class Main extends Application {
 
     public static final int WIDTH = 20  ;
-    public static final int HEIGHT = 15;
+    public static final int HEIGHT = 14;
 
     public static final double initialSceneWidth = WIDTH * Sprite.SCALED_SIZE;
 
@@ -69,7 +69,6 @@ public class Main extends Application {
         scenes[5] = new LeaderBoard();
         scenes[6] = new NewHighScore();
         scenes[7] = new Instruction();
-        //scenes[0] = new Instruction();
         status = 0;
         ((HomeScene) scenes[0]).setCanContinue(false);
 
