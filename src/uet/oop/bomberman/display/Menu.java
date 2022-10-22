@@ -37,6 +37,7 @@ public abstract class Menu extends DisplayScene {
 
     @Override
     public void reset() {
+        startBGM();
         menuItems[currentItem].setActive(false);
         currentItem = minPos;
         menuItems[currentItem].setActive(true);

@@ -12,7 +12,6 @@ import javafx.scene.text.Text;
 import uet.oop.bomberman.Main;
 
 public class FixedScene extends DisplayScene {
-
     public FixedScene(String mes) {
         Text text = new Text(mes);
         text.setFont(Main.FONT);

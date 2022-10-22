@@ -37,7 +37,6 @@ import uet.oop.bomberman.util.Controller;
 public class BombermanGame extends DisplayScene {
     private GraphicsContext gc;
     private Canvas canvas;
-    private static MediaPlayer bgmPlayer;
     private int level = 0;
     public static int score = 0;
     public static int lives = 0;
@@ -72,15 +71,21 @@ public class BombermanGame extends DisplayScene {
     public void reset() {
         level = 0;
         score = 0;
-        lives = 3;
+        lives = 1;
         Bomber.reset();
         loadNextLevel();
+    }
+
+    @Override
+    public void close() {
+        stopBGM();
     }
 
     private void loadNextLevel() {
         controller = new Controller();
         //Bomb.reset();
         ++level;
+        ++lives;
         Main.setPlayingStatus(3, "STAGE " + level);
         Entity.board = new Board(level);
     }
@@ -128,14 +133,6 @@ public class BombermanGame extends DisplayScene {
 
     public static int getScore() {
         return score;
-    }
-
-    public static void startBGM() {
-        bgmPlayer.play();
-    }
-
-    public static void stopBGM(){
-        bgmPlayer.stop();
     }
 }
 

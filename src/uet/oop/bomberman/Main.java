@@ -10,6 +10,8 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import uet.oop.bomberman.display.*;
@@ -57,9 +59,13 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(Main.class);
     }
-
+    public static MediaPlayer stageStart;
+    public static MediaPlayer gameOver;
     @Override
     public void start(Stage stage) {
+        stageStart = new MediaPlayer(new Media(getClass().getResource("/audio/StageStart.mp3").toString()));
+        gameOver = new MediaPlayer(new Media(getClass().getResource("/audio/GameOver.mp3").toString()));
+
         stage.setResizable(false);
         scenes[0] = new HomeScene();
         scenes[1] = new BombermanGame();
@@ -103,37 +109,41 @@ public class Main extends Application {
     }
 
     public static void setPlayingStatus(int newStatus, String mes) {
+        scenes[status].close();
         switch (newStatus) {
             case 0:
                 if (mes.equals("return")) {
-                    BombermanGame.stopBGM();
                     ((HomeScene) scenes[0]).setCanContinue(true);
+                } else if (mes.equals("game over")) {
+                    ((HomeScene) scenes[0]).setCanContinue(false);
                 }
                 break;
             case 1:
                 if (mes.equals("continue")) {
-                    BombermanGame.startBGM();
                     status = newStatus;
                     return;
                 }
                 break;
             case 3: // mes == "STAGE " + level
                 scenes[3] = new FixedScene(mes);
+                stageStart.play();
                 (new Timer()).schedule(new TimerTask() {
                     @Override
                     public void run() {
                         status = 1;
+                        stageStart.stop();
                     }
-                }, 1000L);
+                }, 2600L);
                 break;
             case 4: // mes = "game over"
-                ((HomeScene) scenes[0]).setCanContinue(false);
+                gameOver.play();
                 (new Timer()).schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        status = 0;
+                        setPlayingStatus(0, "game over");
+                        gameOver.stop();
                     }
-                }, 1000L);
+                }, 6000L);
                 break;
         }
         status = newStatus;

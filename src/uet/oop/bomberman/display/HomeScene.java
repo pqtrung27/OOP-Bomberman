@@ -1,10 +1,14 @@
 package uet.oop.bomberman.display;
 
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import uet.oop.bomberman.Main;
 import uet.oop.bomberman.entities.Option;
 
 public class HomeScene extends Menu {
     public HomeScene() {
+        bgmPlayer = new MediaPlayer(new Media(getClass().getResource("/audio/TitleScreen.mp3").toString()));
+
         text.setText("BOMBERMAN");
         text.setStyle("-fx-font-size: 80");
 
