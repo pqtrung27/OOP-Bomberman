@@ -19,6 +19,8 @@ import uet.oop.bomberman.entities.unbreakable.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class Board implements Serializable {
@@ -266,8 +268,9 @@ public class Board implements Serializable {
 
         boolean layNow = false;
         CanLayBomb canLay = (CanLayBomb) entity;
-        if (canLay.isBomber() && Controller.layBomb && bomber.getBombCount() < bomber.getMaxBombCount()) {
+        if (canLay.isBomber() && Controller.layBomb) {
             Controller.layBomb = false;
+            if (bomber.getBombCount() >= bomber.getMaxBombCount()) return;
             layNow = true;
             (new MediaPlayer(
                     new Media(getClass().getResource("/audio/LayBombSE.wav").toString())
@@ -306,10 +309,12 @@ public class Board implements Serializable {
      * @throws FileNotFoundException khi không tìm thấy tệp cấu hình cần tải
      */
     public void loadLevel(int level) throws FileNotFoundException {
-        String path = "/levels/Level" + level + ".txt";
+        String path = "res/levels/Level" + level + ".txt";
         try {
-            InputStream fstream = this.getClass().getResourceAsStream(path);
-            Scanner scanner = new Scanner(fstream);
+            if (level >= 2) {
+                new CreateLevel(path);
+            }
+            Scanner scanner = new Scanner(Files.newInputStream(Paths.get(path)));
             scanner.nextInt();
             nRow = scanner.nextInt();
             nCol = scanner.nextInt();

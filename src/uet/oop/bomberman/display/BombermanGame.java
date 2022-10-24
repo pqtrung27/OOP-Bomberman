@@ -24,12 +24,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import uet.oop.bomberman.Main;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.character.Bomber;
-import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.util.Board;
 import uet.oop.bomberman.util.Controller;
 
@@ -71,7 +69,7 @@ public class BombermanGame extends DisplayScene {
     public void reset() {
         level = 0;
         score = 0;
-        lives = 1;
+        lives = 2;
         Bomber.reset();
         loadNextLevel();
     }
@@ -85,7 +83,6 @@ public class BombermanGame extends DisplayScene {
         controller = new Controller();
         //Bomb.reset();
         ++level;
-        ++lives;
         Main.setPlayingStatus(3, "STAGE " + level);
         Entity.board = new Board(level);
     }
@@ -109,6 +106,7 @@ public class BombermanGame extends DisplayScene {
             else Main.setPlayingStatus(4, "game over");
         }
         if (Entity.board.nextLevel) {
+            ++lives;
             loadNextLevel();
         }
     }
