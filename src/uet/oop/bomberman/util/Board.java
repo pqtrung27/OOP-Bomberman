@@ -311,13 +311,14 @@ public class Board implements Serializable {
     public void loadLevel(int level) throws FileNotFoundException {
         String path = "res/levels/Level" + level + ".txt";
         try {
-            if (level >= 2) {
+            if (level >= 1) {
                 new CreateLevel(path);
             }
             Scanner scanner = new Scanner(Files.newInputStream(Paths.get(path)));
             scanner.nextInt();
             nRow = scanner.nextInt();
             nCol = scanner.nextInt();
+            scanner.nextLine();
             scanner.nextLine();
             enemies.clear();
             bombs.forEach(bomb -> bomb.isBroken = true);
