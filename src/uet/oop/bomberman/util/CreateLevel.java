@@ -11,19 +11,21 @@ public class CreateLevel {
     private int col;
     private char[][] map;
     private int[] enemyCount = new int[5];
+    private char itemType;
     public CreateLevel(String path) {
         try {
             Scanner scanner = new Scanner(Files.newInputStream(Paths.get(path)));
             int level = scanner.nextInt();
             row = scanner.nextInt();
             col = scanner.nextInt();
+            itemType = scanner.next().charAt(0);
             for (int i = 0; i < 5; ++i)
                 enemyCount[i] = scanner.nextInt();
 
             scanner.close();
 
             FileWriter file = new FileWriter("res/levels/Level" + level + ".txt");
-            file.write(level + " " + row + " " + col + "\n");
+            file.write(level + " " + row + " " + col + " " + itemType + "\n");
             for (int i = 0; i < 5; ++i) {
                 file.write(enemyCount[i] + " ");
             }
@@ -78,12 +80,18 @@ public class CreateLevel {
                 }
             }
         }
-        // portal
+        // portal, power up item
         int p = 2;
+        int item = 1;
         for (int i = 1; i < row - 1; ++i) {
             for (int j = 1; j < col - 1; ++j) {
                 if (map[i][j] == '*') {
-                    if (StdRandom.uniformInt(brickCount) < p) {
+                    int num = StdRandom.uniformInt(brickCount);
+                    if (num == p && item > 0) {
+                        map[i][j] = itemType;
+                        --item;
+                    }
+                    if (num < p) {
                         map[i][j] = 'x';
                         --p;
                     }

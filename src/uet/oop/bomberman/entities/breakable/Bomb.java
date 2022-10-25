@@ -4,6 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import uet.oop.bomberman.entities.BreakableEntity;
+import uet.oop.bomberman.entities.breakable.item.SpeedItem;
 import uet.oop.bomberman.entities.character.CanLayBomb;
 import uet.oop.bomberman.entities.unbreakable.Wall;
 import uet.oop.bomberman.graphics.Sprite;
@@ -93,10 +94,14 @@ public class Bomb extends BreakableEntity {
                         break;
                     }
                     if (entity.stack.peek().isBreakable()) {
-                        if (entity.stack.peek().isItem() || entity.stack.peek().isPortal())
-                            board.flames.add(new Flame(curX, curY, i, true));
+                        if (entity.stack.peek().isItem() || entity.stack.peek().isPortal()){
+                            // board.flames.add(new Flame(curX, curY, i, true));
+                            board.spawnEnemies(entity.getX() / Sprite.SCALED_SIZE, entity.getY() / Sprite.SCALED_SIZE);
+                            if (entity.stack.peek().isPortal()) {
+                                board.decreaseExits();
+                            }
+                        }
                         entity.destroyTop();
-                        // System.out.println(curX + " " + curY + " " + (curY * LoadLevel.nCol + curX));
                         break;
                     }
                 }

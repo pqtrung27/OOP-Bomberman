@@ -26,7 +26,6 @@ public abstract class Enemy extends MovingEntity {
     protected boolean isShowingPoint = false;
     private boolean isVanishing = false;
 
-
     public Enemy(int x, int y) {
         super(x, y);
         _x = x * Sprite.SCALED_SIZE;
