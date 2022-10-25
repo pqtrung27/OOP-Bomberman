@@ -2,6 +2,7 @@ package uet.oop.bomberman.display;
 
 import javafx.scene.Scene;
 import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
 /**
  * Lớp cài dặt màn hình hiển thị.
@@ -25,7 +26,7 @@ public abstract class DisplayScene {
     }
 
     public void reset() {
-
+        startBGM();
     }
 
     public void close() {
@@ -33,8 +34,16 @@ public abstract class DisplayScene {
     }
 
     public void startBGM() {
-        if (bgmPlayer != null)
+        if (bgmPlayer != null){
             bgmPlayer.play();
+            bgmPlayer.setOnEndOfMedia(new Runnable() {
+                @Override
+                public void run() {
+                    bgmPlayer.seek(Duration.ZERO);
+                    bgmPlayer.play();
+                }
+            });
+        }
     }
 
     public void stopBGM(){

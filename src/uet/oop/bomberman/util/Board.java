@@ -311,7 +311,7 @@ public class Board implements Serializable {
     public void loadLevel(int level) throws FileNotFoundException {
         String path = "res/levels/Level" + level + ".txt";
         try {
-            if (level >= 1) {
+            if (level >= 2) {
                 new CreateLevel(path);
             }
             Scanner scanner = new Scanner(Files.newInputStream(Paths.get(path)));

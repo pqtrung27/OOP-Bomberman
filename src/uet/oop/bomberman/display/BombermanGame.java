@@ -31,6 +31,10 @@ import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.util.Board;
 import uet.oop.bomberman.util.Controller;
 
+import java.util.Stack;
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 public class BombermanGame extends DisplayScene {
     private GraphicsContext gc;
@@ -40,7 +44,8 @@ public class BombermanGame extends DisplayScene {
     public static int lives = 0;
     public static final Font INFOFONT = Font.loadFont("file:res/font/RetroGaming.ttf", 30);
 
-    Controller controller = new Controller();
+    private Controller controller = new Controller();
+    private MediaPlayer stageClearBgm;
 
     public BombermanGame() {
         // Tao Canvas
@@ -63,6 +68,10 @@ public class BombermanGame extends DisplayScene {
         String bgmFile = "/audio/MainBGM.mp3";
         Media bgm = new Media(getClass().getResource(bgmFile).toString());
         bgmPlayer = new MediaPlayer(bgm);
+
+        stageClearBgm = new MediaPlayer(
+                new Media(getClass().getResource("/audio/StageClear.mp3").toString())
+        );
     }
 
     @Override
@@ -89,7 +98,10 @@ public class BombermanGame extends DisplayScene {
 
     @Override
     public void update() {
-        startBGM();
+        if (stageClearBgm.getStatus().equals(MediaPlayer.Status.PLAYING)) {
+            return;
+        }
+        // startBGM();
         Entity.board.update();
         if (Entity.board.endGame) {
             stopBGM();
@@ -107,7 +119,14 @@ public class BombermanGame extends DisplayScene {
         }
         if (Entity.board.nextLevel) {
             ++lives;
-            loadNextLevel();
+            stageClearBgm.play();
+            (new Timer()).schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    stageClearBgm.stop();
+                    loadNextLevel();
+                }
+            }, 2500);
         }
     }
 

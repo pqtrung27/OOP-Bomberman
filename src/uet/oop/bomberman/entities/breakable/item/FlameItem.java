@@ -13,9 +13,7 @@ public class FlameItem extends Item {
         if (isBroken()) {
             return false;
         }
-        if(bomberman.getBombRange() < 3) {
-            bomberman.setBombRange(bomberman.getBombRange()+1);
-        }
+        bomberman.setBombRange(bomberman.getBombRange()+1);
         breakEntity();
         return true;
     }
