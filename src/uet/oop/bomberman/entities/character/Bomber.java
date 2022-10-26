@@ -18,14 +18,17 @@ package uet.oop.bomberman.entities.character;
  * @author Tran Thuy Duong
  */
 
-import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import uet.oop.bomberman.Main;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.MovingEntity;
 import uet.oop.bomberman.entities.breakable.Item;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.sound.Sound;
 import uet.oop.bomberman.util.gameUtil.Controller;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Bomber extends MovingEntity implements CanLayBomb {
 
@@ -96,15 +99,20 @@ public class Bomber extends MovingEntity implements CanLayBomb {
         Entity entity = board.getEntityCollideWith(this, 0, 0);
         if (entity != null && board.collide(this, entity) && entity.isItem()) {
             ((Item) entity).powerUp(this);
-            (new MediaPlayer(
-                    new Media(getClass().getResource("/audio/PowerUpSE.wav").toString())
-            )).play();
+            MediaPlayer powerUpSound = Sound.cloneOf(Sound.powerUpSound);
+            powerUpSound.play();
+            (new Timer()).schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    powerUpSound.stop();
+                }
+            }, (int) powerUpSound.getStopTime().toMillis());
         }
     }
 
     public boolean isInPortal() {
         Entity entity = board.getEntityCollideWith(this, 0, 0);
-        return entity != null &&board.collide(this, entity) && entity.isPortal();
+        return entity != null && board.collide(this, entity) && entity.isPortal();
     }
 
     protected void calculateMove() {
@@ -128,7 +136,8 @@ public class Bomber extends MovingEntity implements CanLayBomb {
             move(addX * speed, addY * speed);
         } else isMoving = false;
 
-        if (_direction == MovingEntity.directionRight && _x + Sprite.SCALED_SIZE > Main.initialSceneWidth + board.boardOffsetX - xPadding) {
+        if (_direction == MovingEntity.directionRight && _x + Sprite.SCALED_SIZE
+                > Main.initialSceneWidth + board.boardOffsetX - xPadding) {
             board.boardOffsetX = Math.min(board.nCol * Sprite.SCALED_SIZE - Main.initialSceneWidth
                     , _x + Sprite.SCALED_SIZE - Main.initialSceneWidth + xPadding);
         }
@@ -136,8 +145,9 @@ public class Bomber extends MovingEntity implements CanLayBomb {
             board.boardOffsetX = Math.max(0, _x - xPadding);
         }
 
-        if (_direction == MovingEntity.directionDown && _y + Sprite.SCALED_SIZE > Main.initialSceneHeight + board.boardOffsetY - xPadding) {
-            board.boardOffsetY = Math.min((board.nRow+1) * Sprite.SCALED_SIZE - Main.initialSceneHeight
+        if (_direction == MovingEntity.directionDown && _y + Sprite.SCALED_SIZE
+                > Main.initialSceneHeight + board.boardOffsetY - xPadding) {
+            board.boardOffsetY = Math.min((board.nRow + 1) * Sprite.SCALED_SIZE - Main.initialSceneHeight
                     , _y + Sprite.SCALED_SIZE - Main.initialSceneHeight + xPadding);
         }
         if (_direction == MovingEntity.directionUp && _y <= xPadding + board.boardOffsetY) {

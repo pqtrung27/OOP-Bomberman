@@ -13,6 +13,7 @@ package uet.oop.bomberman.display;
  * <p>
  * This implementation uses JavaFx entirely.
  * <p>
+ *
  * @author Phu Quoc Trung
  * @author Tran Thuy Duong
  */
@@ -23,7 +24,8 @@ import javafx.util.Duration;
 
 public abstract class DisplayScene {
     protected Scene scene;
-    protected MediaPlayer bgmPlayer;
+
+    protected MediaPlayer BGM;
 
     public Scene getScene() {
         return this.scene;
@@ -46,21 +48,19 @@ public abstract class DisplayScene {
     }
 
     public void startBGM() {
-        if (bgmPlayer != null){
-            bgmPlayer.play();
-            bgmPlayer.setOnEndOfMedia(new Runnable() {
-                @Override
-                public void run() {
-                    bgmPlayer.seek(Duration.ZERO);
-                    bgmPlayer.play();
-                }
+        if (BGM != null) {
+            BGM.play();
+            BGM.setOnEndOfMedia(() -> {
+                BGM.seek(Duration.ZERO);
+                BGM.play();
             });
         }
     }
 
-    public void stopBGM(){
-        if (bgmPlayer != null)
-            bgmPlayer.stop();
+    public void stopBGM() {
+        if (BGM != null) {
+            BGM.stop();
+        }
     }
 }
 

@@ -1,5 +1,5 @@
-D 2700
-A 1000
-D 400
-SSS 300
 A 200
+Player1 0
+Player1 0
+Player1 0
+Player1 0

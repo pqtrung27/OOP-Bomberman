@@ -37,7 +37,7 @@ import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.util.gameUtil.Board;
 
 public abstract class Entity {
-    public static Board board;
+    public static Board board = new Board();
 
     //Tọa độ X tính từ góc trái trên trong Canvas
     protected double x;

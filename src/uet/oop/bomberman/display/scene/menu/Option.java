@@ -37,11 +37,9 @@ public class Option extends HBox {
     public Option(String name) {
         super(15);
         setAlignment(Pos.CENTER);
-
-        Image la = new Image("file:res/textures/leftarrow.png");
-        Image ra = new Image("file:res/textures/rightarrow.png");
-        leftArrow = new ImageView(la);
-        rightArrow = new ImageView(ra);
+        
+        leftArrow = new ImageView(getClass().getResource("/textures/leftarrow.png").toString());
+        rightArrow = new ImageView(getClass().getResource("/textures/rightarrow.png").toString());;
 
         text = new Text(name);
         text.setFont(Main.FONT);

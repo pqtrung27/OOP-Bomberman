@@ -17,15 +17,14 @@ package uet.oop.bomberman.display.scene.menu;
  * @author Tran Thuy Duong
  */
 
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import uet.oop.bomberman.Main;
 import uet.oop.bomberman.display.scene.MenuScene;
+import uet.oop.bomberman.sound.Sound;
 
 public class HomeScene extends MenuScene {
     public HomeScene() {
-        bgmPlayer = new MediaPlayer(new Media(getClass().getResource("/audio/TitleScreen.mp3").toString()));
 
+        Sound.TitleBGM.play();
         text.setText("BOMBERMAN");
         text.setStyle("-fx-font-size: 80");
 

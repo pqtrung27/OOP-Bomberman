@@ -18,12 +18,12 @@ package uet.oop.bomberman.entities.breakable;
  */
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import uet.oop.bomberman.entities.BreakableEntity;
 import uet.oop.bomberman.entities.character.CanLayBomb;
 import uet.oop.bomberman.entities.unbreakable.Wall;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.sound.Sound;
 import uet.oop.bomberman.util.entityUtil.Layer;
 
 import java.util.Timer;
@@ -36,7 +36,6 @@ public class Bomb extends BreakableEntity {
     private long delayTime;
 
     private CanLayBomb whoLay;
-    private MediaPlayer explosionSound;
 
     /**
      * Khởi tạo đối tượng sử dụng phương thức khởi tạo của lớp cha BreakableEntity.
@@ -45,10 +44,6 @@ public class Bomb extends BreakableEntity {
      */
     public Bomb(int xUnit, int yUnit, CanLayBomb whoLay) {
         super(xUnit, yUnit, Sprite.bomb.getFxImage());
-
-        explosionSound = new MediaPlayer(
-                new Media(getClass().getResource("/audio/ExplosionSE.mp3").toString())
-        );
 
         sprite = Sprite.bomb;
         waiting = true;
@@ -88,7 +83,14 @@ public class Bomb extends BreakableEntity {
             return;
         }
         breakEntity();
+        MediaPlayer explosionSound = Sound.cloneOf(Sound.explosionSound);
         explosionSound.play();
+        (new Timer()).schedule(new TimerTask() {
+            @Override
+            public void run() {
+                explosionSound.stop();
+            }
+        }, (int) explosionSound.getStopTime().toMillis());
         int xUnit = (int) this.x / Sprite.SCALED_SIZE;
         int yUnit = (int) this.y / Sprite.SCALED_SIZE;
 

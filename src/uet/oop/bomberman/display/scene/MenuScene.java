@@ -29,6 +29,7 @@ import javafx.scene.text.Text;
 import uet.oop.bomberman.Main;
 import uet.oop.bomberman.display.DisplayScene;
 import uet.oop.bomberman.display.scene.menu.Option;
+import uet.oop.bomberman.sound.Sound;
 
 public abstract class MenuScene extends DisplayScene {
     protected int minPos = 0;
@@ -38,6 +39,7 @@ public abstract class MenuScene extends DisplayScene {
     protected VBox root;
 
     public MenuScene() {
+        this.BGM = Sound.TitleBGM;
         root = new VBox();
         root.setSpacing(10);
         root.setAlignment(Pos.CENTER);
@@ -55,7 +57,6 @@ public abstract class MenuScene extends DisplayScene {
 
     @Override
     public void reset() {
-        startBGM();
         menuItems[currentItem].setActive(false);
         currentItem = minPos;
         menuItems[currentItem].setActive(true);

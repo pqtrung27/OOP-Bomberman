@@ -25,10 +25,7 @@ import javafx.scene.text.Text;
 import uet.oop.bomberman.Main;
 import uet.oop.bomberman.display.scene.MenuScene;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -71,12 +68,13 @@ public class LeaderBoard extends MenuScene {
         try {
             names.getChildren().clear();
             scores.getChildren().clear();
-            Scanner scanner = new Scanner(new FileInputStream("res/leaderboard.txt"));
+            InputStream fstream = this.getClass().getResourceAsStream("/leaderboard.txt");
+            Scanner scanner = new Scanner(fstream);
             while (scanner.hasNext()) {
                 names.getChildren().add(createText(scanner.next()));
                 scores.getChildren().add(createText(scanner.next()));
             }
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             System.out.println("Leaderboard File Not Found!!!");
         }
     }
@@ -95,13 +93,14 @@ public class LeaderBoard extends MenuScene {
 
     public static boolean checkHighScore(int newScore) {
         try {
-            Scanner scanner = new Scanner(new FileInputStream("res/leaderboard.txt"));
+            InputStream fstream = LeaderBoard.class.getResourceAsStream("/leaderboard.txt");
+            Scanner scanner = new Scanner(fstream);
             while (scanner.hasNext()) {
                 scanner.next();
                 int highScore = Integer.parseInt(scanner.next());
                 if (newScore > highScore) return true;
             }
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             System.out.println("Leaderboard File Not Found!!!");
         }
         return false;
@@ -110,8 +109,8 @@ public class LeaderBoard extends MenuScene {
     public static void setHighScore(String newName, int newScore) {
         try {
             List<data> players = new ArrayList<>();
-
-            Scanner scanner = new Scanner(Files.newInputStream(Paths.get("res/leaderboard.txt")));
+            InputStream fstream = LeaderBoard.class.getResourceAsStream("/leaderboard.txt");
+            Scanner scanner = new Scanner(fstream);
             while (scanner.hasNext()) {
                 players.add(new data(scanner.next(), Integer.parseInt(scanner.next())));
             }
@@ -119,7 +118,7 @@ public class LeaderBoard extends MenuScene {
             Collections.sort(players);
             scanner.close();
 
-            FileWriter file = new FileWriter("res/leaderboard.txt");
+            FileWriter file = new FileWriter(LeaderBoard.class.getResource("/leaderboard.txt").getFile());
             for (int i = 0; i < 5; ++i) {
                 data thisPlayer = players.get(i);
                 file.write(thisPlayer.name + " " + thisPlayer.score);

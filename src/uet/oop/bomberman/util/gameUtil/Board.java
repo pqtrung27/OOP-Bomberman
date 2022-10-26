@@ -21,7 +21,6 @@ package uet.oop.bomberman.util.gameUtil;
  */
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.MovingEntity;
@@ -43,18 +42,14 @@ import uet.oop.bomberman.entities.character.enemy.Minvo;
 import uet.oop.bomberman.entities.unbreakable.Grass;
 import uet.oop.bomberman.entities.unbreakable.Wall;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.sound.Sound;
 import uet.oop.bomberman.util.entityUtil.EnemyAI;
 import uet.oop.bomberman.util.entityUtil.Layer;
 
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.io.Serializable;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Board implements Serializable {
     public double boardOffsetX = 0;
@@ -71,6 +66,10 @@ public class Board implements Serializable {
     public boolean nextLevel = false;
     private int exitsCount = 2;
     private char itemType;
+
+    public Board() {
+
+    }
 
     public Board(int level) {
         // create map
@@ -265,9 +264,13 @@ public class Board implements Serializable {
             if (!movEn.isKilled() && collide(bomber, movEn)) bomber.kill();
         });
         if (bomber.isKilled()) {
-            (new MediaPlayer(
-                    new Media(getClass().getResource("/audio/BomberKilledSE.wav").toString())
-            )).play();
+            Sound.bomberisKilledSound.play();
+            (new Timer()).schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    Sound.bomberisKilledSound.stop();
+                }
+            }, (int) Sound.bomberisKilledSound.getStopTime().toMillis());
         }
     }
 
@@ -283,9 +286,13 @@ public class Board implements Serializable {
             if ((entity).isDead()) {
                 enemies.remove(i);
                 if (enemies.isEmpty()) {
-                    (new MediaPlayer(
-                            new Media(getClass().getResource("/audio/KillAllEnemiesSE.wav").toString())
-                    )).play();
+                    Sound.allEnemiesIsKilledSound.play();
+                    (new Timer()).schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            Sound.allEnemiesIsKilledSound.stop();
+                        }
+                    }, (int) Sound.allEnemiesIsKilledSound.getStopTime().toMillis());
                 }
             }
         }
@@ -308,15 +315,20 @@ public class Board implements Serializable {
             Controller.layBomb = false;
             if (bomber.getBombCount() >= bomber.getMaxBombCount()) return;
             layNow = true;
-            (new MediaPlayer(
-                    new Media(getClass().getResource("/audio/LayBombSE.wav").toString())
-            )).play();
+            MediaPlayer layBombSound = Sound.cloneOf(Sound.LayBombSound);
+            layBombSound.play();
+            (new Timer()).schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    layBombSound.stop();
+                }
+            }, (int) layBombSound.getStopTime().toMillis());
         } else if (!canLay.isBomber() && canLay.getBombCount() < 1
                 && getEntityCollideWith(entity, 0, 0) == null) {
             Kondoria kon = (Kondoria) entity;
             if (!kon.didJustLayBomb()) {
                 if (Math.abs(kon.getX() - bomber.getX()) / Sprite.SCALED_SIZE <= kon.getBombRange() * 2
-                        || Math.abs(kon.getY() - bomber.getY()) / Sprite.SCALED_SIZE <= kon.getBombRange() * 2){
+                        || Math.abs(kon.getY() - bomber.getY()) / Sprite.SCALED_SIZE <= kon.getBombRange() * 2) {
                     layNow = (StdRandom.uniformInt(1000) == 1);
                     if (layNow) {
                         kon.setJustLayBomb();
@@ -345,12 +357,10 @@ public class Board implements Serializable {
      * @throws FileNotFoundException khi không tìm thấy tệp cấu hình cần tải
      */
     public void loadLevel(int level) throws FileNotFoundException {
-        String path = "res/levels/Level" + level + ".txt";
+        String path = "/levels/Level" + level + ".txt";
         try {
-            if (level >= 1) {
-                new CreateLevel(path);
-            }
-            Scanner scanner = new Scanner(Files.newInputStream(Paths.get(path)));
+            InputStream fstream = this.getClass().getResourceAsStream(path);
+            Scanner scanner = new Scanner(fstream);
             scanner.nextInt();
             nRow = scanner.nextInt();
             nCol = scanner.nextInt();
@@ -415,7 +425,8 @@ public class Board implements Serializable {
                 }
             }
         } catch (Exception e) {
-
+            new CreateLevel(path);
+            loadLevel(level);
         }
     }
 

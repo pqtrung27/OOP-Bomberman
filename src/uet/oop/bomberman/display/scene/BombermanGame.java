@@ -31,6 +31,7 @@ import uet.oop.bomberman.display.scene.menu.LeaderBoard;
 
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.character.Bomber;
+import uet.oop.bomberman.sound.Sound;
 import uet.oop.bomberman.util.gameUtil.Board;
 import uet.oop.bomberman.util.gameUtil.Controller;
 
@@ -44,10 +45,9 @@ public class BombermanGame extends DisplayScene {
     private int level = 0;
     public static int score = 0;
     public static int lives = 0;
-    public static final Font INFOFONT = Font.loadFont("file:res/font/RetroGaming.ttf", 30);
+    public static final Font INFOFONT = Font.loadFont(BombermanGame.class.getResource("/font/RetroGaming.ttf").toString(), 30);
 
     private Controller controller = new Controller();
-    private MediaPlayer stageClearBgm;
 
     public BombermanGame() {
         // Tao Canvas
@@ -66,14 +66,7 @@ public class BombermanGame extends DisplayScene {
         scene.setOnKeyPressed(controller::listen);
         scene.setOnKeyReleased(controller::release);
 
-        //bay lac
-        String bgmFile = "/audio/MainBGM.mp3";
-        Media bgm = new Media(getClass().getResource(bgmFile).toString());
-        bgmPlayer = new MediaPlayer(bgm);
-
-        stageClearBgm = new MediaPlayer(
-                new Media(getClass().getResource("/audio/StageClear.mp3").toString())
-        );
+        this.BGM = Sound.MainBGM;
     }
 
     @Override
@@ -87,7 +80,7 @@ public class BombermanGame extends DisplayScene {
 
     @Override
     public void close() {
-        stopBGM();
+
     }
 
     private void loadNextLevel() {
@@ -100,10 +93,11 @@ public class BombermanGame extends DisplayScene {
 
     @Override
     public void update() {
-        if (stageClearBgm.getStatus().equals(MediaPlayer.Status.PLAYING)) {
+        if (Sound.stageClearBgm.getStatus().equals(MediaPlayer.Status.PLAYING)) {
+            stopBGM();
             return;
         }
-        // startBGM();
+        startBGM();
         Entity.board.update();
         if (Entity.board.endGame) {
             stopBGM();
@@ -121,11 +115,11 @@ public class BombermanGame extends DisplayScene {
         }
         if (Entity.board.nextLevel) {
             ++lives;
-            stageClearBgm.play();
+            Sound.stageClearBgm.play();
             (new Timer()).schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    stageClearBgm.stop();
+                    Sound.stageClearBgm.stop();
                     loadNextLevel();
                 }
             }, 2500);
