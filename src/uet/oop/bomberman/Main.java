@@ -6,6 +6,16 @@
 
 package uet.oop.bomberman;
 
+/**
+ * The {@code Main} class is a data type for start the
+ * bomber man game.
+ * <p>
+ * This implementation uses JavaFx entirely to render screen and entity.
+ *
+ * @author Phu Quoc Trung
+ * @author Tran Thuy Duong
+ */
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -15,21 +25,12 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import uet.oop.bomberman.display.*;
+import uet.oop.bomberman.display.scene.*;
+import uet.oop.bomberman.display.scene.menu.*;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.Timer;
 import java.util.TimerTask;
-
-
-/**
- * The {@code BombermanGame} class is a data type for start and loop the
- * bomber man game.
- * <p>
- * This implementation uses JavaFx entirely to render screen and entity.
- *
- * @author Phu Quoc Trung
- * @author Tran Thuy Duong
- */
 
 public class Main extends Application {
 
@@ -150,3 +151,24 @@ public class Main extends Application {
         scenes[status].reset();
     }
 }
+
+
+/******************************************************************************
+ *  Copyright 2022, Phu Quoc Trung and Tran Thuy Duong.
+ *
+ *  This file is part of OOP-Bomberman, which accompanies the course
+ *
+ *      INT2204 of UET-VNU
+ *
+ *  OOP-Bomberman is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  OOP-Bomberman is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  See http://www.gnu.org/licenses.
+ ******************************************************************************/

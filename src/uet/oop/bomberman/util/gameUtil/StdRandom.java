@@ -45,7 +45,7 @@
  *
  ******************************************************************************/
 
-package uet.oop.bomberman.util;
+package uet.oop.bomberman.util.gameUtil;
 
 import java.util.Random;
 

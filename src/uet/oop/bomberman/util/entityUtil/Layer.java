@@ -1,19 +1,32 @@
-package uet.oop.bomberman.util;
+/******************************************************************************
+ *
+ *  The abstract data type for the Unbreakable Entity in general.
+ *
+ ******************************************************************************/
+
+package uet.oop.bomberman.util.entityUtil;
+
+/**
+ * The {@code Layer} class is the data type for all the "block" in the game map.
+ *
+ * <p>
+ * Layers are to store the data of all the still objects on one block, stored in a
+ * stack with the order of the stack is the order of the object from top to bottom.
+ * <p>
+ *
+ * @author Phu Quoc Trung
+ * @author Tran Thuy Duong
+ */
 
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.entities.BreakableEntity;
 import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.breakable.item.Item;
+import uet.oop.bomberman.entities.breakable.Item;
 import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.Stack;
 
-/**
- * Lớp cài đặt các đối tượng "Layer" dùng để lưu map màn chơi.
- *
- * @author TTD
- */
 public class Layer {
     private int x;
     private int y;
@@ -98,3 +111,24 @@ public class Layer {
         stack.peek().update();
     }
 }
+
+
+/******************************************************************************
+ *  Copyright 2022, Phu Quoc Trung and Tran Thuy Duong.
+ *
+ *  This file is part of OOP-Bomberman, which accompanies the course
+ *
+ *      INT2204 of UET-VNU
+ *
+ *  OOP-Bomberman is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  OOP-Bomberman is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  See http://www.gnu.org/licenses.
+ ******************************************************************************/

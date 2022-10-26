@@ -1,50 +1,47 @@
 /******************************************************************************
+ *  Dependency: DisplaceScene.java
  *
- *  Dependency: BreakableEntity.java
- *
- *  The data type for the Portal.
+ *  The class to create the fixed scenes.
  *
  ******************************************************************************/
 
-package uet.oop.bomberman.entities.breakable;
+package uet.oop.bomberman.display.scene;
 
 /**
- * The {@code Portal} class is the data type for the Portal.
- *
+ * The {@code FixedScene} class extend DisplayScene class to create
+ * all the fixed scene.
  * <p>
- * Only when Bomber kill all the enemies that he could use the portal
- * to process to the next level.
+ * This implementation uses JavaFx entirely.
  * <p>
- *
  * @author Phu Quoc Trung
  * @author Tran Thuy Duong
  */
 
-import javafx.scene.canvas.GraphicsContext;
-import uet.oop.bomberman.entities.BreakableEntity;
-import uet.oop.bomberman.entities.unbreakable.Grass;
-import uet.oop.bomberman.graphics.Sprite;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import uet.oop.bomberman.Main;
+import uet.oop.bomberman.display.DisplayScene;
 
-public class Portal extends BreakableEntity {
-    private Grass base;
-    public Portal(int xUnit, int yUnit) {
-        super(xUnit, yUnit, Sprite.portal.getFxImage());
-        base = new Grass(xUnit, yUnit);
-    }
+public class FixedScene extends DisplayScene {
+    public FixedScene(String mes) {
+        Text text = new Text(mes);
+        text.setFont(Main.FONT);
+        text.setFill(Color.WHITE);
 
-    /**
-     * Ghi đè phương thức render() của lớp cha Entity.
-     * @param gc GraphicsContext
-     */
-    @Override
-    public void render(GraphicsContext gc) {
-        base.render(gc);
-        super.render(gc);
-    }
+        VBox root = new VBox(text);
+        root.setAlignment(Pos.CENTER);
+        root.setBackground(new Background(new BackgroundFill(Color.BLACK,
+                CornerRadii.EMPTY,
+                Insets.EMPTY)));
 
-    @Override
-    public void update() {
-
+        scene = new Scene(root, Main.initialSceneWidth, Main.initialSceneHeight);
     }
 }
 

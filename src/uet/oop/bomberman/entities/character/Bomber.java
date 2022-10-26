@@ -1,12 +1,31 @@
+/******************************************************************************
+ *
+ *  Dependency: MovingEntity.java
+ *
+ *  The data type for Bomber, the main character of this game.
+ *
+ ******************************************************************************/
+
 package uet.oop.bomberman.entities.character;
+
+/**
+ * The {@code Bomber} class is the data type for the
+ * Bomber, main character of this game.
+ *
+ * <p>
+ *
+ * @author Phu Quoc Trung
+ * @author Tran Thuy Duong
+ */
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import uet.oop.bomberman.Main;
-import uet.oop.bomberman.entities.*;
-import uet.oop.bomberman.entities.breakable.item.Item;
+import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.MovingEntity;
+import uet.oop.bomberman.entities.breakable.Item;
 import uet.oop.bomberman.graphics.Sprite;
-import uet.oop.bomberman.util.Controller;
+import uet.oop.bomberman.util.gameUtil.Controller;
 
 public class Bomber extends MovingEntity implements CanLayBomb {
 
@@ -190,3 +209,23 @@ public class Bomber extends MovingEntity implements CanLayBomb {
         }
     }
 }
+
+/******************************************************************************
+ *  Copyright 2022, Phu Quoc Trung and Tran Thuy Duong.
+ *
+ *  This file is part of OOP-Bomberman, which accompanies the course
+ *
+ *      INT2204 of UET-VNU
+ *
+ *  OOP-Bomberman is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  OOP-Bomberman is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  See http://www.gnu.org/licenses.
+ ******************************************************************************/

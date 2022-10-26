@@ -1,22 +1,22 @@
 /******************************************************************************
+ *  Dependency: DisplaceScene.java
  *
- *  Main class to run the game.
+ *  The class to run the game scene.
  *
  ******************************************************************************/
 
-package uet.oop.bomberman.display;
+package uet.oop.bomberman.display.scene;
 
 /**
- * The {@code BombermanGame} class is a data type for start and loop the
- * bomber man game.
+ * The {@code BombermanGame} class extend DisplayScene class to create
+ * the main game scene.
  * <p>
- * This implementation uses JavaFx entirely to render screen and entity.
- *
+ * This implementation uses JavaFx entirely
+ * <p>
  * @author Phu Quoc Trung
  * @author Tran Thuy Duong
  */
 
-import com.sun.webkit.dom.EntityImpl;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -26,12 +26,14 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import uet.oop.bomberman.Main;
-import uet.oop.bomberman.entities.*;
-import uet.oop.bomberman.entities.character.Bomber;
-import uet.oop.bomberman.util.Board;
-import uet.oop.bomberman.util.Controller;
+import uet.oop.bomberman.display.DisplayScene;
+import uet.oop.bomberman.display.scene.menu.LeaderBoard;
 
-import java.util.Stack;
+import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.character.Bomber;
+import uet.oop.bomberman.util.gameUtil.Board;
+import uet.oop.bomberman.util.gameUtil.Controller;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -159,7 +161,6 @@ public class BombermanGame extends DisplayScene {
  *  This file is part of OOP-Bomberman, which accompanies the course
  *
  *      INT2204 of UET-VNU
- *
  *
  *  OOP-Bomberman is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by

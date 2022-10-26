@@ -1,14 +1,28 @@
-package uet.oop.bomberman.entities.breakable.item;
+/******************************************************************************
+ *
+ *  Dependency: BreakableEntity.java
+ *
+ *  The abstract data type for all the Item in general.
+ *
+ ******************************************************************************/
+
+package uet.oop.bomberman.entities.breakable;
+
+/**
+ * The {@code Item} class is the data type for all the Item
+ * in this game in general.
+ * <p>
+ * Items are using for Bomber powerup.
+ * <p>
+ *
+ * @author Phu Quoc Trung
+ * @author Tran Thuy Duong
+ */
 
 import javafx.scene.image.Image;
 import uet.oop.bomberman.entities.BreakableEntity;
 import uet.oop.bomberman.entities.character.Bomber;
 
-/**
- * Lớp trừu tượng cài đặt các đối tượng vật phẩm.
- *
- * @author TTD
- */
 public abstract class Item extends BreakableEntity {
     /**
      * Khởi tạo đối tượng sử dụng phương thức khởi tạo của lớp cha BreakableEntity.

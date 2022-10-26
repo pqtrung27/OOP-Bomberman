@@ -1,6 +1,25 @@
+/******************************************************************************
+ *
+ *  Dependency: Item.java
+ *
+ *  The data type for the Bomb item.
+ *
+ ******************************************************************************/
+
 package uet.oop.bomberman.entities.breakable.item;
 
-import uet.oop.bomberman.entities.breakable.Bomb;
+/**
+ * The {@code BombItem} class is the data type for the BombItem.
+ * <p>
+ * This BombItem will increase the number of bombs the player could lay by 1.
+ * <p>
+ *
+ * @author Phu Quoc Trung
+ * @author Tran Thuy Duong
+ */
+
+
+import uet.oop.bomberman.entities.breakable.Item;
 import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.graphics.Sprite;
 

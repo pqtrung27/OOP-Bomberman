@@ -1,10 +1,30 @@
+/******************************************************************************
+ *
+ *  Dependency: MovingEntity.java
+ *
+ *  The abstract data type for the enemies in general.
+ *
+ ******************************************************************************/
+
 package uet.oop.bomberman.entities.character;
 
-import uet.oop.bomberman.display.BombermanGame;
+/**
+ * The {@code Enemy} class is the data type for all the enemies
+ * in this game in general.
+ * <p>
+ * It has all the method and variable that a normal enemy
+ * would have.
+ * <p>
+ *
+ * @author Phu Quoc Trung
+ * @author Tran Thuy Duong
+ */
+
+import uet.oop.bomberman.display.scene.BombermanGame;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.MovingEntity;
 import uet.oop.bomberman.graphics.Sprite;
-import uet.oop.bomberman.util.StdRandom;
+import uet.oop.bomberman.util.gameUtil.StdRandom;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -174,3 +194,24 @@ public abstract class Enemy extends MovingEntity {
         }
     }
 }
+
+
+/******************************************************************************
+ *  Copyright 2022, Phu Quoc Trung and Tran Thuy Duong.
+ *
+ *  This file is part of OOP-Bomberman, which accompanies the course
+ *
+ *      INT2204 of UET-VNU
+ *
+ *  OOP-Bomberman is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  OOP-Bomberman is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  See http://www.gnu.org/licenses.
+ ******************************************************************************/

@@ -1,10 +1,33 @@
-package uet.oop.bomberman.util;
+/******************************************************************************
+ *
+ *  Dependency: Serializable.java
+ *
+ *  The data type for the game board in each level.
+ *
+ ******************************************************************************/
+
+package uet.oop.bomberman.util.gameUtil;
+
+/**
+ * The {@code Board} class is the data type for the game board in each level.
+ *
+ * <p>
+ * The Board data type store all the data of the thing going on in the game at a moment
+ * like all the entities' information, and handling the interactions between two or more entities
+ * <p>
+ *
+ * @author Phu Quoc Trung
+ * @author Tran Thuy Duong
+ */
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import uet.oop.bomberman.entities.*;
-import uet.oop.bomberman.entities.breakable.*;
+import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.MovingEntity;
+import uet.oop.bomberman.entities.breakable.Bomb;
+import uet.oop.bomberman.entities.breakable.Brick;
+import uet.oop.bomberman.entities.breakable.Flame;
 import uet.oop.bomberman.entities.breakable.item.BombItem;
 import uet.oop.bomberman.entities.breakable.item.FlameItem;
 import uet.oop.bomberman.entities.breakable.Portal;
@@ -12,16 +35,26 @@ import uet.oop.bomberman.entities.breakable.item.SpeedItem;
 import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.entities.character.CanLayBomb;
 import uet.oop.bomberman.entities.character.Enemy;
-import uet.oop.bomberman.entities.character.EnemyAI;
-import uet.oop.bomberman.entities.character.enemy.*;
+import uet.oop.bomberman.entities.character.enemy.Ballom;
+import uet.oop.bomberman.entities.character.enemy.Doll;
+import uet.oop.bomberman.entities.character.enemy.Kondoria;
+import uet.oop.bomberman.entities.character.enemy.Oneal;
+import uet.oop.bomberman.entities.character.enemy.Minvo;
 import uet.oop.bomberman.entities.unbreakable.Grass;
 import uet.oop.bomberman.entities.unbreakable.Wall;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.util.entityUtil.EnemyAI;
+import uet.oop.bomberman.util.entityUtil.Layer;
 
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Scanner;
 
 public class Board implements Serializable {
     public double boardOffsetX = 0;
@@ -183,15 +216,16 @@ public class Board implements Serializable {
         temp.setBotX(entity.getBotX() + addX);
         temp.setBotY(entity.getBotY() + addY);
 
-        Layer layer = getLayerCollideWith(temp);
-        if (layer != null && collide(temp, layer.getTop()))
-            return layer.getTop();
 
         for (Bomb bomb : bombs) {
             if (!bomb.isJustLay() && collide(bomb, temp)) {
                 return bomb;
             }
         }
+
+        Layer layer = getLayerCollideWith(temp);
+        if (layer != null && collide(temp, layer.getTop()))
+            return layer.getTop();
 
         return null;
     }
@@ -409,3 +443,24 @@ public class Board implements Serializable {
         }
     }
 }
+
+
+/******************************************************************************
+ *  Copyright 2022, Phu Quoc Trung and Tran Thuy Duong.
+ *
+ *  This file is part of OOP-Bomberman, which accompanies the course
+ *
+ *      INT2204 of UET-VNU
+ *
+ *  OOP-Bomberman is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  OOP-Bomberman is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  See http://www.gnu.org/licenses.
+ ******************************************************************************/

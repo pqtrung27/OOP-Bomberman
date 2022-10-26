@@ -6,7 +6,7 @@
  *
  ******************************************************************************/
 
-package uet.oop.bomberman.entities.character;
+package uet.oop.bomberman.util.entityUtil;
 
 /**
  * The {@code EnemyAI} class is a data type for computing the running
@@ -18,15 +18,19 @@ package uet.oop.bomberman.entities.character;
  * <a href = "https://en.wikipedia.org/wiki/A*_search_algorithm">Peter Hart, Nils Nilsson and Bertram Raphael</a>.
  * Each operation takes time proportional to the size of the board in the worst case.
  * The data values are stored with priority queue using custom Node class.
+ * <p>
  *
  * @author Phu Quoc Trung
  * @author Tran Thuy Duong
  */
 
 import uet.oop.bomberman.entities.MovingEntity;
+import uet.oop.bomberman.entities.character.Bomber;
+import uet.oop.bomberman.entities.character.Enemy;
 import uet.oop.bomberman.graphics.Sprite;
 
-import java.util.*;
+import java.util.PriorityQueue;
+
 
 public final class EnemyAI {
 
@@ -110,7 +114,7 @@ public final class EnemyAI {
         if (Math.abs(initNode.x - bomberPosX) >= 15) return 0;
         if (Math.abs(initNode.y - bomberPosY) >= 15) return 0;
 
-        Queue<Node> pq = new ArrayDeque<>();
+        PriorityQueue<Node> pq = new PriorityQueue<>();
         pq.add(initNode);
         int loop_count = 0;
         while (!pq.isEmpty()) {
@@ -158,7 +162,6 @@ public final class EnemyAI {
  *  This file is part of OOP-Bomberman, which accompanies the course
  *
  *      INT2204 of UET-VNU
- *
  *
  *  OOP-Bomberman is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by

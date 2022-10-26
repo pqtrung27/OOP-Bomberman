@@ -1,6 +1,24 @@
+/******************************************************************************
+ *
+ *  Dependency: Item.java
+ *
+ *  The data type for the Flame item.
+ *
+ ******************************************************************************/
+
 package uet.oop.bomberman.entities.breakable.item;
 
-import uet.oop.bomberman.entities.breakable.Bomb;
+/**
+ * The {@code FlameItem} class is the data type for the Flame Item.
+ * <p>
+ * This FlameItem will double the range of the player bombs.
+ * <p>
+ *
+ * @author Phu Quoc Trung
+ * @author Tran Thuy Duong
+ */
+
+import uet.oop.bomberman.entities.breakable.Item;
 import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.graphics.Sprite;
 

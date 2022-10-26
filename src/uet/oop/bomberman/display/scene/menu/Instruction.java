@@ -1,4 +1,21 @@
-package uet.oop.bomberman.display;
+/******************************************************************************
+ *  Dependency: Menu.java.
+ *
+ *  The class for the game instruction scene.
+ *
+ ******************************************************************************/
+
+package uet.oop.bomberman.display.scene.menu;
+
+/**
+ * The {@code Instruction} class extend Menu class is the
+ * class for the instruction scene.
+ * <p>
+ * This implementation uses JavaFx entirely.
+ * <p>
+ * @author Phu Quoc Trung
+ * @author Tran Thuy Duong
+ */
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -10,10 +27,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import uet.oop.bomberman.Main;
-import uet.oop.bomberman.entities.Option;
+import uet.oop.bomberman.display.scene.MenuScene;
 import uet.oop.bomberman.graphics.Sprite;
 
-public class Instruction extends DisplayScene {
+public class Instruction extends MenuScene {
     private final Page[] pages;
     private int currentPage = 0;
     public Instruction() {
@@ -230,7 +247,7 @@ public class Instruction extends DisplayScene {
         }
     }
 
-    private class Page extends Menu {
+    private class Page extends MenuScene {
         private final VBox body = new VBox();
         public Page(String name) {
             text.setText(name);
@@ -261,3 +278,24 @@ public class Instruction extends DisplayScene {
         }
     }
 }
+
+
+/******************************************************************************
+ *  Copyright 2022, Phu Quoc Trung and Tran Thuy Duong.
+ *
+ *  This file is part of OOP-Bomberman, which accompanies the course
+ *
+ *      INT2204 of UET-VNU
+ *
+ *  OOP-Bomberman is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  OOP-Bomberman is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  See http://www.gnu.org/licenses.
+ ******************************************************************************/

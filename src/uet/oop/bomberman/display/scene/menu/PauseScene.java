@@ -1,27 +1,45 @@
 /******************************************************************************
+ *  Dependency: Menu.java.
  *
- *  The interface for all the entity which could lays bombs to implement.
+ *  The class for the paused scene.
  *
  ******************************************************************************/
 
-package uet.oop.bomberman.entities.character;
+package uet.oop.bomberman.display.scene.menu;
 
 /**
- * The {@code CanLayBomb} interface is the interface for all the
- * entity which could lays bombs to implement.
- *
+ * The {@code PausedScene} class extend Menu class to create
+ * the game paused scene.
  * <p>
- *
+ * This implementation uses JavaFx entirely.
+ * <p>
  * @author Phu Quoc Trung
  * @author Tran Thuy Duong
  */
 
-public interface CanLayBomb {
-    int getBombCount();
-    void setBombCount(int bombCount);
-    int getBombRange();
-    void setBombRange(int bombRange);
-    boolean isBomber();
+import uet.oop.bomberman.Main;
+import uet.oop.bomberman.display.scene.MenuScene;
+
+public class PauseScene extends MenuScene {
+    public PauseScene() {
+        text.setText("GAME PAUSED");
+
+        menuItems = new Option[2];
+
+        menuItems[0] = new Option("CONTINUE");
+        menuItems[0].setOnActivate(() -> Main.setPlayingStatus(1, "continue"));
+
+        menuItems[1] = new Option("RETURN");
+        menuItems[1].setOnActivate(() -> {
+            Main.setPlayingStatus(0, "return");
+        });
+
+        currentItem = 0;
+        menuItems[currentItem].setActive(true);
+
+        root.getChildren().add(text);
+        root.getChildren().addAll(menuItems);
+    }
 }
 
 
