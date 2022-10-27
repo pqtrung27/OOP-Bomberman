@@ -73,6 +73,7 @@ public class Bomb extends BreakableEntity {
                 explosionSound.stop();
             }
         }, (int) explosionSound.getStopTime().toMillis());
+
         int xUnit = (int) this.x / Sprite.SCALED_SIZE;
         int yUnit = (int) this.y / Sprite.SCALED_SIZE;
 
