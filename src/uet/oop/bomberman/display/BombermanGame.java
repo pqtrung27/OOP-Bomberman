@@ -101,7 +101,7 @@ public class BombermanGame extends DisplayScene {
         if (stageClearBgm.getStatus().equals(MediaPlayer.Status.PLAYING)) {
             return;
         }
-        // startBGM();
+        startBGM();
         Entity.board.update();
         if (Entity.board.endGame) {
             stopBGM();

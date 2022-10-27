@@ -3,6 +3,8 @@ package uet.oop.bomberman.display;
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import uet.oop.bomberman.Main;
@@ -23,6 +25,8 @@ public class LeaderBoard extends Menu {
     private VBox names;
     private VBox scores;
     public LeaderBoard() {
+        bgmPlayer = new MediaPlayer(new Media(getClass().getResource("/audio/TitleScreen.mp3").toString()));
+
         text.setText("LEADERBOARD");
 
         names = new VBox();
@@ -66,6 +70,7 @@ public class LeaderBoard extends Menu {
 
     @Override
     public void reset() {
+        super.reset();
         loadLeaderboard();
     }
 

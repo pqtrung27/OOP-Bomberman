@@ -6,6 +6,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -17,6 +19,8 @@ public class Instruction extends DisplayScene {
     private final Page[] pages;
     private int currentPage = 0;
     public Instruction() {
+        bgmPlayer = new MediaPlayer(new Media(getClass().getResource("/audio/TitleScreen.mp3").toString()));
+
         pages = new Page[6];
         pages[0] = new Page("PLAYER");
         pages[1] = new Page("CONTROLS");
@@ -214,6 +218,7 @@ public class Instruction extends DisplayScene {
 
     @Override
     public void reset() {
+        super.reset();
         currentPage = 0;
         pages[currentPage].reset();
     }
