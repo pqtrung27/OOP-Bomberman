@@ -1,12 +1,34 @@
+/******************************************************************************
+ *
+ *  Dependency: MovingEntity.java
+ *
+ *  The data type for Bomber, the main character of this game.
+ *
+ ******************************************************************************/
+
 package uet.oop.bomberman.entities.character;
 
-import javafx.scene.media.Media;
+/**
+ * The {@code Bomber} class is the data type for the
+ * Bomber, main character of this game.
+ *
+ * <p>
+ *
+ * @author Phu Quoc Trung
+ * @author Tran Thuy Duong
+ */
+
 import javafx.scene.media.MediaPlayer;
 import uet.oop.bomberman.Main;
-import uet.oop.bomberman.entities.*;
-import uet.oop.bomberman.entities.breakable.item.Item;
+import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.MovingEntity;
+import uet.oop.bomberman.entities.breakable.Item;
 import uet.oop.bomberman.graphics.Sprite;
-import uet.oop.bomberman.util.Controller;
+import uet.oop.bomberman.sound.Sound;
+import uet.oop.bomberman.util.gameUtil.Controller;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Bomber extends MovingEntity implements CanLayBomb {
 
@@ -77,15 +99,20 @@ public class Bomber extends MovingEntity implements CanLayBomb {
         Entity entity = board.getEntityCollideWith(this, 0, 0);
         if (entity != null && board.collide(this, entity) && entity.isItem()) {
             ((Item) entity).powerUp(this);
-            (new MediaPlayer(
-                    new Media(getClass().getResource("/audio/PowerUpSE.wav").toString())
-            )).play();
+            MediaPlayer powerUpSound = Sound.cloneOf(Sound.powerUpSound);
+            powerUpSound.play();
+            (new Timer()).schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    powerUpSound.stop();
+                }
+            }, (int) powerUpSound.getStopTime().toMillis());
         }
     }
 
     public boolean isInPortal() {
         Entity entity = board.getEntityCollideWith(this, 0, 0);
-        return entity != null &&board.collide(this, entity) && entity.isPortal();
+        return entity != null && board.collide(this, entity) && entity.isPortal();
     }
 
     protected void calculateMove() {
@@ -109,7 +136,8 @@ public class Bomber extends MovingEntity implements CanLayBomb {
             move(addX * speed, addY * speed);
         } else isMoving = false;
 
-        if (_direction == MovingEntity.directionRight && _x + Sprite.SCALED_SIZE > Main.initialSceneWidth + board.boardOffsetX - xPadding) {
+        if (_direction == MovingEntity.directionRight && _x + Sprite.SCALED_SIZE
+                > Main.initialSceneWidth + board.boardOffsetX - xPadding) {
             board.boardOffsetX = Math.min(board.nCol * Sprite.SCALED_SIZE - Main.initialSceneWidth
                     , _x + Sprite.SCALED_SIZE - Main.initialSceneWidth + xPadding);
         }
@@ -117,8 +145,9 @@ public class Bomber extends MovingEntity implements CanLayBomb {
             board.boardOffsetX = Math.max(0, _x - xPadding);
         }
 
-        if (_direction == MovingEntity.directionDown && _y + Sprite.SCALED_SIZE > Main.initialSceneHeight + board.boardOffsetY - xPadding) {
-            board.boardOffsetY = Math.min((board.nRow+1) * Sprite.SCALED_SIZE - Main.initialSceneHeight
+        if (_direction == MovingEntity.directionDown && _y + Sprite.SCALED_SIZE
+                > Main.initialSceneHeight + board.boardOffsetY - xPadding) {
+            board.boardOffsetY = Math.min((board.nRow + 1) * Sprite.SCALED_SIZE - Main.initialSceneHeight
                     , _y + Sprite.SCALED_SIZE - Main.initialSceneHeight + xPadding);
         }
         if (_direction == MovingEntity.directionUp && _y <= xPadding + board.boardOffsetY) {
@@ -190,3 +219,23 @@ public class Bomber extends MovingEntity implements CanLayBomb {
         }
     }
 }
+
+/******************************************************************************
+ *  Copyright 2022, Phu Quoc Trung and Tran Thuy Duong.
+ *
+ *  This file is part of OOP-Bomberman, which accompanies the course
+ *
+ *      INT2204 of UET-VNU
+ *
+ *  OOP-Bomberman is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  OOP-Bomberman is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  See http://www.gnu.org/licenses.
+ ******************************************************************************/

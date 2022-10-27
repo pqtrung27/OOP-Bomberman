@@ -1,9 +1,28 @@
+/******************************************************************************
+ *
+ *  Dependency: UnbreakableEntity.java
+ *
+ *  The data type for the Wall entity.
+ *
+ ******************************************************************************/
+
 package uet.oop.bomberman.entities.unbreakable;
 
-import uet.oop.bomberman.entities.Entity;
+/**
+ * The {@code Wall} class is the data type for the Wall entity.
+ *
+ * <p>
+ * Wall can not be passed, nor broken.
+ * <p>
+ *
+ * @author Phu Quoc Trung
+ * @author Tran Thuy Duong
+ */
+
+import uet.oop.bomberman.entities.UnbreakableEntity;
 import uet.oop.bomberman.graphics.Sprite;
 
-public class Wall extends Entity {
+public class Wall extends UnbreakableEntity {
 
 
 

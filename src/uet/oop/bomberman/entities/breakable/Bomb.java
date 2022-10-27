@@ -1,23 +1,34 @@
+/******************************************************************************
+ *
+ *  Dependency: BreakableEntity.java
+ *
+ *  The data type for the Bomb.
+ *
+ ******************************************************************************/
+
 package uet.oop.bomberman.entities.breakable;
 
+/**
+ * The {@code Bomb} class is the data type for the bombs which
+ * the entity who implement CanLayBom interface could lay.
+ * <p>
+ *
+ * @author Phu Quoc Trung
+ * @author Tran Thuy Duong
+ */
+
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import uet.oop.bomberman.entities.BreakableEntity;
-import uet.oop.bomberman.entities.breakable.item.SpeedItem;
 import uet.oop.bomberman.entities.character.CanLayBomb;
 import uet.oop.bomberman.entities.unbreakable.Wall;
 import uet.oop.bomberman.graphics.Sprite;
-import uet.oop.bomberman.util.Layer;
+import uet.oop.bomberman.sound.Sound;
+import uet.oop.bomberman.util.entityUtil.Layer;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-/**
- * Lớp cài đặt đối tượng Bomb.
- *
- * @author TTD
- */
 public class Bomb extends BreakableEntity {
     private Sprite sprite;
     private boolean waiting;
@@ -25,7 +36,6 @@ public class Bomb extends BreakableEntity {
     private long delayTime;
 
     private CanLayBomb whoLay;
-    private MediaPlayer explosionSound;
 
     /**
      * Khởi tạo đối tượng sử dụng phương thức khởi tạo của lớp cha BreakableEntity.
@@ -34,10 +44,6 @@ public class Bomb extends BreakableEntity {
      */
     public Bomb(int xUnit, int yUnit, CanLayBomb whoLay) {
         super(xUnit, yUnit, Sprite.bomb.getFxImage());
-
-        explosionSound = new MediaPlayer(
-                new Media(getClass().getResource("/audio/ExplosionSE.mp3").toString())
-        );
 
         sprite = Sprite.bomb;
         waiting = true;
@@ -77,7 +83,14 @@ public class Bomb extends BreakableEntity {
             return;
         }
         breakEntity();
+        MediaPlayer explosionSound = Sound.cloneOf(Sound.explosionSound);
         explosionSound.play();
+        (new Timer()).schedule(new TimerTask() {
+            @Override
+            public void run() {
+                explosionSound.stop();
+            }
+        }, (int) explosionSound.getStopTime().toMillis());
         int xUnit = (int) this.x / Sprite.SCALED_SIZE;
         int yUnit = (int) this.y / Sprite.SCALED_SIZE;
 
@@ -152,3 +165,24 @@ public class Bomb extends BreakableEntity {
         super.render(gc);
     }
 }
+
+
+/******************************************************************************
+ *  Copyright 2022, Phu Quoc Trung and Tran Thuy Duong.
+ *
+ *  This file is part of OOP-Bomberman, which accompanies the course
+ *
+ *      INT2204 of UET-VNU
+ *
+ *  OOP-Bomberman is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  OOP-Bomberman is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  See http://www.gnu.org/licenses.
+ ******************************************************************************/

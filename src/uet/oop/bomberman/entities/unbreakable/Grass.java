@@ -1,9 +1,29 @@
+/******************************************************************************
+ *
+ *  Dependency: UnbreakableEntity.java
+ *
+ *  The data type for the Grass entity.
+ *
+ ******************************************************************************/
+
 package uet.oop.bomberman.entities.unbreakable;
 
-import uet.oop.bomberman.entities.Entity;
+/**
+ * The {@code Grass} class is the data type for the Grass entity.
+ *
+ * <p>
+ * Grasses are the green things in the background.
+ * Grass could be passed, of course, and can not be broken.
+ * <p>
+ *
+ * @author Phu Quoc Trung
+ * @author Tran Thuy Duong
+ */
+
+import uet.oop.bomberman.entities.UnbreakableEntity;
 import uet.oop.bomberman.graphics.Sprite;
 
-public class Grass extends Entity {
+public class Grass extends UnbreakableEntity {
 
     private double topX;
     private double topY;

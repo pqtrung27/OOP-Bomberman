@@ -6,23 +6,8 @@
 
 package uet.oop.bomberman;
 
-import javafx.animation.AnimationTimer;
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.scene.Scene;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.text.Font;
-import javafx.stage.Stage;
-import uet.oop.bomberman.display.*;
-import uet.oop.bomberman.graphics.Sprite;
-
-import java.util.Timer;
-import java.util.TimerTask;
-
-
 /**
- * The {@code BombermanGame} class is a data type for start and loop the
+ * The {@code Main} class is a data type for start the
  * bomber man game.
  * <p>
  * This implementation uses JavaFx entirely to render screen and entity.
@@ -31,9 +16,24 @@ import java.util.TimerTask;
  * @author Tran Thuy Duong
  */
 
+import javafx.animation.AnimationTimer;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.scene.Scene;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
+import uet.oop.bomberman.display.*;
+import uet.oop.bomberman.display.scene.*;
+import uet.oop.bomberman.display.scene.menu.*;
+import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.sound.Sound;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class Main extends Application {
 
-    public static final int WIDTH = 20  ;
+    public static final int WIDTH = 20;
     public static final int HEIGHT = 14;
 
     public static final double initialSceneWidth = WIDTH * Sprite.SCALED_SIZE;
@@ -54,18 +54,16 @@ public class Main extends Application {
     public static int status;
 
     public static DisplayScene[] scenes = new DisplayScene[8];
-    public static final Font FONT = Font.loadFont("file:res/font/font.ttf", 30);
+    public static final Font FONT = Font.loadFont(Main.class.getResource("/font/font.ttf").toString(), 30);
 
     public static void main(String[] args) {
         launch(Main.class);
     }
-    public static MediaPlayer stageStart;
-    public static MediaPlayer gameOver;
+
+
+
     @Override
     public void start(Stage stage) {
-        stageStart = new MediaPlayer(new Media(getClass().getResource("/audio/StageStart.mp3").toString()));
-        gameOver = new MediaPlayer(new Media(getClass().getResource("/audio/GameOver.mp3").toString()));
-
         stage.setResizable(false);
         scenes[0] = new HomeScene();
         scenes[1] = new BombermanGame();
@@ -126,22 +124,22 @@ public class Main extends Application {
                 break;
             case 3: // mes == "STAGE " + level
                 scenes[3] = new FixedScene(mes);
-                stageStart.play();
+                Sound.stageStartBGM.play();
                 (new Timer()).schedule(new TimerTask() {
                     @Override
                     public void run() {
                         status = 1;
-                        stageStart.stop();
+                        Sound.stageStartBGM.stop();
                     }
                 }, 2600L);
                 break;
             case 4: // mes = "game over"
-                gameOver.play();
+                Sound.gameOverBGM.play();
                 (new Timer()).schedule(new TimerTask() {
                     @Override
                     public void run() {
                         setPlayingStatus(0, "game over");
-                        gameOver.stop();
+                        Sound.gameOverBGM.stop();
                     }
                 }, 6000L);
                 break;
@@ -150,3 +148,24 @@ public class Main extends Application {
         scenes[status].reset();
     }
 }
+
+
+/******************************************************************************
+ *  Copyright 2022, Phu Quoc Trung and Tran Thuy Duong.
+ *
+ *  This file is part of OOP-Bomberman, which accompanies the course
+ *
+ *      INT2204 of UET-VNU
+ *
+ *  OOP-Bomberman is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  OOP-Bomberman is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  See http://www.gnu.org/licenses.
+ ******************************************************************************/
