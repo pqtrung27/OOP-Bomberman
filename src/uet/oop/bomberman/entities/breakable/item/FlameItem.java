@@ -27,13 +27,11 @@ public class FlameItem extends Item {
         super(xUnit, yUnit, Sprite.powerup_flames.getFxImage());
     }
 
-    public boolean powerUp(Bomber bomberman) {
-        if (isBroken()) {
-            return false;
-        }
+    public void powerUp(Bomber bomberman) {
+        if (isBroken()) return;
+        super.powerUp(bomberman);
         bomberman.setBombRange(bomberman.getBombRange()+1);
         breakEntity();
-        return true;
     }
 }
 

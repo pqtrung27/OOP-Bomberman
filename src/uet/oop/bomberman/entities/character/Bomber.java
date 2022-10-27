@@ -30,7 +30,7 @@ import uet.oop.bomberman.util.gameUtil.Controller;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Bomber extends MovingEntity implements CanLayBomb {
+public class Bomber extends MovingEntity {
 
     private final int xPadding = Sprite.SCALED_SIZE * 4;
     private Sprite _sprite = Sprite.player_right;
@@ -38,7 +38,6 @@ public class Bomber extends MovingEntity implements CanLayBomb {
 
     private static int maxBombCount = 1;
     private static int bombRange = 1;
-    private int bombCount = 0;
     private int _x;
     private int _y;
 
@@ -66,7 +65,7 @@ public class Bomber extends MovingEntity implements CanLayBomb {
         }
     }
 
-    public int getMaxBombCount() {
+    public static int getMaxBombCount() {
         return maxBombCount;
     }
 
@@ -74,15 +73,7 @@ public class Bomber extends MovingEntity implements CanLayBomb {
         this.maxBombCount = maxBombCount;
     }
 
-    public int getBombCount() {
-        return bombCount;
-    }
-
-    public void setBombCount(int bombCount) {
-        this.bombCount = bombCount;
-    }
-
-    public int getBombRange() {
+    public static int getBombRange() {
         return bombRange;
     }
 

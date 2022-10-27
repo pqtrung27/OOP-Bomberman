@@ -92,7 +92,7 @@ public class BombermanGame extends DisplayScene {
             // stopBGM();
             return;
         }
-        // startBGM();
+        super.reset();
         Entity.board.update();
         if (Entity.board.endGame) {
             stopBGM();

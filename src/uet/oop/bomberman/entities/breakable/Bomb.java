@@ -20,7 +20,7 @@ package uet.oop.bomberman.entities.breakable;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.media.MediaPlayer;
 import uet.oop.bomberman.entities.BreakableEntity;
-import uet.oop.bomberman.entities.character.CanLayBomb;
+import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.entities.unbreakable.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.sound.Sound;
@@ -33,28 +33,19 @@ public class Bomb extends BreakableEntity {
     private Sprite sprite;
     private boolean waiting;
     private boolean justLay;
-    private long delayTime;
-
-    private CanLayBomb whoLay;
 
     /**
      * Khởi tạo đối tượng sử dụng phương thức khởi tạo của lớp cha BreakableEntity.
      * Gán trạng thái đang đợi cho đối tượng.
      * Cài đặt Timer, hủy trạng thái đang đợi sau 2s.
      */
-    public Bomb(int xUnit, int yUnit, CanLayBomb whoLay) {
+    public Bomb(int xUnit, int yUnit) {
         super(xUnit, yUnit, Sprite.bomb.getFxImage());
 
         sprite = Sprite.bomb;
         waiting = true;
         justLay = true;
         isBroken = false;
-        this.whoLay = whoLay;
-        if (whoLay.isBomber()) {
-            delayTime = 2000;
-        } else {
-            delayTime = 5000;
-        }
         Timer timer = new Timer();
         // Hủy trạng thái đang đợi
         timer.schedule(new TimerTask() {
@@ -63,16 +54,7 @@ public class Bomb extends BreakableEntity {
             waiting = false;
             explode();
             }
-        }, delayTime);
-    }
-
-    /**
-     * Phương thức tăng phạm vi nổ của bomb.
-     * Có thể được sử dụng sau khi Bomber nhận power-up FlameItem.
-     * Phạm vi nổ lớn nhất của bomb = 3.
-     */
-    public CanLayBomb getWhoLay() {
-        return this.whoLay;
+        }, 2000);
     }
 
     /**
@@ -96,8 +78,9 @@ public class Bomb extends BreakableEntity {
 
         int[] addX = {-1, 1, 0, 0};
         int[] addY = {0, 0, -1, 1};
+        int range = Bomber.getBombRange();
         for (int i = 0; i < addX.length; ++i) {
-            for (int k = 1; k <= whoLay.getBombRange(); ++k) {
+            for (int k = 1; k <= range; ++k) {
                 int curX = xUnit + addX[i] * k;
                 int curY = yUnit + addY[i] * k;
                 Wall temp = new Wall(curX, curY);
@@ -118,7 +101,7 @@ public class Bomb extends BreakableEntity {
                         break;
                     }
                 }
-                board.flames.add(new Flame(curX, curY, i, k == whoLay.getBombRange()));
+                board.flames.add(new Flame(curX, curY, i, k == range));
             }
         }
     }
@@ -135,7 +118,6 @@ public class Bomb extends BreakableEntity {
     public void update() {
         if (isBroken) {
             board.bombs.remove(this);
-            whoLay.setBombCount(whoLay.getBombCount()-1);
             return;
         }
 

@@ -32,7 +32,6 @@ import uet.oop.bomberman.entities.breakable.item.FlameItem;
 import uet.oop.bomberman.entities.breakable.Portal;
 import uet.oop.bomberman.entities.breakable.item.SpeedItem;
 import uet.oop.bomberman.entities.character.Bomber;
-import uet.oop.bomberman.entities.character.CanLayBomb;
 import uet.oop.bomberman.entities.character.Enemy;
 import uet.oop.bomberman.entities.character.enemy.Ballom;
 import uet.oop.bomberman.entities.character.enemy.Doll;
@@ -47,7 +46,6 @@ import uet.oop.bomberman.util.entityUtil.EnemyAI;
 import uet.oop.bomberman.util.entityUtil.Layer;
 
 import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -307,49 +305,23 @@ public class Board implements Serializable {
 
 
     protected void layBomb(MovingEntity entity) {
-        if (!entity.isBomber() && !entity.isKondoria()) {
-            return;
-        }
-
-        boolean layNow = false;
-        CanLayBomb canLay = (CanLayBomb) entity;
-        if (canLay.isBomber() && Controller.layBomb) {
-            Controller.layBomb = false;
-            if (bomber.getBombCount() >= bomber.getMaxBombCount()) return;
-            layNow = true;
-            MediaPlayer layBombSound = Sound.cloneOf(Sound.LayBombSound);
-            layBombSound.play();
-            (new Timer()).schedule(new TimerTask() {
+        if (!entity.isBomber() || !Controller.layBomb) return;
+        Controller.layBomb = false;
+        if (bombs.size() >= bomber.getMaxBombCount()) return;
+        MediaPlayer layBombSound = Sound.cloneOf(Sound.LayBombSound);
+        layBombSound.play();
+        (new Timer()).schedule(new TimerTask() {
                 @Override
-                public void run() {
-                    layBombSound.stop();
+                public void run() {layBombSound.stop();
                 }
             }, (int) layBombSound.getStopTime().toMillis());
-        } else if (!canLay.isBomber() && canLay.getBombCount() < 1
-                && getEntityCollideWith(entity, 0, 0) == null) {
-            Kondoria kon = (Kondoria) entity;
-            if (!kon.didJustLayBomb()) {
-                if (Math.abs(kon.getX() - bomber.getX()) / Sprite.SCALED_SIZE <= kon.getBombRange() * 2
-                        || Math.abs(kon.getY() - bomber.getY()) / Sprite.SCALED_SIZE <= kon.getBombRange() * 2) {
-                    layNow = (StdRandom.uniformInt(1000) == 1);
-                    if (layNow) {
-                        kon.setJustLayBomb();
-                    }
-                }
-            }
-        }
 
-        if (layNow) {
+        double bombX = entity.getTopX() + entity.getSpeed();
+        double bombY = entity.getTopY() + entity.getSpeed();
 
-            double bombX = entity.getTopX() + entity.getSpeed();
-            double bombY = entity.getTopY() + entity.getSpeed();
-
-            Bomb bom = new Bomb((int) bombX / (Sprite.SCALED_SIZE), (int) bombY / Sprite.SCALED_SIZE, canLay);
-            canLay.setBombCount(canLay.getBombCount() + 1);
-            bom.setJustLay(true);
-            bombs.add(bom);
-            Controller.layBomb = false;
-        }
+        Bomb bom = new Bomb((int) bombX / (Sprite.SCALED_SIZE), (int) bombY / Sprite.SCALED_SIZE);
+        bom.setJustLay(true);
+        bombs.add(bom);
     }
 
     /**

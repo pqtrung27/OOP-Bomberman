@@ -31,13 +31,11 @@ public class SpeedItem extends Item {
     }
 
     @Override
-    public boolean powerUp(Bomber bomberman) {
-        if (isBroken()) {
-            return false;
-        }
+    public void powerUp(Bomber bomberman) {
+        if (isBroken()) return;
+        super.powerUp(bomberman);
         bomberman.setSpeed(bomberman.getSpeed() + 1);
         breakEntity();
-        return true;
     }
 
     @Override

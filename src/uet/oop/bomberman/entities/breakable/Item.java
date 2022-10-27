@@ -20,6 +20,7 @@ package uet.oop.bomberman.entities.breakable;
  */
 
 import javafx.scene.image.Image;
+import uet.oop.bomberman.display.scene.BombermanGame;
 import uet.oop.bomberman.entities.BreakableEntity;
 import uet.oop.bomberman.entities.character.Bomber;
 
@@ -44,7 +45,10 @@ public abstract class Item extends BreakableEntity {
         this.isBroken = true;
     }
 
-    public abstract boolean powerUp(Bomber bomber);
+    public void powerUp(Bomber bomber) {
+        if (isBroken()) return;
+        BombermanGame.addScore(1000);
+    }
 
     @Override
     public void update() {

@@ -13,7 +13,6 @@ package uet.oop.bomberman.entities.breakable.item;
  * <p>
  * This BombItem will increase the number of bombs the player could lay by 1.
  * <p>
- *
  * @author Phu Quoc Trung
  * @author Tran Thuy Duong
  */
@@ -28,13 +27,11 @@ public class BombItem extends Item {
         super(xUnit, yUnit, Sprite.powerup_bombs.getFxImage());
     }
 
-    public boolean powerUp(Bomber bomberman) {
-        if (isBroken()) {
-            return false;
-        }
+    public void powerUp(Bomber bomberman) {
+        if (isBroken()) return;
+        super.powerUp(bomberman);
         bomberman.setMaxBombCount(bomberman.getMaxBombCount()+1);
         breakEntity();
-        return true;
     }
 }
 
