@@ -1,5 +1,5 @@
-Player1 0
-Player1 0
+A 600
+A 400
 Player1 0
 Player1 0
 Player1 0
