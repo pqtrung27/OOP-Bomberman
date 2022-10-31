@@ -3,8 +3,9 @@
 
 ## Table of Contents ##
 **[Introduction](#introduction)**  
-**[How to Start](#usages)**  
+**[Usages](#usages)**  
 **[Previews](#previews)**  
+**[Inheritance Tree](#inheritance-tree)**  
 **[References](#references)**  
 
 ## Introduction ##
@@ -55,16 +56,17 @@ java -jar bomberman.jar
 ![Imgur Image](https://imgur.com/a87M7GE.png)
 - Leaderboard
 ![Imgur Image](https://imgur.com/61lSqj8.png)
-- Inheritance Tree
-	* Display package \
+
+## Inheritance Tree ##
+- Display package \
 ![Imgur Image](https://imgur.com/IUwWif2.png)
-	* Entities package\
+- Entities package\
 ![Imgur Image](https://imgur.com/DRZTfCY.png)
-	* Graphics package\
+- Graphics package\
 ![Imgur Image](https://imgur.com/xS95jtj.png)
-	* Sound package\
+- Sound package\
 ![Imgur Image](https://imgur.com/xb7P3Co.png)
-	* Util package\
+- Util package\
 ![Imgur Image](https://imgur.com/mSQ5ufw.png)
 
 ## References ##
