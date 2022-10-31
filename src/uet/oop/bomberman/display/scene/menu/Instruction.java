@@ -109,7 +109,7 @@ public class Instruction extends MenuScene {
     }
 
     private void setEnemies1Body() {
-        Text description = new Text("there are 8 types of enemy characters\n" +
+        Text description = new Text("there are 5 types of enemy characters\n" +
                 "each type moves in its own particular fashion\n" +
                 "player will earn points when an enemy is killed");
         description.setFont(Main.FONT);
@@ -139,7 +139,7 @@ public class Instruction extends MenuScene {
     }
 
     private void setEnemies2Body() {
-        Text description = new Text("there are 8 types of enemy characters\n" +
+        Text description = new Text("there are 5 types of enemy characters\n" +
                 "each type moves in its own particular fashion\n" +
                 "player will earn points when an enemy is killed");
         description.setFont(Main.FONT);

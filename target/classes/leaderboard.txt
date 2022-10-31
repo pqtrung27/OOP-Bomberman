@@ -1,5 +1,5 @@
-A 100
-DKASJJLASJDSLKDJALKJD 100
+Player1 0
+Player1 0
 Player1 0
 Player1 0
 Player1 0
