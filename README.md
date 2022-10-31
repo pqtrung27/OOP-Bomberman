@@ -44,28 +44,28 @@ java -jar bomberman.jar
 
 ## Previews ##
 - Home screen
-![Imgur Image](https://imgur.com/zr6dHZ5)
+![Imgur Image](https://imgur.com/zr6dHZ5.png)
 - Gameplay
-![Imgur Image](https://imgur.com/FMv1Umz)
-![Imgur Image](https://imgur.com/LzmtOBq)
-![Imgur Image](https://imgur.com/L0z2zvk)
-![Imgur Image](https://imgur.com/nJJSWAh)
+![Imgur Image](https://imgur.com/FMv1Umz.png)
+![Imgur Image](https://imgur.com/LzmtOBq.png)
+![Imgur Image](https://imgur.com/L0z2zvk.png)
+![Imgur Image](https://imgur.com/nJJSWAh.png)
 - Instruction
-![Imgur Image](https://imgur.com/Xugk0BV)
-![Imgur Image](https://imgur.com/a87M7GE)
+![Imgur Image](https://imgur.com/Xugk0BV.png)
+![Imgur Image](https://imgur.com/a87M7GE.png)
 - Leaderboard
-![Imgur Image](https://imgur.com/61lSqj8)
+![Imgur Image](https://imgur.com/61lSqj8.png)
 - Inheritance Tree
 	* Display package
-![Imgur Image](https://imgur.com/IUwWif2)
+![Imgur Image](https://imgur.com/IUwWif2.png)
 	* Entities package
-![Imgur Image](https://imgur.com/DRZTfCY)
+![Imgur Image](https://imgur.com/DRZTfCY.png)
 	* Graphics package
-![Imgur Image](https://imgur.com/xS95jtj)
+![Imgur Image](https://imgur.com/xS95jtj.png)
 	* Sound package
-![Imgur Image](https://imgur.com/xb7P3Co)
+![Imgur Image](https://imgur.com/xb7P3Co.png)
 	* Util package
-![Imgur Image](https://imgur.com/mSQ5ufw)
+![Imgur Image](https://imgur.com/mSQ5ufw.png)
 
 ## References ##
 Inspired by Bomberman NES
