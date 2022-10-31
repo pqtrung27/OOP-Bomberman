@@ -11,7 +11,7 @@
 This is a game project made under Object-Oriented Programming course (INT2204_21 UET-VNU)
 
 ### Developers ###
-- Trần Thùy Dương - 21020010 - QH-2021-I/CQ-C-CLC. \
+- Trần Thùy Dương - 21020010 - QH-2021-I/CQ-C-CLC. 
 - Phú Quốc Trung - 21020096 - QH-2021-I/CQ-C-CLC.
 
 ### Info ###
@@ -56,15 +56,15 @@ java -jar bomberman.jar
 - Leaderboard
 ![Imgur Image](https://imgur.com/61lSqj8.png)
 - Inheritance Tree
-	* Display package
+	* Display package \
 ![Imgur Image](https://imgur.com/IUwWif2.png)
-	* Entities package
+	* Entities package\
 ![Imgur Image](https://imgur.com/DRZTfCY.png)
-	* Graphics package
+	* Graphics package\
 ![Imgur Image](https://imgur.com/xS95jtj.png)
-	* Sound package
+	* Sound package\
 ![Imgur Image](https://imgur.com/xb7P3Co.png)
-	* Util package
+	* Util package\
 ![Imgur Image](https://imgur.com/mSQ5ufw.png)
 
 ## References ##
