@@ -57,6 +57,10 @@ public abstract class Sound {
             new Media(Sound.class.getResource("/audio/KillAllEnemiesSE.wav").toString())
     );
 
+    public static final MediaPlayer endingSE = new MediaPlayer(
+            new Media(Sound.class.getResource("/audio/Ending.mp3").toString())
+    );
+
     /**
      * Create a new MediaPlayer with the same media as 'That' (clone).
      * @param that input MediaPlayer.

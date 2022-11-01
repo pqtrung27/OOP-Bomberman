@@ -51,10 +51,11 @@ public class Main extends Application {
      * status = 6: New high score
      * status = 7: Instruction
      * status = 8: About
+     * status = 9: Winning
      */
     public static int status;
 
-    public static DisplayScene[] scenes = new DisplayScene[9];
+    public static DisplayScene[] scenes = new DisplayScene[10];
     public static final Font FONT = Font.loadFont(Main.class.getResource("/font/font.ttf").toString(), 30);
 
     public static void main(String[] args) {
@@ -75,6 +76,9 @@ public class Main extends Application {
         scenes[6] = new NewHighScore();
         scenes[7] = new Instruction();
         scenes[8] = new About();
+        scenes[9] = new FixedScene("CONGRATULATIONS\n\n" +
+                "YOU HAVE SUCCEEDED IN\nHELPING BOMBERMAN TO BECOME\nA HUMAN BEING\n\n" +
+                "GOOD BYE");
         status = 0;
         ((HomeScene) scenes[0]).setCanContinue(false);
 
@@ -144,6 +148,16 @@ public class Main extends Application {
                         Sound.gameOverBGM.stop();
                     }
                 }, 6000L);
+                break;
+            case 9: // wining
+                Sound.endingSE.play();
+                (new Timer()).schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        setPlayingStatus(0, "game over");
+                        Sound.endingSE.stop();
+                    }
+                }, 12000L);
                 break;
         }
         status = newStatus;

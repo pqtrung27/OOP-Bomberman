@@ -82,8 +82,12 @@ public class BombermanGame extends DisplayScene {
         controller = new Controller();
         //Bomb.reset();
         ++level;
-        Main.setPlayingStatus(3, "STAGE " + level);
-        Entity.board = new Board(level);
+        if (level <= 20) {
+            Main.setPlayingStatus(3, "STAGE " + level);
+            Entity.board = new Board(level);
+        } else {
+            Main.setPlayingStatus(9, "winning");
+        }
     }
 
     @Override

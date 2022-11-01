@@ -22,6 +22,7 @@ package uet.oop.bomberman.util.gameUtil;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.media.MediaPlayer;
+import uet.oop.bomberman.Main;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.MovingEntity;
 import uet.oop.bomberman.entities.breakable.Bomb;
