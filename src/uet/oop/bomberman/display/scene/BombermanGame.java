@@ -71,7 +71,7 @@ public class BombermanGame extends DisplayScene {
 
     @Override
     public void reset() {
-        level = 0;
+        level = -1;
         score = 0;
         lives = 2;
         Bomber.reset();
@@ -136,6 +136,7 @@ public class BombermanGame extends DisplayScene {
         Entity.board.render(gc);
 
         gc.setFill(Color.WHITE);
+        gc.fillText("STAGE " + level, 50, 35);
         gc.fillText("LEFT: " + lives, 750, 35);
         gc.fillText(String.valueOf(score), 450, 35);
     }
