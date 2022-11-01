@@ -80,7 +80,6 @@ public class BombermanGame extends DisplayScene {
 
     private void loadNextLevel() {
         controller = new Controller();
-        //Bomb.reset();
         ++level;
         if (level <= 20) {
             Main.setPlayingStatus(3, "STAGE " + level);

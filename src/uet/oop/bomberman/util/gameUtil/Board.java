@@ -47,6 +47,7 @@ import uet.oop.bomberman.util.entityUtil.EnemyAI;
 import uet.oop.bomberman.util.entityUtil.Layer;
 
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -332,12 +333,13 @@ public class Board implements Serializable {
      * @throws FileNotFoundException khi không tìm thấy tệp cấu hình cần tải
      */
     public void loadLevel(int level) throws FileNotFoundException {
-        String path = "res/levels/Level" + level + ".txt";
+        String path = "/levels/Level" + level + ".txt";
         try {
             if (level >= 1) {
                 new CreateLevel(path);
             }
-            Scanner scanner = new Scanner(Files.newInputStream(Paths.get(path)));
+            InputStream fstream = this.getClass().getResourceAsStream(path);
+            Scanner scanner = new Scanner(fstream);
             scanner.nextInt();
             nRow = scanner.nextInt();
             nCol = scanner.nextInt();
